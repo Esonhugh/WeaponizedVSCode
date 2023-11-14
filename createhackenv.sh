@@ -25,7 +25,7 @@ createhack () {
 	echo 'c291cmNlICRQUk9KRUNUX0ZPTERFUi8udnNjb2RlL2Vudi56c2gKbXNmY29uc29sZSAtciAiJFBST0pFQ1RfRk9MREVSLy52c2NvZGUvd29ya3NwYWNlX21ldGFzcGxvaXQucmMi' | base64 -d > $1/.vscode/source_metasploit.zsh
 
     # .vscode/env.zsh
-	echo 'ZXhwb3J0IFJIT1NUPTEwLjEwLlguWApleHBvcnQgTEhPU1Q9MTAuWC5YLlgKZXhwb3J0IFRBUkdFVD14eHguZG9tYWluLmNvbQoKc2V0dXBfdmVudigpIHsKICAgIHB5dGhvbjMgLW0gdmVudiAkUFJPSkVDVF9GT0xERVIvdmVudgp9Cgp1bnNldCBTU1NfTE9BREVE' | base64 -d > $1/.vscode/env.zsh
+	echo 'ZXhwb3J0IFJIT1NUPTEwLjEwLlguWApleHBvcnQgTEhPU1Q9MTAuWC5YLlgKZXhwb3J0IFRBUkdFVD14eHguZG9tYWluLmNvbQoKdW5zZXQgU1NTX0xPQURFRA==' | base64 -d > $1/.vscode/env.zsh
 
 	echo "Generate Success" "Launched VSCode"
 	code $1
