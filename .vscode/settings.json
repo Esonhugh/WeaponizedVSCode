@@ -1,0 +1,54 @@
+{
+    "terminal.integrated.profiles.linux": {
+        "zsh-shell": {
+            "path": "zsh",
+            "args": [
+                "-c",
+                "export PROJECT_FOLDER=${workspaceFolder} ;source ${workspaceFolder}/.vscode/source.zsh"
+            ]
+        },
+        "metasploit": {
+            "overrideName": true,
+            "path": "zsh",
+            "args": [
+                "-c",
+                "export PROJECT_FOLDER=${workspaceFolder} ;source ${workspaceFolder}/.vscode/source_metasploit.zsh"
+            ]
+        },
+        "web-delivery": {
+            "overrideName": true,
+            "path": "zsh",
+            "args": [
+                "-c",
+                "export PROJECT_FOLDER=${workspaceFolder} ;source ${workspaceFolder}/.vscode/source_web-delivery.zsh"
+            ]
+        }
+    },
+    "terminal.integrated.profiles.osx": {
+        "zsh-shell": {
+            "path": "zsh",
+            "args": [
+                "-c",
+                "export PROJECT_FOLDER=${workspaceFolder} ;source ${workspaceFolder}/.vscode/source.zsh"
+            ]
+        },
+        "metasploit": {
+            "overrideName": true,
+            "path": "zsh",
+            "args": [
+                "-c",
+                "export PROJECT_FOLDER=${workspaceFolder} ;source ${workspaceFolder}/.vscode/source_metasploit.zsh"
+            ]
+        },
+        "web-delivery": {
+            "overrideName": true,
+            "path": "zsh",
+            "args": [
+                "-c",
+                "export PROJECT_FOLDER=${workspaceFolder} ;source ${workspaceFolder}/.vscode/source_web-delivery.zsh"
+            ]
+        }
+    },
+    "terminal.integrated.defaultProfile.osx": "zsh-shell",
+    "terminal.integrated.defaultProfile.linux": "zsh-shell",
+}
