@@ -1,4 +1,4 @@
-export PROJECT_WEB_DELIVERY=$PROJECT_FOLDER/.web-delivery
+source $PROJECT_FOLDER/.vscode/env.zsh
 
 mkdir -p $PROJECT_WEB_DELIVERY
 
