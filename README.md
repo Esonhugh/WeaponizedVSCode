@@ -104,6 +104,7 @@ linux/macos (windows is completely different)
     > now: you can create a file named `cred` and save the credentials in it. `user` folder to save context with getting foothold and to user. `root` folder to save context with getting root.
     > 
 
+5. more feature ...
 
 
 ### what's craft.py
