@@ -15,7 +15,7 @@ createhack foldername # creates foldername and sets up environment with vscode a
 
     > like `vscode setting.json` and metasploit workspace rcfile `workspace_metasploit.rc`
 
-3. Create `env.zsh`` for environments variables you want to set. it will be sourced at first line in `source_*.zsh` and `source.zsh`.
+3. Create `env.zsh` for environments variables you want to set. it will be sourced at first line in `source_*.zsh` and `source.zsh`.
 
     > e.g. `export RHOST=11.45.1.4`
 
