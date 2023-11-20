@@ -47,6 +47,14 @@
                 "-c",
                 "export PROJECT_FOLDER=${workspaceFolder} ;source ${workspaceFolder}/.vscode/source_web-delivery.zsh"
             ]
+        },
+        "kali-orbstack": {
+            "overrideName": true,
+            "path": "zsh",
+            "args": [
+                "-c",
+                "orb -u root source ${workspaceFolder}/.vscode/source_kali-orbstack.zsh"
+            ]
         }
     },
     "terminal.integrated.defaultProfile.osx": "zsh-shell",
