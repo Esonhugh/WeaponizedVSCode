@@ -50,6 +50,11 @@ createhack foldername # creates foldername and sets up environment with vscode a
     > `web-delivery` will cd into the $PROJECT_WEB_DELIVERY folder and start a python http server for you to delivery web files. It based on `source source_web-delivery.zsh` file. 
     >   > you can use pdteam's simplehttpserver to replace it.
     >
+    > `kali-orbstack` will launch orbstack virtual machine - kalilinx, source `source _kali-orbstack.zsh` and process env variables in `env.zsh` file inside env.
+    > 
+    >   > you can easily inject environment variables into the kali vm with this mode. and reuse command outside.
+    >   > 
+    >   > like `evil-winrm -i $RHOST -u $RUSER -p $RPASS` will work in kali vm and host machine. and you just need set the env variables in `env.zsh` file once.
 
 ### Supported Platfrom 
 
