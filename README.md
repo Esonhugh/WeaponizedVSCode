@@ -45,7 +45,7 @@ createhack foldername # creates foldername and sets up environment with vscode a
 
     > `zsh-shell` will create a new zsh shell with sourcing `source.zsh` file
     > 
-    > `metasploit` will launch up a new msfconsole with the workspace_metasploit.rc file and it based on `source source_metasploit.zsh` file
+    > `meterpreter-handler` will launch up a new msfconsole with the workspace_metasploit.rc file which will called with msfconsole command in `source source_metasploit.zsh` file
     >
     > `web-delivery` will cd into the $PROJECT_WEB_DELIVERY folder and start a python http server for you to delivery web files. It based on `source source_web-delivery.zsh` file. 
     >   > you can use pdteam's simplehttpserver to replace it.

@@ -7,7 +7,7 @@
                 "export PROJECT_FOLDER=${workspaceFolder} ;source ${workspaceFolder}/.vscode/source.zsh"
             ]
         },
-        "metasploit": {
+        "meterpreter-handler": {
             "overrideName": true,
             "path": "zsh",
             "args": [
@@ -32,7 +32,7 @@
                 "export PROJECT_FOLDER=${workspaceFolder} ;source ${workspaceFolder}/.vscode/source.zsh"
             ]
         },
-        "metasploit": {
+        "meterpreter-handler": {
             "overrideName": true,
             "path": "zsh",
             "args": [
