@@ -5,6 +5,11 @@
 ```zsh
 source createhackenv.sh
 createhack foldername # creates foldername and sets up environment with vscode automatically
+
+# Optional
+# Create alias for createhack
+
+alias weaponize-vsc=createhack
 ```
 
 ### What it does:
