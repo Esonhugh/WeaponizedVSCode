@@ -111,6 +111,10 @@ linux/macos (windows is completely different)
 
 5. more feature ...
 
+### Warning
+
+1. env.zsh and source_*.zsh will load before zshrc
+
 
 ### what's craft.py
 
