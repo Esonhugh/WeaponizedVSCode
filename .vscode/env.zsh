@@ -4,9 +4,7 @@ export DOMAIN=
 
 
 ## set systembased settings
-export HOST=${DOMAIN:-${RHOST}} # if DOMAIN is not set, use RHOST
-export host=${HOST} # alias as HOST
-export TARGET=${HOST} # target is HOST
+export TARGET=${DOMAIN:-${RHOST}} # target is HOST
 
 export IP=${RHOST} # alias rhost
 export ip=${IP} # alias as IP
