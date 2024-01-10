@@ -61,6 +61,11 @@ alias weaponize-vsc=createhack
     >   > 
     >   > like `evil-winrm -i $RHOST -u $RUSER -p $RPASS` will work in kali vm and host machine. and you just need set the env variables in `env.zsh` file once.
 
+9. reverse shell handler
+    
+    >  `netcat-handler` terminal will listen with rlwrap netcat for reverse shell, you can replace it with like tools `pwncat-cs` or other reverse shell handler tools.
+
+
 ### Supported Platfrom 
 
 linux/macos (windows is completely different)
