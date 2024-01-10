@@ -1,5 +1,6 @@
 export RHOST=10.10.X.X
 export LHOST=10.10.X.X
+export LPORT=6789
 export DOMAIN=
 
 

@@ -15,6 +15,17 @@
                 "export PROJECT_FOLDER=${workspaceFolder} ;source ${workspaceFolder}/.vscode/source_metasploit.zsh"
             ]
         },
+        "netcat-handler": {
+            "overrideName": true,
+            "path": "zsh",
+            "args": [
+                "-c",
+                "source ${workspaceFolder}/.vscode/revshell.zsh"
+            ],
+            "env": {
+                "PROJECT_FOLDER": "${workspaceFolder}"
+            }
+        },
         "web-delivery": {
             "overrideName": true,
             "path": "zsh",
@@ -39,6 +50,17 @@
                 "-c",
                 "export PROJECT_FOLDER=${workspaceFolder} ;source ${workspaceFolder}/.vscode/source_metasploit.zsh"
             ]
+        },
+        "netcat-handler": {
+            "overrideName": true,
+            "path": "zsh",
+            "args": [
+                "-c",
+                "source ${workspaceFolder}/.vscode/revshell.zsh"
+            ],
+            "env": {
+                "PROJECT_FOLDER": "${workspaceFolder}"
+            }
         },
         "web-delivery": {
             "overrideName": true,
