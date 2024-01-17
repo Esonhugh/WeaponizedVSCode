@@ -102,4 +102,10 @@
     },
     "terminal.integrated.defaultProfile.osx": "zsh-shell",
     "terminal.integrated.defaultProfile.linux": "zsh-shell",
+    "terminal.integrated.automationProfile.osx": {
+        "path": "zsh",
+    },
+    "terminal.integrated.automationProfile.linux": {
+        "path": "zsh",
+    },
 }

