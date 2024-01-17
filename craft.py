@@ -77,9 +77,14 @@ def test():
 
 
 def main():
+    print("reGenerating bash script")
     content =  generate_bash_script()
+    print("Content: ")
+    print(content)
+    print("Writing to createhackenv.sh file")
     with open("createhackenv.sh", 'w') as f:
         f.write(content)
+    print("Done")
 
 if __name__ == "__main__":
     main()

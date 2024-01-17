@@ -18,7 +18,7 @@
             "path": "zsh",
             "args": [
                 "-c",
-                "source ${workspaceFolder}/.vscode/source_metasploit.zsh"
+                "source ${workspaceFolder}/.vscode/source_metasploit-handler.zsh"
             ]
         },
         "netcat-handler": {
@@ -63,7 +63,7 @@
             "path": "zsh",
             "args": [
                 "-c",
-                "source ${workspaceFolder}/.vscode/source_metasploit.zsh"
+                "source ${workspaceFolder}/.vscode/source_metasploit-handler.zsh"
             ]
         },
         "netcat-handler": {
