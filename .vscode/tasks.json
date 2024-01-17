@@ -16,7 +16,7 @@
                 "-f",
                 "${input:msfvenom-format}",
                 "-o",
-                "${input:msfvenom-output}/1.${input:msfvenom-format}"
+                "${input:msfvenom-output}"
             ],
             "presentation": {
                 "echo": true,
@@ -97,7 +97,7 @@
             "id": "msfvenom-output",
             "type": "promptString",
             "description": "Enter the output filename",
-            "default": "${workspaceFolder}/.web-delivery/",
+            "default": "${workspaceFolder}/.web-delivery/muma",
         }
     ]
 }
