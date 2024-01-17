@@ -95,12 +95,9 @@
         },
         {
             "id": "msfvenom-output",
-            "type": "pickString",
-            "description": "Enter the advanced options",
-            "options": [
-                "${workspaceFolder}",
-                "${workspaceFolder}/.web-delivery",
-            ]
+            "type": "promptString",
+            "description": "Enter the output filename",
+            "default": "${workspaceFolder}/.web-delivery/",
         }
     ]
 }
