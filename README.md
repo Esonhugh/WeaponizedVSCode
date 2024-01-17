@@ -1,84 +1,14 @@
 ## Create Hacking Environment
 
-### Usage:
+### USAGE 
 
-```zsh
-source createhackenv.sh
-createhack foldername # creates foldername and sets up environment with vscode automatically
+[readme](./documents/USE.md)
 
-# Optional
-# Create alias for createhack
+### AIM of project (which problem this project try to solve)
 
-alias weaponize-vsc=createhack
-```
+Cobalt Strike has a lot of features, but it's too heavy for only host machine or boxes. But it's inspired me a lot.
 
-### What it does:
-
-1. Creates a folder with the name you give it
-
-2. Create a .vscode folder with all settings 
-
-    > like `vscode setting.json` and metasploit workspace rcfile `workspace_metasploit.rc`
-
-3. Create `env.zsh` for environments variables you want to set. it will be sourced at first line in `source_*.zsh` and `source.zsh`.
-
-    > e.g. `export RHOST=11.45.1.4`
-
-4. Create `source_*.zsh` files for you to source your own scripts
-
-    > e.g. `source_web-delivery.zsh` will be used when you use `web-delivery` mode in your new vscode terminal. 
-    > 
-    > and you can put your own script in it
-
-5. Create workspace metasploit rcfile `workspace_metasploit.rc` for you to use in vscode terminal
-
-    > e.g. `msfconsole -r workspace_metasploit.rc` 
-    >
-    > or
-    > 
-    > your can start msfconsole in new vscode terminal with `metasploit` mode
-
-6. open up vscode with the folder you just created
-
-7. it also will auto set the envirnoment variable of $PROJECT_FOLDER to the folder you just created, and $PROJECT_WEB_DELIVERY in the `source_web-delivery.zsh` file to the folder to delivery web files
-
-    > so you can use it in your own scripts
-    > 
-    > e.g. `cd $PROJECT_FOLDER`
-
-8. Create a new terminal in vscode and choose different one.
-
-    > `zsh-shell` will create a new zsh shell with sourcing `source.zsh` file
-    > 
-    > `meterpreter-handler` will launch up a new msfconsole with the workspace_metasploit.rc file which will called with msfconsole command in `source source_metasploit.zsh` file
-    >
-    > `web-delivery` will cd into the $PROJECT_WEB_DELIVERY folder and start a python http server for you to delivery web files. It based on `source source_web-delivery.zsh` file. 
-    >   > you can use pdteam's simplehttpserver to replace it.
-    >
-    > `kali-orbstack` will launch orbstack virtual machine - kalilinx, source `source _kali-orbstack.zsh` and process env variables in `env.zsh` file inside env.
-    > 
-    >   > you can easily inject environment variables into the kali vm with this mode. and reuse command outside.
-    >   > 
-    >   > like `evil-winrm -i $RHOST -u $RUSER -p $RPASS` will work in kali vm and host machine. and you just need set the env variables in `env.zsh` file once.
-
-9. reverse shell handler
-    
-    >  `netcat-handler` terminal will listen with rlwrap netcat for reverse shell, you can replace it with like tools `pwncat-cs` or other reverse shell handler tools.
-
-
-### Supported Platfrom 
-
-linux/macos (windows is completely different)
-
-### Requirements
-
-1. zsh
-2. vscode
-3. python3 \[Optional\]
-4. metasploit \[Optional\]
-5. esonhugh/sss \[Optional\] - shell script snippets
-
-### problem this project try to solve
+So I wanna create a lightweight hacking environment for myself and providing features like following:
 
 1. different enviroment in different hacking project - content switching
 
@@ -108,7 +38,7 @@ linux/macos (windows is completely different)
     > 
     > now: you can edit the rcfile for project and use it in vscode terminal with `metasploit` mode. send trigger again and get the shell.
 
-4. taking notes, log/save credentials, download files from remote machine 
+4. taking notes, log/save credentials, download files from remote machine and keep them tidy
 
     it works well with vscode. so you can use some vscode extensions and vscode features to do sth.
 
@@ -119,21 +49,15 @@ linux/macos (windows is completely different)
     > now: you can create a file named `cred` and save the credentials in it. `user` folder to save context with getting foothold and to user. `root` folder to save context with getting root.
     > 
 
-5. more feature ...
+5. fast payload generation with metasploit
 
-### Warning
+    > such as, you have a #hackthebox machine and you want to craft a payload for it.
+    > 
+    > now: you can use vscode tasks in vscode to generate the payload fastly.
+    >
+    > 
 
-1. env.zsh and source_*.zsh will load before zshrc
+6. more feature ...
 
 
-### what's craft.py
-
-it's a python script to create the creathackenv.sh file for you based on current folder vscode configuration.
-
-It will pack the config files with base64 and put it in the creathackenv.sh file.
-
-and createhackenv.sh will decode it and put it in the right place when you create a new hacking environment.
-
-you can customize the createhackenv.sh file by yourself, but you need to make sure the base64 string is correct.
-
-Happy hacking. ;)
+### Happy hacking. ;)
