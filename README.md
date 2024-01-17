@@ -1,8 +1,12 @@
 ## Create Hacking Environment
 
-### USAGE 
+### USAGE
 
-[readme](./documents/USE.md)
+[Usage Readme](./documents/USE.md)
+
+[Custom Readme](./documents/CUSTOM.md)
+
+[Demo](./documents/DEMO.md)
 
 ### AIM of project (which problem this project try to solve)
 
