@@ -16,7 +16,7 @@
                 "-f",
                 "${input:msfvenom-format}",
                 "-o",
-                "${workspaceFolder}/.web-delivery/1.${input:msfvenom-format}"
+                "${input:msfvenom-output}/1.${input:msfvenom-format}"
             ],
             "presentation": {
                 "echo": true,
@@ -90,6 +90,16 @@
                 "PrependMigrate=true PrependMigrateProc=explorer.exe",
                 "PrependFork=true",
                 "PrependSetuid=true",
+                "PrependSetuid=true PrependFork=true",
+            ]
+        },
+        {
+            "id": "msfvenom-output",
+            "type": "pickString",
+            "description": "Enter the advanced options",
+            "options": [
+                "${workspaceFolder}",
+                "${workspaceFolder}/.web-delivery",
             ]
         }
     ]
