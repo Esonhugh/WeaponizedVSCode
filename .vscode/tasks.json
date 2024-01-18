@@ -41,7 +41,9 @@
             "type": "pickString",
             "description": "Select the payload",
             "options": [
-                "windows/x64/meterpreter/reverse_tcp", // Staged
+                // Order with the most used payloads first
+                // Staged first, better stageless
+                "windows/x64/meterpreter/reverse_tcp", 
                 "windows/meterpreter/reverse_tcp",
                 "linux/x64/meterpreter/reverse_tcp",
                 "linux/x86/meterpreter/reverse_tcp",
@@ -51,6 +53,7 @@
                 "windows/x64/meterpreter/reverse_http",
                 "windows/meterpreter/reverse_https",
                 "windows/x64/meterpreter/reverse_https",
+                "java/meterpreter/reverse_tcp",
             ]
         },
         {
@@ -58,14 +61,30 @@
             "type": "pickString",
             "description": "Select the format of the payload",
             "options": [
+                // executable first, script second, web hta third
                 "exe",
                 "elf",
+                "psh (powershell script with loader)",
+                "dll",
+                "hta-psh",
+                "psh-cmd",
+                "psh-net",
+                "psh-reflection",
                 "elf-so",
                 "exe-service",
-                "psh",
-                "php",
+                "raw (if scripts payload like php meterpreter, python meterpreter, etc.)",
                 "jsp",
-                "asp"
+                "jar",
+                "war",
+                "pl",
+                "asp",
+                "aspx",
+                "msi",
+                "python-reflection",
+                "vba",
+                "vba-exe",
+                "vba-psh",
+                "vbs",
             ]
         },
         {
