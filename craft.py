@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import json
+from hashlib import sha256
 from base64 import b64encode
 
 def read_file_return_base64ed_content(filename):
@@ -28,7 +29,19 @@ def create_value_map(filepath:str):
 vscode_path = ".vscode"
 
 template_head = """#!/bin/zsh
-createhack () {
+# __        __                        __     ______   ____          _      
+# \ \      / /__  __ _ _ __   ___  _ _\ \   / / ___| / ___|___   __| | ___ 
+#  \ \ /\ / / _ \/ _` | '_ \ / _ \| '_ \ \ / /\___ \| |   / _ \ / _` |/ _ \\
+#   \ V  V /  __/ (_| | |_) | (_) | | | \ V /  ___) | |__| (_) | (_| |  __/
+#    \_/\_/ \___|\__,_| .__/ \___/|_| |_|\_/  |____/ \____\___/ \__,_|\___|
+#                    |_|                                                  
+#
+# Author: Esonhugh <weapon_vscode@eson.ninja>
+# Path: createhackenv.sh
+# Usage: createhackenv <foldername>
+# Description: Create a hacking project with vscode based environment
+
+weapon_vscode () {
 	echo "Creating VSCode Hack Environment"
 	echo "Usage: $0 <foldername>"
 	if [ -z "$1" ]
@@ -48,6 +61,12 @@ template_tail = """
 	echo "Generate Success" "Launched VSCode"
 	code $1
 }
+
+# Create Alias for weapon_vscode
+alias createhackenv=weapon_vscode
+alias createhack=weapon_vscode
+
+# Script Hash: __HASH__
 """
 
 
@@ -75,10 +94,13 @@ def test():
     print(filename_to_variable_name("./vscode/source.zsh"))
     print(generate_bash_script())
 
+def content_hash(content):
+    return sha256(content.encode('utf-8')).hexdigest()
 
 def main():
     print("reGenerating bash script")
     content =  generate_bash_script()
+    content = content.replace("__HASH__", content_hash(content))
     print("Content: ")
     print(content)
     print("Writing to createhackenv.sh file")

@@ -1,5 +1,17 @@
 #!/bin/zsh
-createhack () {
+# __        __                        __     ______   ____          _      
+# \ \      / /__  __ _ _ __   ___  _ _\ \   / / ___| / ___|___   __| | ___ 
+#  \ \ /\ / / _ \/ _` | '_ \ / _ \| '_ \ \ / /\___ \| |   / _ \ / _` |/ _ \
+#   \ V  V /  __/ (_| | |_) | (_) | | | \ V /  ___) | |__| (_) | (_| |  __/
+#    \_/\_/ \___|\__,_| .__/ \___/|_| |_|\_/  |____/ \____\___/ \__,_|\___|
+#                    |_|                                                  
+#
+# Author: Esonhugh <weapon_vscode@eson.ninja>
+# Path: createhackenv.sh
+# Usage: createhackenv <foldername>
+# Description: Create a hacking project with vscode based environment
+
+weapon_vscode () {
 	echo "Creating VSCode Hack Environment"
 	echo "Usage: $0 <foldername>"
 	if [ -z "$1" ]
@@ -45,3 +57,9 @@ createhack () {
 	echo "Generate Success" "Launched VSCode"
 	code $1
 }
+
+# Create Alias for weapon_vscode
+alias createhackenv=weapon_vscode
+alias createhack=weapon_vscode
+
+# Script Hash: 2ac1b5c9ab4545d52df6fa05c64da92a2e8bfe442be8433c80fad25f3a1331aa
