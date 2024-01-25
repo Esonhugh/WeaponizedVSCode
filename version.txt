@@ -1,0 +1,16 @@
+# Weaponaized your VSCode
+
+## What is this?
+
+This is a simple script that will allow you to use VSCode as a weapon. 
+
+It will open a new VSCode window and will open a new file with the name of the file you given. 
+
+The `.vscode` folder will be created, and vscode will loaded settings from it.
+
+## How to use it?
+
+1. Download the script
+2. source it 
+3. use function `createhack <foldername>` with the name of the file you want to open
+4. vscode will Automatically open the folder

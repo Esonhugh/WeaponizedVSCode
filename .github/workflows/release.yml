@@ -1,0 +1,32 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+permissions: 
+    contents: write
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v2
+            
+            - name: Set up Python 3.8
+              uses: actions/setup-python@v2
+              with:
+                python-version: '3.x'
+
+            - run: python3 craft.py
+
+            - name: Create Release
+              uses: softprops/action-gh-release@v1
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                body_path: ${{ github.workspace }}/version.txt
+                files: |
+                    ${{ github.workspace }}/createhackenv.sh
