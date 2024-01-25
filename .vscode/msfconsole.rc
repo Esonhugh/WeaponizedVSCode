@@ -1,0 +1,4 @@
+set Prompt [Knight Operation Console]
+set MeterpreterPrompt [Knight Enemy]
+
+# 

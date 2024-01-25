@@ -10,6 +10,17 @@
                 "source ${workspaceFolder}/.vscode/source.zsh"
             ]
         },
+        "msfconsole": {
+            "overrideName": true,
+            "env": {
+                "PROJECT_FOLDER": "${workspaceFolder}"
+            },
+            "path": "zsh",
+            "args": [
+                "-c",
+                "source ${workspaceFolder}/.vscode/source_msfconsole.zsh"
+            ]
+        },
         "meterpreter-handler": {
             "overrideName": true,
             "env": {
@@ -64,6 +75,17 @@
             "args": [
                 "-c",
                 "source ${workspaceFolder}/.vscode/source_metasploit-handler.zsh"
+            ]
+        },
+        "msfconsole": {
+            "overrideName": true,
+            "env": {
+                "PROJECT_FOLDER": "${workspaceFolder}"
+            },
+            "path": "zsh",
+            "args": [
+                "-c",
+                "source ${workspaceFolder}/.vscode/source_msfconsole.zsh"
             ]
         },
         "netcat-handler": {
