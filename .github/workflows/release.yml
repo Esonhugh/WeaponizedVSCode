@@ -23,7 +23,7 @@ jobs:
             - run: python3 craft.py
 
             - run: |
-                python3 verify.py >> version.txt
+                python3 verify.py ./createhackenv.sh >> version.txt
                 echo '```'  >> version.txt
 
             - name: Create Release
