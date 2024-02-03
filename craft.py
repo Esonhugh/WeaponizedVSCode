@@ -58,6 +58,9 @@ template_body = """
 """
 
 template_tail = """
+    echo "source.zsh" > $1/.vscode/.gitignore
+    echo "source*.zsh" >> $1/.vscode/.gitignore
+
 	echo "Generate Success" "Launched VSCode"
 	code $1
 }

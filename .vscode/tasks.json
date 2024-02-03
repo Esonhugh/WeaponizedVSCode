@@ -33,6 +33,15 @@
             "isBackground": false,
             "promptOnClose": true,
             "hide": false,
+        },
+        {
+            "label": "venv create",
+            "type": "shell",
+            "detail": "venv create task",
+            "command": [
+                "python3 -m venv venv;",
+                "echo '*' > venv/.gitignore;",
+            ],
         }
     ],
     "inputs": [
