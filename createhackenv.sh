@@ -54,8 +54,11 @@ weapon_vscode () {
     # .vscode/env.zsh
 	echo 'ZXhwb3J0IFJIT1NUPTEwLjEwLlguWApleHBvcnQgTEhPU1Q9MTAuMTAuWC5YCmV4cG9ydCBMUE9SVD02Nzg5CmV4cG9ydCBET01BSU49CgoKIyMgc2V0IHN5c3RlbWJhc2VkIHNldHRpbmdzCmV4cG9ydCBUQVJHRVQ9JHtET01BSU46LSR7UkhPU1R9fSAjIHRhcmdldCBpcyBIT1NUCgpleHBvcnQgSVA9JHtSSE9TVH0gIyBhbGlhcyByaG9zdApleHBvcnQgaXA9JHtJUH0gIyBhbGlhcyBhcyBJUAoKZXhwb3J0IFBST0pFQ1RfV0VCX0RFTElWRVJZPSRQUk9KRUNUX0ZPTERFUi8ud2ViLWRlbGl2ZXJ5ICMgd2ViLWRlbGl2ZXJ5IGlzIGEgZm9sZGVyIGluIFBST0pFQ1RfRk9MREVSCnVuc2V0IFNTU19MT0FERUQgIyBtYWtlIHN1cmUgc3NzIGluaXQgc2hlbGwgaXMgbm90IHNldAoKIyBpZiB5b3UgbmVlZCB0byBzZXQgZnVuY3Rpb25zIGRlZmluaXRpb25zLCB5b3UgY2FuIGRvIGl0IGhlcmUKIyBzb3VyY2UgJFBST0pFQ1RfRk9MREVSLy52c2NvZGUvdXRpbHMuenNo' | base64 -d > $1/.vscode/env.zsh
 
-    echo "source.zsh" > $1/.vscode/.gitignore
-    echo "source*.zsh" >> $1/.vscode/.gitignore
+	echo "*" > $1/.vscode/.gitignore
+    echo "!env.zsh" >> $1/.vscode/.gitignore
+    echo "!metasploit_handler.rc" >> $1/.vscode/.gitignore
+	echo "!msfconsole.rc" >> $1/.vscode/.gitignore
+	echo "!revshell.zsh" >> $1/.vscode/.gitignore
 
 	echo "Generate Success" "Launched VSCode"
 	code $1
@@ -65,4 +68,4 @@ weapon_vscode () {
 alias createhackenv=weapon_vscode
 alias createhack=weapon_vscode
 
-# Script Hash: 7908e06b056f6fb1d8d120c07550c83664f63ea591954febeea245ce9d685bb4
+# Script Hash: 1f946844d472abbfbe40d01f1ef41fb15ac38c0775786c6450ceafb9b576e1a0

@@ -58,8 +58,11 @@ template_body = """
 """
 
 template_tail = """
-    echo "source.zsh" > $1/.vscode/.gitignore
-    echo "source*.zsh" >> $1/.vscode/.gitignore
+	echo "*" > $1/.vscode/.gitignore
+    echo "!env.zsh" >> $1/.vscode/.gitignore
+    echo "!metasploit_handler.rc" >> $1/.vscode/.gitignore
+	echo "!msfconsole.rc" >> $1/.vscode/.gitignore
+	echo "!revshell.zsh" >> $1/.vscode/.gitignore
 
 	echo "Generate Success" "Launched VSCode"
 	code $1
