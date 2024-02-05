@@ -31,9 +31,23 @@ export DOMAIN=
 # export MC_HOST_myminio=http://${MINIO_ROOT_USER}:${MINIO_ROOT_PASSWORD}@${MINIO_ENDPOINT}
 
 # Terraform settings
+export TF_LOG=trace
+export TF_LOG_PATH=$PROJECT_FOLDER/terraform.log
 # export TF_VAR_aws_access_key=...
 # export TF_VAR_aws_secret_key=...
 # export TF_VAR_aws_session_token=...
+# export TF_VAR_aws_region=us-west-2
+
+# OpenStack settings
+# export OS_USERNAME=username
+# export OS_PASSWORD=password
+# export OS_TENANT_NAME=projectName
+# export OS_AUTH_URL=https://identityHost:portNumber/v2
+# The following lines can be omitted
+# export OS_TENANT_ID=tenantIDString
+# export OS_REGION_NAME=regionName
+# export OS_CACERT=/path/to/cacertFile
+# export OS_TOKEN=tokenString
 
 ################################################################
 # More default settings
