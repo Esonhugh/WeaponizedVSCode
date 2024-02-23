@@ -16,7 +16,7 @@
                 "-o",
                 "${input:msfvenom-output}",
                 "-f",
-                "${input:msfvenom-format}",
+                "${input:msfvenom-format}"
             ],
             "presentation": {
                 "echo": true,
@@ -32,7 +32,7 @@
             },
             "isBackground": false,
             "promptOnClose": true,
-            "hide": false,
+            "hide": false
         },
         {
             "label": "venv create",
@@ -40,8 +40,20 @@
             "detail": "venv create task",
             "command": [
                 "python3 -m venv venv;",
-                "echo '*' > venv/.gitignore;",
+                "echo '*' > venv/.gitignore;"
+            ]
+        },
+        {
+            "label": "edit /etc/hosts",
+            "type": "shell",
+            "detail": "edit /etc/hosts task",
+            "command": [
+                "sudo",
+                "'${execPath}'",
+                "/etc/hosts"
             ],
+            "isBackground": false,
+            "problemMatcher": []
         }
     ],
     "inputs": [
