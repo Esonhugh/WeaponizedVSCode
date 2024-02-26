@@ -10,50 +10,54 @@
                 "source ${workspaceFolder}/.vscode/source.zsh"
             ]
         },
-        "msfconsole": {
-            "overrideName": true,
-            "env": {
-                "PROJECT_FOLDER": "${workspaceFolder}"
-            },
-            "path": "zsh",
-            "args": [
-                "-c",
-                "source ${workspaceFolder}/.vscode/source_msfconsole.zsh"
-            ]
-        },
         "meterpreter-handler": {
             "overrideName": true,
             "env": {
-                "PROJECT_FOLDER": "${workspaceFolder}"
+                "PROJECT_FOLDER": "${workspaceFolder}",
+                "METASPLOIT_HANDLER_MODE": "True"
             },
             "path": "zsh",
             "args": [
                 "-c",
-                "source ${workspaceFolder}/.vscode/source_metasploit-handler.zsh"
+                "source ${workspaceFolder}/.vscode/source.zsh"
+            ]
+        },
+        "msfconsole": {
+            "overrideName": true,
+            "env": {
+                "PROJECT_FOLDER": "${workspaceFolder}",
+                "METASPLOIT_CONSOLE_MODE": "True"
+            },
+            "path": "zsh",
+            "args": [
+                "-c",
+                "source ${workspaceFolder}/.vscode/source.zsh"
             ]
         },
         "netcat-handler": {
             "overrideName": true,
             "env": {
-                "PROJECT_FOLDER": "${workspaceFolder}"
+                "PROJECT_FOLDER": "${workspaceFolder}",
+                "REVERSE_SHELL_MODE": "True"
             },
             "path": "zsh",
             "args": [
                 "-c",
-                "source ${workspaceFolder}/.vscode/revshell.zsh"
+                "source ${workspaceFolder}/.vscode/source.zsh"
             ]
         },
         "web-delivery": {
             "overrideName": true,
             "env": {
-                "PROJECT_FOLDER": "${workspaceFolder}"
+                "PROJECT_FOLDER": "${workspaceFolder}",
+                "WEB_DELIVERY_MODE": "True"
             },
             "path": "zsh",
             "args": [
                 "-c",
-                "source ${workspaceFolder}/.vscode/source_web-delivery.zsh"
+                "source ${workspaceFolder}/.vscode/source.zsh"
             ]
-        }
+        },
     },
     "terminal.integrated.profiles.osx": {
         "zsh-shell": {
@@ -69,45 +73,49 @@
         "meterpreter-handler": {
             "overrideName": true,
             "env": {
-                "PROJECT_FOLDER": "${workspaceFolder}"
+                "PROJECT_FOLDER": "${workspaceFolder}",
+                "METASPLOIT_HANDLER_MODE": "True"
             },
             "path": "zsh",
             "args": [
                 "-c",
-                "source ${workspaceFolder}/.vscode/source_metasploit-handler.zsh"
+                "source ${workspaceFolder}/.vscode/source.zsh"
             ]
         },
         "msfconsole": {
             "overrideName": true,
             "env": {
-                "PROJECT_FOLDER": "${workspaceFolder}"
+                "PROJECT_FOLDER": "${workspaceFolder}",
+                "METASPLOIT_CONSOLE_MODE": "True"
             },
             "path": "zsh",
             "args": [
                 "-c",
-                "source ${workspaceFolder}/.vscode/source_msfconsole.zsh"
+                "source ${workspaceFolder}/.vscode/source.zsh"
             ]
         },
         "netcat-handler": {
             "overrideName": true,
             "env": {
-                "PROJECT_FOLDER": "${workspaceFolder}"
+                "PROJECT_FOLDER": "${workspaceFolder}",
+                "REVERSE_SHELL_MODE": "True"
             },
             "path": "zsh",
             "args": [
                 "-c",
-                "source ${workspaceFolder}/.vscode/revshell.zsh"
+                "source ${workspaceFolder}/.vscode/source.zsh"
             ]
         },
         "web-delivery": {
             "overrideName": true,
             "env": {
-                "PROJECT_FOLDER": "${workspaceFolder}"
+                "PROJECT_FOLDER": "${workspaceFolder}",
+                "WEB_DELIVERY_MODE": "True"
             },
             "path": "zsh",
             "args": [
                 "-c",
-                "source ${workspaceFolder}/.vscode/source_web-delivery.zsh"
+                "source ${workspaceFolder}/.vscode/source.zsh"
             ]
         },
         "kali-orbstack": {
