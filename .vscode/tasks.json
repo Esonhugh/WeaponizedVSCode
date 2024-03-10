@@ -41,7 +41,8 @@
             "command": [
                 "python3 -m venv venv;",
                 "echo '*' > venv/.gitignore;"
-            ]
+            ],
+            "problemMatcher": []
         },
         {
             "label": "edit /etc/hosts",
@@ -56,13 +57,21 @@
             "problemMatcher": []
         },
         {
+            "label": "Encoder/Decoder",
+            "command": [
+                "${input:visit-cyberchef}"
+            ],
+            "problemMatcher": []
+        },
+        {
             "label": "OSCP exam style note template",
             "type": "shell",
             "detail": "OSCP exam style note template task, you can use this to create a note file for the exam or other lab.",
             "command": [
                 "echo ${input:note-template-type}|base64 -d > ${input:note-filename}",
                 "\n# fileSource: https://github.com/0prrr/OSCP-Note-Template",
-            ]
+            ],
+            "problemMatcher": []
         }
     ],
     "inputs": [
@@ -73,7 +82,7 @@
             "options": [
                 // Order with the most used payloads first
                 // Staged first, better stageless
-                "windows/x64/meterpreter/reverse_tcp", 
+                "windows/x64/meterpreter/reverse_tcp",
                 "windows/meterpreter/reverse_tcp",
                 "linux/x64/meterpreter/reverse_tcp",
                 "linux/x86/meterpreter/reverse_tcp",
@@ -164,6 +173,14 @@
             "type": "promptString",
             "description": "Enter the note filename",
             "default": "${workspaceFolder}/note.md",
+        },
+        {
+            "id": "visit-cyberchef",
+            "type": "command",
+            "command": "simpleBrowser.show",
+            "args": [
+                "https://gchq.github.io/CyberChef/"
+            ]
         }
     ]
 }
