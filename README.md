@@ -52,6 +52,8 @@ So I wanna create a lightweight hacking environment for myself and providing fea
     > 
     > now: you can create a file named `cred` and save the credentials in it. `user` folder to save context with getting foothold and to user. `root` folder to save context with getting root.
     > 
+    > also I recommand using Foam in extensions.json to take notes and save the notes in the project folder. you can use the notes to write the report after you get the goal. you can use double linked like [[USE]] to go to the doucment use.md.
+    > 
 
 5. fast payload generation with metasploit
 

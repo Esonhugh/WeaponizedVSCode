@@ -1,0 +1,43 @@
+{
+    "recommendations": [
+        ////////////////////////////////////////////////////////////////
+        // Main extensions
+        ////////////////////////////////////////////////////////////////
+        // remote controls
+        "ms-vscode-remote.remote-ssh", // remote ssh controller
+        "ms-kubernetes-tools.vscode-kubernetes-tools", // Kubernetes Control
+        
+        // documents and file read helper
+        "foam.foam-vscode", // double linked knowledge base for showing the relationship in targets in actions
+        "redhat.vscode-yaml", // yaml formatter
+        "euskadi31.json-pretty-printer", // json pretty printer
+        
+        ////////////////////////////////////////////////////////////////
+        // Language supports
+        ////////////////////////////////////////////////////////////////
+        // C#
+        "icsharpcode.ilspy-vscode", // c# decompiler
+        // Python
+        "ms-python.python", // ms python supports
+        "donjayamanne.python-environment-manager", // python environment/packages manager
+        // Golang
+        "golang.go", // golang support
+
+        ////////////////////////////////////////////////////////////////
+        // Protocol supports
+        ////////////////////////////////////////////////////////////////
+        // Database Connections
+        // "alexcvzz.vscode-sqlite", // sqlite support
+        //
+        // Protocols
+        // "rpdswtk.vsmqtt", // MQTT support
+        // "Dancheg97.grpc-clicker", // gRPC support
+        "cweijan.vscode-office", // documents support + http request sender
+
+        ////////////////////////////////////////////////////////////////
+        // Custom Favorites
+        ////////////////////////////////////////////////////////////////
+        "vscodevim.vim" // vim mode support
+        // "mhutchie.git-graph", // git graph
+    ]
+}
