@@ -72,6 +72,24 @@
                 "\n# fileSource: https://github.com/0prrr/OSCP-Note-Template",
             ],
             "problemMatcher": []
+        },
+        {
+            "label": "service account token kubeconfig generation",
+            "type": "shell",
+            "detail": "Create service account based kubeconfig file",
+            "command": [
+                "echo 'This Task needs kubectl; make sure the kubeconfig is in your path';\n",
+                "mv ~/.kube/config ~/.kube/config-back.vscode-gernerating ;\n",
+                "kubectl config set-cluster localcfg --server=${input:kubeconfig-gen-api-server} --insecure-skip-tls-verify=true ;\n",
+                "kubectl config set-credentials user --token ${input:kubeconfig-gen-sa-token} ;\n",
+                "kubectl config set-context localcfg --cluster=localcfg --user=user --namespace=${input:kubeconfig-gen-namespace} ;\n",
+                "cp ~/.kube/config ${workspaceFolder}/kubeconfig ;\n",
+                "mv ~/.kube/config-back.vscode-gernerating ~/.kube/config ;\n",
+                "echo ;\n",
+                "echo export KUBECONFIG=${workspaceFolder}/kubeconfig ;\n",
+                "cat ${workspaceFolder}/kubeconfig"
+            ],
+            "problemMatcher": []
         }
     ],
     "inputs": [
@@ -181,6 +199,23 @@
             "args": [
                 "https://gchq.github.io/CyberChef/"
             ]
+        },
+        {
+            "id": "kubeconfig-gen-api-server",
+            "type": "promptString",
+            "description": "kubernetes api server",
+            "default": "https://server-ip:6443",
+        },
+        {
+            "id": "kubeconfig-gen-sa-token",
+            "type": "promptString",
+            "description": "kubernetes service account token under /var/run/secrets/kubernetes.io/serviceaccount/token",
+        },
+        {
+            "id": "kubeconfig-gen-namespace",
+            "type": "promptString",
+            "description": "kubernetes service account namespace",
+            "default": "default"
         }
     ]
 }
