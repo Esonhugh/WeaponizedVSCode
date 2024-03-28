@@ -6,7 +6,8 @@
 ################################################################
 # Target settings
 export RHOST=10.10.X.X
-export LHOST=`ifconfig|grep '10\.10\.'|cut -d ' ' -f2` # works well on HTB and THM.
+# works well on HTB and THM, Put your reverse IP here.
+export LHOST=`ifconfig|grep '10\.10\.'|cut -d ' ' -f2`
 export LPORT=6789
 export DOMAIN=
 
