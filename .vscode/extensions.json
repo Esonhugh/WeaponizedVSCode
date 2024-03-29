@@ -9,6 +9,7 @@
         
         // documents and file read helper
         "foam.foam-vscode", // double linked knowledge base for showing the relationship in targets in actions
+        "redhat.vscode-xml", // xml formatter 
         "redhat.vscode-yaml", // yaml formatter
         "euskadi31.json-pretty-printer", // json pretty printer
         
