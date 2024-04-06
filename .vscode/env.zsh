@@ -11,6 +11,8 @@ export LHOST=`ifconfig|grep '10\.10\.'|cut -d ' ' -f2`
 export LPORT=6789
 export DOMAIN=
 
+export METASPLOIT_INIT_COMMAND=""
+
 ################################################################
 # Advanced settings
 

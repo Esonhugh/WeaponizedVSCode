@@ -22,13 +22,22 @@ if [ "$WEB_DELIVERY_MODE" ]; then
     exit 0
 fi 
 
+
+export METASPLOIT_INIT_COMMAND="${METASPLOIT_INIT_COMMAND} setg RHOSTS $RHOST;"
+export METASPLOIT_INIT_COMMAND="${METASPLOIT_INIT_COMMAND} setg LHOST $LHOST;"
+export METASPLOIT_INIT_COMMAND="${METASPLOIT_INIT_COMMAND} setg LPORT $LPORT;"
+export METASPLOIT_INIT_COMMAND="${METASPLOIT_INIT_COMMAND} setg VHOST $DOMAIN;"
+
+
 if [ "$METASPLOIT_HANDLER_MODE" ]; then
-    msfconsole -r "$PROJECT_FOLDER/.vscode/metasploit_handler.rc"
+    msfconsole -r "$PROJECT_FOLDER/.vscode/metasploit_handler.rc" \
+        -x "${METASPLOIT_INIT_COMMAND}"
     exit 0
 fi
 
 if [ "$METASPLOIT_CONSOLE_MODE" ]; then 
-    msfconsole -r "$PROJECT_FOLDER/.vscode/msfconsole.rc"
+    msfconsole -r "$PROJECT_FOLDER/.vscode/msfconsole.rc" \
+        -x "${METASPLOIT_INIT_COMMAND}"
     exit 0
 fi
 
