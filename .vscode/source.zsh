@@ -54,5 +54,7 @@ if [ "$REVERSE_SHELL_MODE" ]; then
     exit 0
 fi
 
+if [ -d "$PROJECT_FOLDER/venv" ]; then
+    source $PROJECT_FOLDER/venv/bin/activate
+fi
 
-exec zsh -i  # must be there. otherwise, the terminal will close immediately.

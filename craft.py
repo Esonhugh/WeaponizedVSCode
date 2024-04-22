@@ -49,7 +49,8 @@ weapon_vscode () {
 		echo "No folder name given"
 		return 1
 	fi
-	mkdir -p $1/.vscode
+    mkdir -p $1/.vscode/zdotdir
+
 """
 
 template_body = """

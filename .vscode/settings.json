@@ -2,12 +2,12 @@
     "terminal.integrated.profiles.linux": {
         "zsh-shell": {
             "env": {
-                "PROJECT_FOLDER": "${workspaceFolder}"
+                "PROJECT_FOLDER": "${workspaceFolder}",
+                "ZDOTDIR": "${workspaceFolder}/.vscode/zdotdir"
             },
             "path": "zsh",
             "args": [
-                "-c",
-                "source ${workspaceFolder}/.vscode/source.zsh"
+                "--globalrcs", "--rcs"
             ]
         },
         "meterpreter-handler": {
@@ -62,12 +62,12 @@
     "terminal.integrated.profiles.osx": {
         "zsh-shell": {
             "env": {
-                "PROJECT_FOLDER": "${workspaceFolder}"
+                "PROJECT_FOLDER": "${workspaceFolder}",
+                "ZDOTDIR": "${workspaceFolder}/.vscode/zdotdir"
             },
             "path": "zsh",
             "args": [
-                "-c",
-                "source ${workspaceFolder}/.vscode/source.zsh"
+                "--globalrcs", "--rcs"
             ]
         },
         "meterpreter-handler": {
