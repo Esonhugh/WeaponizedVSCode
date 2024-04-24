@@ -71,7 +71,7 @@ aws_sts_env () {
         then
                 echo "Usage: $0 \`json\`"
                 echo "Example: export cred=\`aws sts assume-role --role-arn xxxx --role-session-name xxxx|jq ".Credentials"\`"
-                echo "aws_sts_env \$cred"
+                echo "         aws_sts_env \$cred"
                 return
         fi
         export AWS_ACCESS_KEY_ID=`echo $1|jq -r '.AccessKeyId' ` 
