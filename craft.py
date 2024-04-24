@@ -25,6 +25,10 @@ def create_value_map(filepath:str):
             variable_file_content_map.update(create_value_map(curr_file) )
     return variable_file_content_map
 
+def read_file(filename):
+    with open(filename) as f:
+        data = f.read()
+    return data
 
 vscode_path = ".vscode"
 
@@ -72,6 +76,8 @@ template_tail = """
 alias createhackenv=weapon_vscode
 alias createhack=weapon_vscode
 
+__LAUNCH_HELPER__
+
 # Script Hash: __HASH__
 """
 
@@ -86,7 +92,9 @@ def generate_bash_script():
                 replace("__KEY__", filename_to_variable_name(key)). \
                     replace("__VALUE__", value). \
                         replace("__FILEPATH__", key)
-    bash_script_content += template_tail
+    
+    bash_script_content += template_tail. \
+            replace("__LAUNCH_HELPER__", read_file("launch_helper.zsh"))
 
     return bash_script_content
 
