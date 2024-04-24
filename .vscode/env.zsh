@@ -68,6 +68,3 @@ unset https_proxy http_proxy all_proxy
 # export http_proxy=
 # export https_proxy=
 # export all_proxy=
-
-# if you need to set functions definitions, you can do it here
-# source $PROJECT_FOLDER/.vscode/utils.zsh
