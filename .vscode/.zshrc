@@ -60,6 +60,26 @@ if [ "$REVERSE_SHELL_MODE" ]; then
 fi
 
 # Here is mode if-tree complete, Now will launch the shell
+# export SUBDOMAIN_WORDLIST=$SECLIST/Discovery/DNS/bitquark-subdomains-top100000.txt
+# alias wfuzz=/PATH/To/wfuzz / docker run --rm -it wfuzz
+# alias wfuzz_http_vhost='wfuzz -c -w $SUBDOMAIN_WORDLIST -H "Host: FUZZ.$host" -u "http://$host"'
+# alias wfuzz_https_vhost='wfuzz -c -w $SUBDOMAIN_WORDLIST -H "Host: FUZZ.$host" -u "https://$host"'
+
+# automatically set the AWS environment variables from the json output of `aws sts assume-role` 
+aws_sts_env () {
+        if [[ -z "$1" ]]
+        then
+                echo "Usage: $0 \`json\`"
+                echo "Example: export cred=\`aws sts assume-role --role-arn xxxx --role-session-name xxxx|jq ".Credentials"\`"
+                echo "aws_sts_env \$cred"
+                return
+        fi
+        export AWS_ACCESS_KEY_ID=`echo $1|jq -r '.AccessKeyId' ` 
+        export AWS_SECRET_ACCESS_KEY=`echo $1|jq -r '.SecretAccessKey'` 
+        export AWS_SESSION_TOKEN=`echo $1|jq -r '.SessionToken' ` 
+        echo "SET AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN in environment."
+        env | grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox} AWS | awk '{ print "export " $0 }'
+}
 
 # Start the virtual environment if exists
 if [ -d "$PROJECT_FOLDER/venv" ]; then

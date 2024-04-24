@@ -7,9 +7,24 @@
 # Target settings
 export RHOST=10.10.X.X
 # works well on HTB and THM, Put your reverse IP here.
-export LHOST=`ifconfig|grep '10\.10\.'|cut -d ' ' -f2`
+export LHOST=`ifconfig|grep '10\.10\.'|cut -d ' ' -f2` 
+
+# use this if you are using a VPS or cloud server it can automatically get your public IP.
+# export LHOST=`curl ifconfig.me` 
+# export LHOST=`curl ip.me`
 export LPORT=6789
 export DOMAIN=
+
+# export USER_A=
+# export PASS_A=
+
+# export USER_B=
+# export PASS_B=
+
+# useful settings like ROCKYOU, SECLIST, etc.
+# export ROCKYOU=/usr/share/wordlists/rockyou.txt
+# export SECLIST=/usr/share/wordlists/seclists/
+# export WORDLISTS=/usr/share/wordlists/
 
 export METASPLOIT_INIT_COMMAND=""
 
