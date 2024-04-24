@@ -8,6 +8,8 @@
 
     > like `vscode setting.json tasks.json` and metasploit workspace rcfile `workspace_metasploit.rc`
 
+3. Check [LaunchOrder.md](./LaunchOrder.md) for the launch order of zsh files and it will explain how they works.
+
 ### How to customize it?
 
 #### in disk temporary
@@ -55,8 +57,12 @@
     > `tasks.json` defines commands which will run just once.
     >
     > current task is msfvenom payload fast generate task.
+    > 
+    > `extension.json` defines the extension you'd better to install in vscode.
+    >
+    > it extends vscode with other strong features like code analysis, code completion, etc.
 
-- `env.zsh` for environments variables you want to set. it should be sourced at first line in `source_*.zsh` and `source.zsh`. (recommended to source it in every .zsh file under .vscode folder)
+- `env.zsh` for environments variables you want to set. it should be sourced `source*.zsh`. (recommended to source it in every .zsh file under .vscode folder)
 
     > e.g. `export RHOST=11.45.1.4`
     >
@@ -67,15 +73,12 @@
     > e.g. `cd $PROJECT_FOLDER` switch the pwd back to the project
     >
 
-- `source_*.zsh` files for you to source your own scripts
+- `source.zsh` file will control the zsh shell behavior in vscode terminal with mode
 
-    > e.g. `source_web-delivery.zsh` will be used when you use `web-delivery` mode in your new vscode terminal. 
+    > e.g. `source.zsh` will be used when you set env varoiable `WEB_DELIVERY_MODE` in your new vscode terminal. 
     > 
-    > and you can put your own script in it
+    > you will launched a new zsh shell and execute the WEB_DELIVERY_MODE command in the block
 
-
-    > `zsh-shell` will create a new zsh shell with sourcing `source.zsh` file
-    > 
     > `meterpreter-handler` will launch up a new msfconsole with the metasploit rcfile 
     > this terminal will called with msfconsole command in `source source_metasploit.zsh` file
     >
@@ -84,12 +87,12 @@
     > `web-delivery` will cd into the $PROJECT_WEB_DELIVERY folder and start a python http server for you to delivery web files. It based on `source source_web-delivery.zsh` file. 
     >   > you can use pdteam's simplehttpserver to replace it.
     >
-    > `kali-orbstack` will launch orbstack virtual machine - kalilinx, source `source _kali-orbstack.zsh` and process env variables in `env.zsh` file inside env.
-    > 
+
+- `kali-orbstack` file will launch orbstack virtual machine - kalilinx, source `source_kali-orbstack.zsh` and process env variables in `env.zsh` file inside env. it will also control the zsh behavior but in kali vm.
+
     >   > you can easily inject environment variables into the kali vm with this mode. and reuse command outside.
     >   > 
     >   > like `evil-winrm -i $RHOST -u $RUSER -p $RPASS` will work in kali vm and host machine. and you just need set the env variables in `env.zsh` file once.
-
 
 - metasploit rcfile `metasploit_handler.rc` for you to use in vscode terminal (meterpreter-handler mode)
 
