@@ -81,6 +81,32 @@ aws_sts_env () {
         env | grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox} AWS | awk '{ print "export " $0 }'
 }
 
+# alias wfuzz= ?
+unfunction wfuzz_vhost_http 
+function wfuzz_vhost_http () {
+    local host=$1 
+    local wordlist=$2 
+    if [[ -z $wordlist ]] || [[ -z $host ]]
+    then
+        echo "Usage: wfuzz_vhost <host> <wordlist> [wfuzz options]"
+            return
+    fi
+    wfuzz -c -w $wordlist -H "Host: FUZZ.$host" -u "http://$host" $3 $4 $5 $6 $7 $8 $9 $10 $11 $12 $13 $14 $15 $16 $17 $18 $19
+}
+
+unfunction wfuzz_vhost_https
+function wfuzz_vhost_https () {
+    local host=$1 
+    local wordlist=$2 
+    if [[ -z $wordlist ]] || [[ -z $host ]]
+    then
+        echo "Usage: wfuzz_vhost <host> <wordlist> [wfuzz options]"
+            return
+    fi
+    wfuzz -c -w $wordlist -H "Host: FUZZ.$host" -u "https://$host" $3 $4 $5 $6 $7 $8 $9 $10 $11 $12 $13 $14 $15 $16 $17 $18 $19
+}
+
+
 # Start the virtual environment if exists
 if [ -d "$PROJECT_FOLDER/venv" ]; then
     source $PROJECT_FOLDER/venv/bin/activate
