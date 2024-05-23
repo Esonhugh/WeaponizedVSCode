@@ -109,5 +109,10 @@ function wfuzz_vhost_https () {
 
 # Start the virtual environment if exists
 if [ -d "$PROJECT_FOLDER/venv" ]; then
-    source $PROJECT_FOLDER/venv/bin/activate
+    if [ -n "${VIRTUAL_ENV}" ];then 
+        echo "Virtual Environment is already activated."
+        echo "Virtual Environment Home: ${VIRTUAL_ENV}"
+    else
+        source $PROJECT_FOLDER/venv/bin/activate
+    fi
 fi
