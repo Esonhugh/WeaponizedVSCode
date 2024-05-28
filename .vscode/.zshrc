@@ -67,22 +67,31 @@ fi
 
 # automatically set the AWS environment variables from the json output of `aws sts assume-role` 
 aws_sts_env () {
-        if [[ -z "$1" ]]
+        if [[ -n "$1" ]]
+        then
+            local cred=$1
+        fi
+        if [[ -z "$cred" ]]
         then
                 echo "Usage: $0 \`json\`"
                 echo "Example: export cred=\`aws sts assume-role --role-arn xxxx --role-session-name xxxx|jq ".Credentials"\`"
-                echo "         aws_sts_env \$cred"
+                echo "         or get metadata from remote"
+                echo "         export cred=\`curl 169.254.169.254/latest/meta-data/identity-credentials/ec2/security-credentials/ec2-instance\`"
+                echo "         aws_sts_env '[\$cred optional]'"
                 return
         fi
-        export AWS_ACCESS_KEY_ID=`echo $1|jq -r '.AccessKeyId' ` 
-        export AWS_SECRET_ACCESS_KEY=`echo $1|jq -r '.SecretAccessKey'` 
-        export AWS_SESSION_TOKEN=`echo $1|jq -r '.SessionToken' ` 
+        export AWS_ACCESS_KEY_ID=`echo $cred|jq -r '.AccessKeyId' ` 
+        export AWS_SECRET_ACCESS_KEY=`echo $cred|jq -r '.SecretAccessKey'`  
+        export AWS_SESSION_TOKEN=`echo $cred|jq -r '(if .SessionToken == null then .Token else .SessionToken end)'` 
         echo "SET AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN in environment."
+        unset cred
         env | grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox} AWS | awk '{ print "export " $0 }'
 }
 
-# alias wfuzz= ?
-unfunction wfuzz_vhost_http 
+# alias wfuzz=docker run --rm --name wfuzz -v /usr/share/wordlists:/wordlists/ -it ghcr.io/xmendez/wfuzz wfuzz 
+# pipx install wfuzz
+alias wfuzz=\wfuzz
+unset -f wfuzz_vhost_http 
 function wfuzz_vhost_http () {
     local host=$1 
     local wordlist=$2 
@@ -94,7 +103,7 @@ function wfuzz_vhost_http () {
     wfuzz -c -w $wordlist -H "Host: FUZZ.$host" -u "http://$host" $3 $4 $5 $6 $7 $8 $9 $10 $11 $12 $13 $14 $15 $16 $17 $18 $19
 }
 
-unfunction wfuzz_vhost_https
+unset -f wfuzz_vhost_https
 function wfuzz_vhost_https () {
     local host=$1 
     local wordlist=$2 
