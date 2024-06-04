@@ -59,11 +59,6 @@ if [ "$REVERSE_SHELL_MODE" ]; then
     exit 0
 fi
 
-# Here is mode if-tree complete, Now will launch the shell
-# export SUBDOMAIN_WORDLIST=$SECLIST/Discovery/DNS/bitquark-subdomains-top100000.txt
-# alias wfuzz=/PATH/To/wfuzz / docker run --rm -it wfuzz
-# alias wfuzz_http_vhost='wfuzz -c -w $SUBDOMAIN_WORDLIST -H "Host: FUZZ.$host" -u "http://$host"'
-# alias wfuzz_https_vhost='wfuzz -c -w $SUBDOMAIN_WORDLIST -H "Host: FUZZ.$host" -u "https://$host"'
 
 # automatically set the AWS environment variables from the json output of `aws sts assume-role` 
 aws_sts_env () {
@@ -88,8 +83,12 @@ aws_sts_env () {
         env | grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox} AWS | awk '{ print "export " $0 }'
 }
 
-# alias wfuzz=docker run --rm --name wfuzz -v /usr/share/wordlists:/wordlists/ -it ghcr.io/xmendez/wfuzz wfuzz 
+# Here is mode if-tree complete, Now will launch the shell
+# export SUBDOMAIN_WORDLIST=$SECLIST/Discovery/DNS/bitquark-subdomains-top100000.txt
 # pipx install wfuzz
+# alias wfuzz=docker run --rm --name wfuzz -v /usr/share/wordlists:/wordlists/ -it ghcr.io/xmendez/wfuzz wfuzz 
+# usage: alias wfuzz_http_vhost='wfuzz -c -w $SUBDOMAIN_WORDLIST -H "Host: FUZZ.$host" -u "http://$host"'
+# usage: alias wfuzz_https_vhost='wfuzz -c -w $SUBDOMAIN_WORDLIST -H "Host: FUZZ.$host" -u "https://$host"'
 alias wfuzz=\wfuzz
 unset -f wfuzz_vhost_http 
 function wfuzz_vhost_http () {
