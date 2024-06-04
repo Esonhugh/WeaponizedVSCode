@@ -21,10 +21,6 @@ export DOMAIN=
 # export USER_B=
 # export PASS_B=
 
-# useful settings like ROCKYOU, SECLIST, etc.
-# export ROCKYOU=/usr/share/wordlists/rockyou.txt
-# export SECLIST=/usr/share/wordlists/seclists/
-# export WORDLISTS=/usr/share/wordlists/
 
 export METASPLOIT_INIT_COMMAND=""
 
@@ -83,3 +79,27 @@ unset https_proxy http_proxy all_proxy
 # export http_proxy=
 # export https_proxy=
 # export all_proxy=
+
+################################################################
+# Hashcat settings
+
+# useful settings like ROCKYOU, SECLIST, etc.
+# export ROCKYOU=/usr/share/wordlists/rockyou.txt
+# export SECLIST=/usr/share/wordlists/seclists/
+# export WORDLISTS=/usr/share/wordlists/
+
+# URL: https://hashcat.net/wiki/doku.php?id=example_hashes
+export HASH_MD5=0
+export HASH_SHA1=100
+export HASH_MD5CYPT=500
+export HASH_MD4=900
+export HASH_NTLM=1000
+export HASH_SHA256=1400
+export HASH_APRMD5=1600
+export HASH_SHA512=1800
+export HASH_BCRYPT=3200
+export HASH_NETNTLMv2=5600
+export HASH_SHA256CRYPT=7400
+export HASH_KRB5_PREAUTH=7500
+export HASH_DJANGO_PBKDF2_SHA256=10000
+export HASH_PBKDF2_HMAC_SHA256=10900
