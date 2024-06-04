@@ -50,7 +50,7 @@
             "detail": "edit /etc/hosts task",
             "command": [
                 "sudo",
-                "'${execPath}'",
+                "vim",
                 "/etc/hosts"
             ],
             "isBackground": false,
