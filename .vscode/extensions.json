@@ -38,7 +38,8 @@
         ////////////////////////////////////////////////////////////////
         // Custom Favorites
         ////////////////////////////////////////////////////////////////
-        "vscodevim.vim" // vim mode support
+        "vscodevim.vim", // vim mode support
+        "ms-vscode-remote.vscode-remote-extensionpack" // remote extension pack
         // "mhutchie.git-graph", // git graph
     ]
 }
