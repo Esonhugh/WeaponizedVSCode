@@ -39,7 +39,7 @@
             "type": "shell",
             "detail": "venv create task",
             "command": [
-                "python3 -m venv venv;",
+                "${input:python-versioned} -m venv venv;",
                 "echo '*' > venv/.gitignore;"
             ],
             "problemMatcher": []
@@ -93,6 +93,7 @@
         }
     ],
     "inputs": [
+        // msfvenom
         {
             "id": "msfvenom-payload",
             "type": "pickString",
@@ -177,6 +178,7 @@
             "description": "Enter the output filename. if you put /dev/stdout here, the output will be printed to the terminal",
             "default": "${workspaceFolder}/trojan",
         },
+        // note-templates
         {
             "id": "note-template-type",
             "type": "pickString",
@@ -192,6 +194,7 @@
             "description": "Enter the note filename",
             "default": "${workspaceFolder}/note.md",
         },
+        // cyberchef url
         {
             "id": "visit-cyberchef",
             "type": "command",
@@ -200,6 +203,7 @@
                 "https://gchq.github.io/CyberChef/"
             ]
         },
+        // kubeconfig creator
         {
             "id": "kubeconfig-gen-api-server",
             "type": "promptString",
@@ -216,6 +220,21 @@
             "type": "promptString",
             "description": "kubernetes service account namespace",
             "default": "default"
+        },
+        // python version picker
+        {
+            "id": "python-versioned",
+            "type": "pickString",
+            "description": "Python version",
+            "options": [
+                "python3.8",
+                "python3.9",
+                "python3.10",
+                "python3.11",
+                "python3.12",
+                "python",
+            ],
+            "default": "python3.12"
         }
     ]
 }
