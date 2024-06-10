@@ -148,7 +148,39 @@ if [ -d "$PROJECT_FOLDER/venv" ]; then
     if [ -n "${VIRTUAL_ENV}" ];then 
         echo "Virtual Environment is already activated."
         echo "Virtual Environment Home: ${VIRTUAL_ENV}"
-    else
-        source $PROJECT_FOLDER/venv/bin/activate
+        echo "Trying to deactivate the virtual environment automatically."
+
+        # force deactivate the virtual environment
+        if [ -n "${_OLD_VIRTUAL_PATH:-}" ]
+        then
+                PATH="${_OLD_VIRTUAL_PATH:-}" 
+                export PATH
+                unset _OLD_VIRTUAL_PATH
+        fi
+        if [ -n "${_OLD_VIRTUAL_PYTHONHOME:-}" ]
+        then
+                PYTHONHOME="${_OLD_VIRTUAL_PYTHONHOME:-}" 
+                export PYTHONHOME
+                unset _OLD_VIRTUAL_PYTHONHOME
+        fi
+        if [ -n "${BASH:-}" -o -n "${ZSH_VERSION:-}" ]
+        then
+                hash -r 2> /dev/null
+        fi
+        if [ -n "${_OLD_VIRTUAL_PS1:-}" ]
+        then
+                PS1="${_OLD_VIRTUAL_PS1:-}" 
+                export PS1
+                unset _OLD_VIRTUAL_PS1
+        fi
+        unset VIRTUAL_ENV
+        unset VIRTUAL_ENV_PROMPT
+        if [ ! "${1:-}" = "nondestructive" ]
+        then
+            # deactivate always useless here
+            # unset -f deactivate
+        fi
     fi
+    
+    source $PROJECT_FOLDER/venv/bin/activate
 fi

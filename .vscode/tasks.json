@@ -234,7 +234,7 @@
                 "python3.12",
                 "python",
             ],
-            "default": "python3.12"
+            "default": "python"
         }
     ]
 }
