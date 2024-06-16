@@ -1,2 +1,6 @@
 venv/
 createhackenv.sh
+hosts/
+users/
+services/
+index.md

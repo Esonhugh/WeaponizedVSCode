@@ -44,6 +44,9 @@ export METASPLOIT_INIT_COMMAND=""
 # export MINIO_ENDPOINT=
 # export MC_HOST_myminio=http://${MINIO_ROOT_USER}:${MINIO_ROOT_PASSWORD}@${MINIO_ENDPOINT}
 
+# Kubernetes settings
+# export KUBECONFIG=${PROJECT_FOLDER}/kubeconfig
+
 # Terraform settings
 export TF_LOG=trace
 export TF_LOG_PATH=$PROJECT_FOLDER/terraform.log
@@ -86,6 +89,7 @@ unset https_proxy http_proxy all_proxy
 # useful settings like ROCKYOU, SECLIST, etc.
 # export ROCKYOU=/usr/share/wordlists/rockyou.txt
 # export SECLIST=/usr/share/wordlists/seclists/
+# export TOP_DNS=${SECLIST}/Discovery/DNS/bitquark-subdomains-top100000.txt
 # export WORDLISTS=/usr/share/wordlists/
 
 # URL: https://hashcat.net/wiki/doku.php?id=example_hashes
@@ -103,3 +107,79 @@ export HASH_SHA256CRYPT=7400
 export HASH_KRB5_PREAUTH=7500
 export HASH_DJANGO_PBKDF2_SHA256=10000
 export HASH_PBKDF2_HMAC_SHA256=10900
+
+
+# utils functions
+
+# automatically set the AWS environment variables from the json output of `aws sts assume-role` 
+aws_sts_env () {
+        if [[ -n "$1" ]]
+        then
+            local cred=$1
+        fi
+        if [[ -z "$cred" ]]
+        then
+                echo "Usage: $0 \`json\`"
+                echo "Example: export cred=\`aws sts assume-role --role-arn xxxx --role-session-name xxxx|jq ".Credentials"\`"
+                echo "         or get metadata from remote"
+                echo "         export cred=\`curl 169.254.169.254/latest/meta-data/identity-credentials/ec2/security-credentials/ec2-instance\`"
+                echo "         aws_sts_env '[\$cred optional]'"
+                return
+        fi
+        export AWS_ACCESS_KEY_ID=`echo $cred|jq -r '.AccessKeyId' ` 
+        export AWS_SECRET_ACCESS_KEY=`echo $cred|jq -r '.SecretAccessKey'`  
+        export AWS_SESSION_TOKEN=`echo $cred|jq -r '(if .SessionToken == null then .Token else .SessionToken end)'` 
+        echo "SET AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN in environment."
+        unset cred
+        env | grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox} AWS | awk '{ print "export " $0 }'
+}
+
+# Here is mode if-tree complete, Now will launch the shell
+# export SUBDOMAIN_WORDLIST=$SECLIST/Discovery/DNS/bitquark-subdomains-top100000.txt
+# pipx install wfuzz
+# alias wfuzz=docker run --rm --name wfuzz -v /usr/share/wordlists:/wordlists/ -it ghcr.io/xmendez/wfuzz wfuzz 
+# usage: alias wfuzz_http_vhost='wfuzz -c -w $SUBDOMAIN_WORDLIST -H "Host: FUZZ.$host" -u "http://$host"'
+# usage: alias wfuzz_https_vhost='wfuzz -c -w $SUBDOMAIN_WORDLIST -H "Host: FUZZ.$host" -u "https://$host"'
+alias wfuzz=\wfuzz
+# unset -f wfuzz_vhost_http 
+function wfuzz_vhost_http () {
+    local host=$1 
+    local wordlist=$2 
+    if [[ -z $wordlist ]] || [[ -z $host ]]
+    then
+        echo "Usage: wfuzz_vhost <host> <wordlist> [wfuzz options]"
+            return
+    fi
+    wfuzz -c -w $wordlist -H "Host: FUZZ.$host" -u "http://$host" $3 $4 $5 $6 $7 $8 $9 $10 $11 $12 $13 $14 $15 $16 $17 $18 $19
+}
+
+unset -f wfuzz_vhost_https
+function wfuzz_vhost_https () {
+    local host=$1 
+    local wordlist=$2 
+    if [[ -z $wordlist ]] || [[ -z $host ]]
+    then
+        echo "Usage: wfuzz_vhost <host> <wordlist> [wfuzz options]"
+            return
+    fi
+    wfuzz -c -w $wordlist -H "Host: FUZZ.$host" -u "https://$host" $3 $4 $5 $6 $7 $8 $9 $10 $11 $12 $13 $14 $15 $16 $17 $18 $19
+}
+
+function create_project_structure () {
+    if [ -f "index.md" ];then # lock the project folder
+        return
+    fi
+    mkdir -p $PROJECT_FOLDER/{hosts,users,services}
+    touch $PROJECT_FOLDER/hosts/host-list.md
+    touch $PROJECT_FOLDER/users/user-list.md
+    touch $PROJECT_FOLDER/services/service-list.md
+    touch $PROJECT_FOLDER/index.md
+    echo "Project Folder sturcture created completed!"
+}
+create_project_structure
+unset -f create_project_structure
+
+function clean_project_structure () {
+    rm -rf $PROJECT_FOLDER/{hosts,users,services} $PROJECT_FOLDER/index.md
+    echo "Project Folder sturcture cleaned completed!"
+}

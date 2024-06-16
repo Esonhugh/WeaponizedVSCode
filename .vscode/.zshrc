@@ -50,8 +50,8 @@ if [ "$WEB_DELIVERY_MODE" ]; then
     echo "PS: If your terminal can't display this notes properly, you need resize your terminal window."
     echo ""
     # ProjectDiscovery/SimpleHTTPServer
-    # simplehttpserver -listen 0.0.0.0:$LISTEN_ON -upload 
-    python3 -m http.server $LISTEN_ON
+    simplehttpserver -listen 0.0.0.0:$LISTEN_ON -verbose -upload
+    # python3 -m http.server $LISTEN_ON
     exit 0
 fi 
 
@@ -87,68 +87,14 @@ if [ "$REVERSE_SHELL_MODE" ]; then
     exit 0
 fi
 
-
-# automatically set the AWS environment variables from the json output of `aws sts assume-role` 
-aws_sts_env () {
-        if [[ -n "$1" ]]
-        then
-            local cred=$1
-        fi
-        if [[ -z "$cred" ]]
-        then
-                echo "Usage: $0 \`json\`"
-                echo "Example: export cred=\`aws sts assume-role --role-arn xxxx --role-session-name xxxx|jq ".Credentials"\`"
-                echo "         or get metadata from remote"
-                echo "         export cred=\`curl 169.254.169.254/latest/meta-data/identity-credentials/ec2/security-credentials/ec2-instance\`"
-                echo "         aws_sts_env '[\$cred optional]'"
-                return
-        fi
-        export AWS_ACCESS_KEY_ID=`echo $cred|jq -r '.AccessKeyId' ` 
-        export AWS_SECRET_ACCESS_KEY=`echo $cred|jq -r '.SecretAccessKey'`  
-        export AWS_SESSION_TOKEN=`echo $cred|jq -r '(if .SessionToken == null then .Token else .SessionToken end)'` 
-        echo "SET AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN in environment."
-        unset cred
-        env | grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox} AWS | awk '{ print "export " $0 }'
-}
-
-# Here is mode if-tree complete, Now will launch the shell
-# export SUBDOMAIN_WORDLIST=$SECLIST/Discovery/DNS/bitquark-subdomains-top100000.txt
-# pipx install wfuzz
-# alias wfuzz=docker run --rm --name wfuzz -v /usr/share/wordlists:/wordlists/ -it ghcr.io/xmendez/wfuzz wfuzz 
-# usage: alias wfuzz_http_vhost='wfuzz -c -w $SUBDOMAIN_WORDLIST -H "Host: FUZZ.$host" -u "http://$host"'
-# usage: alias wfuzz_https_vhost='wfuzz -c -w $SUBDOMAIN_WORDLIST -H "Host: FUZZ.$host" -u "https://$host"'
-alias wfuzz=\wfuzz
-unset -f wfuzz_vhost_http 
-function wfuzz_vhost_http () {
-    local host=$1 
-    local wordlist=$2 
-    if [[ -z $wordlist ]] || [[ -z $host ]]
-    then
-        echo "Usage: wfuzz_vhost <host> <wordlist> [wfuzz options]"
-            return
-    fi
-    wfuzz -c -w $wordlist -H "Host: FUZZ.$host" -u "http://$host" $3 $4 $5 $6 $7 $8 $9 $10 $11 $12 $13 $14 $15 $16 $17 $18 $19
-}
-
-unset -f wfuzz_vhost_https
-function wfuzz_vhost_https () {
-    local host=$1 
-    local wordlist=$2 
-    if [[ -z $wordlist ]] || [[ -z $host ]]
-    then
-        echo "Usage: wfuzz_vhost <host> <wordlist> [wfuzz options]"
-            return
-    fi
-    wfuzz -c -w $wordlist -H "Host: FUZZ.$host" -u "https://$host" $3 $4 $5 $6 $7 $8 $9 $10 $11 $12 $13 $14 $15 $16 $17 $18 $19
-}
-
-
 # Start the virtual environment if exists
 if [ -d "$PROJECT_FOLDER/venv" ]; then
     if [ -n "${VIRTUAL_ENV}" ];then 
-        echo "Virtual Environment is already activated."
-        echo "Virtual Environment Home: ${VIRTUAL_ENV}"
-        echo "Trying to deactivate the virtual environment automatically."
+        # sliently deactivate the virtual environment
+
+        # echo "Virtual Environment is already activated."
+        # echo "Virtual Environment Home: ${VIRTUAL_ENV}"
+        # echo "Trying to deactivate the virtual environment automatically."
 
         # force deactivate the virtual environment
         if [ -n "${_OLD_VIRTUAL_PATH:-}" ]
