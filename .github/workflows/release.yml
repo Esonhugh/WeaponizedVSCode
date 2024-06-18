@@ -25,7 +25,7 @@ jobs:
       - run: |
           cd $GITHUB_WORKSPACE
           ls -al 
-          git fetch 
+          git fetch --all 
           git fetch --tags
           git tag -l
 
