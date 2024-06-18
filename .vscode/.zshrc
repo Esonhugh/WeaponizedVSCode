@@ -130,3 +130,23 @@ if [ -d "$PROJECT_FOLDER/venv" ]; then
     
     source $PROJECT_FOLDER/venv/bin/activate
 fi
+
+# Auto Create Project Note Structure.
+function create_project_structure () {
+    if [ -f "index.md" ];then # lock the project folder
+        return
+    fi
+    mkdir -p $PROJECT_FOLDER/{hosts,users,services}
+    touch $PROJECT_FOLDER/hosts/host-list.md
+    touch $PROJECT_FOLDER/users/user-list.md
+    touch $PROJECT_FOLDER/services/service-list.md
+    touch $PROJECT_FOLDER/index.md
+    echo "Project Folder sturcture created completed!"
+}
+create_project_structure
+unset -f create_project_structure
+
+function clean_project_structure () {
+    rm -rf $PROJECT_FOLDER/{hosts,users,services} $PROJECT_FOLDER/index.md
+    echo "Project Folder sturcture cleaned completed!"
+}

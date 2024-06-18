@@ -165,21 +165,3 @@ function wfuzz_vhost_https () {
     wfuzz -c -w $wordlist -H "Host: FUZZ.$host" -u "https://$host" $3 $4 $5 $6 $7 $8 $9 $10 $11 $12 $13 $14 $15 $16 $17 $18 $19
 }
 
-function create_project_structure () {
-    if [ -f "index.md" ];then # lock the project folder
-        return
-    fi
-    mkdir -p $PROJECT_FOLDER/{hosts,users,services}
-    touch $PROJECT_FOLDER/hosts/host-list.md
-    touch $PROJECT_FOLDER/users/user-list.md
-    touch $PROJECT_FOLDER/services/service-list.md
-    touch $PROJECT_FOLDER/index.md
-    echo "Project Folder sturcture created completed!"
-}
-create_project_structure
-unset -f create_project_structure
-
-function clean_project_structure () {
-    rm -rf $PROJECT_FOLDER/{hosts,users,services} $PROJECT_FOLDER/index.md
-    echo "Project Folder sturcture cleaned completed!"
-}
