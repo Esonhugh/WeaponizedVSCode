@@ -29,10 +29,13 @@ __UPDATE_LOGS__
 """
 
 import os
+import sys
 
 def main():
     verify_output = os.popen("python3 ./verify.py ./creathackenv.sh").read()
-    update_logs = os.popen("bash ./gitcmd.sh").read()
+    with open(sys.argv[1], "r") as f: 
+        log = f.read()
+    update_logs = log
     print(template.replace("__VERIFY_OUTPUT__", verify_output).replace("__UPDATE_LOGS__", update_logs))
     pass
 

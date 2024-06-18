@@ -19,4 +19,4 @@ git log --format='%(trailers:key=Type,valueonly,separator=%x20)%x1c%s [%(trailer
             for (i=0; i<item_count[k]; i++) print "- "items[k, i];
             print ""
         }
-    }'
+    }' > commit_notes
