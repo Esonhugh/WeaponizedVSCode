@@ -1,3 +1,5 @@
+#!/bin/sh 
+
 LATEST_TAG=`git tag --sort=refname |tail -n 2 |head -n 1`
 NEW_TAG=`git tag --sort=refname |tail -n 1`
 git log --format='%(trailers:key=Type,valueonly,separator=%x20)%x1c%s [%(trailers:key=Issue,valueonly,separator=,)]' $LATEST_TAG..$NEW_TAG | awk -F "\034" '
