@@ -102,6 +102,9 @@
         "*.nuclei": "yaml"
     },
     "yaml.schemas": {
-        "https://raw.githubusercontent.com/projectdiscovery/nuclei/main/nuclei-jsonschema.json": "*.nuclei"
+        "https://raw.githubusercontent.com/projectdiscovery/nuclei/main/nuclei-jsonschema.json": [
+            "*.nuclei",
+            "*nuclei.yaml",
+        ]
     },
 }
