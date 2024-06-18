@@ -25,6 +25,8 @@ jobs:
       - run: |
           cd $GITHUB_WORKSPACE
           ls -al 
+          git fetch 
+          git fetch --tags
           git tag -l
 
           LATEST_TAG=`git tag --sort=refname |tail -n 2 |head -n 1`
