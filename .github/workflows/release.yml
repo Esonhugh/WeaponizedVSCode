@@ -3,34 +3,33 @@ name: Release
 on:
   push:
     tags:
-      - '*'
+      - "*"
 
-permissions: 
-    contents: write
+permissions:
+  contents: write
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout Repository
-              uses: actions/checkout@v2
-            
-            - name: Set up Python 3.8
-              uses: actions/setup-python@v2
-              with:
-                python-version: '3.x'
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-            - run: python3 craft.py
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
 
-            - run: |
-                python3 verify.py ./createhackenv.sh >> version.txt
-                echo '```'  >> version.txt
+      - run: python3 craft.py
 
-            - name: Create Release
-              uses: softprops/action-gh-release@v1
-              env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              with:
-                body_path: ${{ github.workspace }}/version.txt
-                files: |
-                    ${{ github.workspace }}/createhackenv.sh
+      - run: |
+          python3 ./releaser.py > version.txt
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          body_path: ${{ github.workspace }}/version.txt
+          files: |
+            ${{ github.workspace }}/createhackenv.sh

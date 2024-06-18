@@ -1,3 +1,4 @@
+template = """
 # Weaponaized your VSCode
 
 ## What is this?
@@ -18,3 +19,22 @@ The `.vscode` folder will be created, and vscode will loaded settings from it.
 ## Script Hash
 
 ```
+__VERIFY_OUTPUT__
+```
+
+## Update Log
+
+__UPDATE_LOGS__
+
+"""
+
+import os
+
+def main():
+    verify_output = os.popen("python3 ./verify.py ./creathackenv.sh").read()
+    update_logs = os.popen("bash ./gitcmd.sh").read()
+    print(template.replace("__VERIFY_OUTPUT__", verify_output).replace("__UPDATE_LOGS__", update_logs))
+    pass
+
+if __name__ == "__main__":
+    main()
