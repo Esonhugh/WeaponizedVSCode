@@ -24,6 +24,7 @@ jobs:
 
       - run: |
           python3 ./releaser.py > version.txt
+          cat version.txt
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
