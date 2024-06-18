@@ -14,7 +14,7 @@ git log --format='%(trailers:key=Type,valueonly,separator=%x20)%x1c%s [%(trailer
             k2=k;
             gsub(/./, "-", k2);
             print k2
-            for (i=0; i<item_count[k]; i++) print "* "items[k, i];
+            for (i=0; i<item_count[k]; i++) print "- "items[k, i];
             print ""
         }
     }'
