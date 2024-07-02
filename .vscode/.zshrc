@@ -133,7 +133,7 @@ fi
 
 # Auto Create Project Note Structure.
 function create_project_structure () {
-    if [ -f "index.md" ];then # lock the project folder
+    if [ -f "Makefile" ];then # lock the project folder
         return
     fi
     mkdir -p $PROJECT_FOLDER/{hosts,users,services}
@@ -141,12 +141,52 @@ function create_project_structure () {
     touch $PROJECT_FOLDER/users/user-list.md
     touch $PROJECT_FOLDER/services/service-list.md
     touch $PROJECT_FOLDER/index.md
+    touch $PROJECT_FOLDER/Makefile
     echo "Project Folder sturcture created completed!"
 }
 create_project_structure
 unset -f create_project_structure
 
 function clean_project_structure () {
-    rm -rf $PROJECT_FOLDER/{hosts,users,services} $PROJECT_FOLDER/index.md
+    rm -rf $PROJECT_FOLDER/{hosts,users,services} $PROJECT_FOLDER/index.md $PROJECT_FOLDER/Makefile
     echo "Project Folder sturcture cleaned completed!"
+}
+
+function new-user () {
+    local name=$1
+	echo "Creating new user..."
+	if [[ -z "${name}" ]]; then 
+        echo "Usage: $0 <name>"; 
+        return -1; 
+    fi
+	mkdir users/$name
+	echo "# $name" > users/$name/$name.md
+	echo "* [[$name]]" >> users/user-list.md
+	echo "User $name created!"
+}
+
+function new-host () {
+    local name=$1
+	echo "Creating new host..."
+	if [[ -z "${name}" ]]; then 
+        echo "Usage: $0 <name>"; 
+        return -1; 
+    fi
+	mkdir hosts/$name
+	echo "# $name" > hosts/$name/$name.md
+	echo "* [[$name]]" >> hosts/host-list.md
+	echo "Host $name created!"
+}
+
+function new-service () {
+    local name=$1
+    echo "Creating new service..."
+    if [[ -z "${name}" ]]; then 
+        echo "Usage: $0 <name>"; 
+        return -1; 
+    fi
+    mkdir services/$name
+    echo "# $name" > services/$name/$name.md
+    echo "* [[$name]]" >> services/service-list.md
+    echo "Service $name created!"
 }
