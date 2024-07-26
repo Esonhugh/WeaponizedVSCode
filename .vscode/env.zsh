@@ -155,7 +155,7 @@ function wfuzz_vhost_http () {
     wfuzz -c -w $wordlist -H "Host: FUZZ.$host" -u "http://$host" $3 $4 $5 $6 $7 $8 $9 $10 $11 $12 $13 $14 $15 $16 $17 $18 $19
 }
 
-unset -f wfuzz_vhost_https
+# unset -f wfuzz_vhost_https
 function wfuzz_vhost_https () {
     local host=$1 
     local wordlist=$2 
