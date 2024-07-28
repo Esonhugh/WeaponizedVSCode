@@ -159,9 +159,9 @@ function new-user () {
         echo "Usage: $0 <name>"; 
         return -1; 
     fi
-	mkdir users/$name
-	echo "# $name" > users/$name/$name.md
-	echo "* [[$name]]" >> users/user-list.md
+	mkdir ${PROJECT_FOLDER}/users/$name
+	echo "# $name" > ${PROJECT_FOLDER}/users/$name/$name.md
+	echo "* [[$name]]" >> ${PROJECT_FOLDER}/users/user-list.md
 	echo "User $name created!"
 }
 
@@ -172,9 +172,9 @@ function new-host () {
         echo "Usage: $0 <name>"; 
         return -1; 
     fi
-	mkdir hosts/$name
-	echo "# $name" > hosts/$name/$name.md
-	echo "* [[$name]]" >> hosts/host-list.md
+	mkdir ${PROJECT_FOLDER}/hosts/$name
+	echo "# $name" > ${PROJECT_FOLDER}/hosts/$name/$name.md
+	echo "* [[$name]]" >> ${PROJECT_FOLDER}/hosts/host-list.md
 	echo "Host $name created!"
 }
 
@@ -185,8 +185,8 @@ function new-service () {
         echo "Usage: $0 <name>"; 
         return -1; 
     fi
-    mkdir services/$name
-    echo "# $name" > services/$name/$name.md
-    echo "* [[$name]]" >> services/service-list.md
+    mkdir ${PROJECT_FOLDER}/services/$name
+    echo "# $name" > ${PROJECT_FOLDER}/services/$name/$name.md
+    echo "* [[$name]]" >> ${PROJECT_FOLDER}/services/service-list.md
     echo "Service $name created!"
 }
