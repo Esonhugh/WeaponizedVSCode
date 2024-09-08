@@ -133,7 +133,7 @@ fi
 
 # Auto Create Project Note Structure.
 function create_project_structure () {
-    if [ -f "Makefile" ];then # lock the project folder
+    if [ -f "${PROJECT_FOLDER}/Makefile" ];then # lock the project folder
         return
     fi
     mkdir -p $PROJECT_FOLDER/{hosts,users,services}
@@ -142,13 +142,35 @@ function create_project_structure () {
     touch $PROJECT_FOLDER/services/service-list.md
     touch $PROJECT_FOLDER/index.md
     touch $PROJECT_FOLDER/Makefile
+
     echo "Project Folder sturcture created completed!"
+    echo "===================== MANUAL ====================="
+    echo "Note: this function will not run again if Makefile is exists!"
+    echo "if you don't need created folder structure"
+    echo "Clean Project Folder: "
+    echo "   clean_project_structure"
+    echo ""
+    echo "Create Notes:"
+    echo "  User: "
+    echo "    new-user <username>"
+    echo "  Host:"
+    echo "    new-host <hostname>"
+    echo "  Service: "
+    echo "    new-service <servicename>"
+    echo "Delete Notes:"
+    echo "  User: "
+    echo "    del-user <username>"
+    echo "  Host:"
+    echo "    del-host <hostname>"
+    echo "  Service: "
+    echo "    del-service <servicename>"
+    echo "=================================================="
 }
 create_project_structure
 unset -f create_project_structure
 
 function clean_project_structure () {
-    rm -rf $PROJECT_FOLDER/{hosts,users,services} $PROJECT_FOLDER/index.md $PROJECT_FOLDER/Makefile
+    rm -rf $PROJECT_FOLDER/{hosts,users,services} $PROJECT_FOLDER/index.md # $PROJECT_FOLDER/Makefile
     echo "Project Folder sturcture cleaned completed!"
 }
 
@@ -165,6 +187,18 @@ function new-user () {
 	echo "User $name created!"
 }
 
+function del-user () {
+    local name=$1
+    echo "Deleting user..."
+    if [[ -z "${name}" ]]; then 
+        echo "Usage: $0 <name>"; 
+        return -1; 
+    fi
+    rm -rf ${PROJECT_FOLDER}/users/$name
+    sed -i '' -e "/\* \[\[$name\]\]/d" ${PROJECT_FOLDER}/users/user-list.md
+    echo "User $name deleted!"
+}
+
 function new-host () {
     local name=$1
 	echo "Creating new host..."
@@ -178,6 +212,18 @@ function new-host () {
 	echo "Host $name created!"
 }
 
+function del-host () {
+    local name=$1
+    echo "Deleting host..."
+    if [[ -z "${name}" ]]; then 
+        echo "Usage: $0 <name>"; 
+        return -1; 
+    fi
+    rm -rf ${PROJECT_FOLDER}/hosts/$name
+    sed -i "" -e "/\* \[\[$name\]\]/d" ${PROJECT_FOLDER}/hosts/host-list.md
+    echo "Host $name deleted!"
+}
+
 function new-service () {
     local name=$1
     echo "Creating new service..."
@@ -189,4 +235,16 @@ function new-service () {
     echo "# $name" > ${PROJECT_FOLDER}/services/$name/$name.md
     echo "* [[$name]]" >> ${PROJECT_FOLDER}/services/service-list.md
     echo "Service $name created!"
+}
+
+function del-service () {
+    local name=$1
+    echo "Deleting service..."
+    if [[ -z "${name}" ]]; then 
+        echo "Usage: $0 <name>"; 
+        return -1; 
+    fi
+    rm -rf ${PROJECT_FOLDER}/services/$name
+    sed -i "" -e "/\* \[\[$name\]\]/d" ${PROJECT_FOLDER}/services/service-list.md
+    echo "Service $name deleted!"
 }
