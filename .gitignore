@@ -4,3 +4,5 @@ hosts/
 users/
 services/
 index.md
+Makefile
+.DS_Store
