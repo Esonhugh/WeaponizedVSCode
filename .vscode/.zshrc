@@ -261,4 +261,5 @@ HISTFILE=${PROJECT_FOLDER}/.vscode/.command_history
 setopt inc_append_history
 setopt share_history
 setopt hist_save_no_dups
+setopt EXTENDED_HISTORY # with timestamp
 fc -R -I ${OLD_HISTFILE} # loading the old histfile 
