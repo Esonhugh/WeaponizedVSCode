@@ -248,3 +248,17 @@ function del-service () {
     sed -i "" -e "/\* \[\[$name\]\]/d" ${PROJECT_FOLDER}/services/service-list.md
     echo "Service $name deleted!"
 }
+
+# change hist file location in project.
+HISTSIZE=100000000
+SAVEHIST=100000000
+OLD_HISTFILE=$HISTFILE
+if [[ -z "${HISTFILE}" ]]; then
+    OLD_HISTFILE=~/.zsh_history
+fi
+## set new history
+HISTFILE=${PROJECT_FOLDER}/.vscode/.command_history
+setopt inc_append_history
+setopt share_history
+setopt hist_save_no_dups
+fc -R -I ${OLD_HISTFILE} # loading the old histfile 

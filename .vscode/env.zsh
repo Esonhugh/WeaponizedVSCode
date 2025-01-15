@@ -113,27 +113,99 @@ export HASH_JWT=16500
 
 # utils functions
 
-# automatically set the AWS environment variables from the json output of `aws sts assume-role` 
-aws_sts_env () {
-        if [[ -n "$1" ]]
+### functions
+function proxys() {
+    export Proxy="127.0.0.1"   # define as your favour
+    export ProxyPort="7890"  # define as your favour
+        case "$1" in
+                (h)
+                        echo "|==============================================|"
+                        echo "|                   $0 Usage                   |"
+                        echo "|         ---- fast commandline proxy switcher |"
+                        echo "|==============================================|"
+                        echo "| Basic Usage: $0 [SubCommand] [param1]        |"
+                        echo "|==============================================|"
+                        echo "|                Sub Command List              |"
+                        echo "|==============================================|"
+                        echo "| proxy [proxy_ip]          import ip temply   |"
+                        echo "| port [port_id]            import port temply |"
+                        echo "| loc                       import localhost   |"
+                        echo "| on                        up the cli proxy   |"
+                        echo "| off                       down the proxy     |"
+                        echo "| *                         show proxy setting |"
+                        echo "| h/help                    show help          |"
+                        echo "|==============================================|"
+                        ;;
+                (proxy)
+                        export Proxy="$2"
+                        ;;
+                (port)
+                        export ProxyPort="$2"
+                        ;;
+                (loc)
+                        export Proxy="127.0.0.1"        # define as your favour
+                        export ProxyPort="7890"       # define as your favour
+                        $0 on
+                        ;;
+                (on)
+                        export https_proxy=http://$Proxy:$ProxyPort \
+                        http_proxy=http://$Proxy:$ProxyPort && \
+                        echo 'export Proxy complete' && $0 show
+                        ;;
+                (off)
+                        unset https_proxy http_proxy all_proxy && echo 'unset Proxy complete'
+                        ;;
+                (help)
+                        proxys h
+                        ;;
+                (*)
+                        echo "Current Proxy Condition like ...."
+                        export|grep proxy
+                        echo "if you can't see any output like 'XX_PROXY=' there"
+                        echo "That means no proxy is set"
+                        ;;
+        esac
+}
+
+function venv-init () {
+    python3 -m venv venv
+}
+
+function venv-activate () {
+        if [ -d "./venv/" ] 
         then
-            local cred=$1
+                source "./venv/bin/activate"
+        else 
+                echo "No Python venv there. Error"
         fi
-        if [[ -z "$cred" ]]
-        then
-                echo "Usage: $0 \`json\`"
-                echo "Example: export cred=\`aws sts assume-role --role-arn xxxx --role-session-name xxxx|jq ".Credentials"\`"
-                echo "         or get metadata from remote"
-                echo "         export cred=\`curl 169.254.169.254/latest/meta-data/identity-credentials/ec2/security-credentials/ec2-instance\`"
-                echo "         aws_sts_env '[\$cred optional]'"
-                return
-        fi
-        export AWS_ACCESS_KEY_ID=`echo $cred|jq -r '.AccessKeyId' ` 
-        export AWS_SECRET_ACCESS_KEY=`echo $cred|jq -r '.SecretAccessKey'`  
-        export AWS_SESSION_TOKEN=`echo $cred|jq -r '(if .SessionToken == null then .Token else .SessionToken end)'` 
-        echo "SET AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN in environment."
-        unset cred
-        env | grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox} AWS | awk '{ print "export " $0 }'
+}
+
+function goproxy () {
+        case "$1" in
+                (on) export GOPROXY=https://goproxy.io,direct  ;;
+                (off) unset GOPROXY ;;
+                (*) $0 on/off ;;
+        esac
+}
+
+function url () {
+        case "$1" in
+                (h |-h |help| --help) 
+                    which $0
+                            ;;
+                (decode | d | -d | --decode) if [ -z "$2" ]
+                        then
+                                \python3 -c "import sys; from urllib.parse import unquote; print(unquote(sys.stdin.read()));"
+                        else
+                                \python3 -c "import sys; from urllib.parse import unquote; print(unquote(' '.join(sys.argv[2:])));" "$@"
+                        fi ;;
+                (encode | e | -e | --encode) if [ -z "$2" ]
+                        then
+                                \python3 -c "import sys; from urllib.parse import quote; print(quote(sys.stdin.read()[:-1]));"
+                        else
+                                \python3 -c "import sys; from urllib.parse import quote; print(quote(' '.join(sys.argv[2:])));" "$@"
+                        fi ;;
+        esac
 }
 
 # Here is mode if-tree complete, Now will launch the shell
@@ -166,4 +238,3 @@ function wfuzz_vhost_https () {
     fi
     wfuzz -c -w $wordlist -H "Host: FUZZ.$host" -u "https://$host" $3 $4 $5 $6 $7 $8 $9 $10 $11 $12 $13 $14 $15 $16 $17 $18 $19
 }
-
