@@ -32,6 +32,8 @@ def read_file(filename):
 
 vscode_path = ".vscode"
 
+foam_template = ".foam/templates"
+
 template_head = """#!/bin/zsh
 # __        __                        __     ______   ____          _      
 # \ \      / /__  __ _ _ __   ___  _ _\ \   / / ___| / ___|___   __| | ___ 
@@ -54,6 +56,7 @@ weapon_vscode () {
 		return 1
 	fi
 	mkdir -p $1/.vscode
+    mkdir -p $1/.foam/templates
 """
 
 template_body = """
@@ -63,6 +66,7 @@ template_body = """
 
 template_tail = """
 	echo "*" > $1/.vscode/.gitignore
+    echo "*" > $1/.foam/.gitignore
     echo "!env.zsh" >> $1/.vscode/.gitignore
     echo "!metasploit_handler.rc" >> $1/.vscode/.gitignore
 	echo "!msfconsole.rc" >> $1/.vscode/.gitignore
@@ -92,7 +96,12 @@ def generate_bash_script():
                 replace("__KEY__", filename_to_variable_name(key)). \
                     replace("__VALUE__", value). \
                         replace("__FILEPATH__", key)
-    
+    for key, value in create_value_map(foam_template).items():
+        bash_script_content += \
+            template_body. \
+                replace("__KEY__", filename_to_variable_name(key)). \
+                    replace("__VALUE__", value). \
+                        replace("__FILEPATH__", key)
     bash_script_content += template_tail. \
             replace("__LAUNCH_HELPER__", read_file("launch_helper.zsh"))
 
