@@ -1,5 +1,10 @@
 {
     "version": "2.0.0",
+    "options": {
+        "env": {
+            "PROJECT_FOLDER": "${workspaceFolder}",
+        }
+    },
     "tasks": [
         {
             "label": "msfvenom payload creating",
@@ -7,6 +12,7 @@
             "detail": "msfvenom payload creating task",
             "problemMatcher": [],
             "command": [
+                "source ${workspaceFolder}/.vscode/.zshrc;", // source shell config
                 "msfvenom",
                 "-p",
                 "${input:msfvenom-payload}",
@@ -49,6 +55,10 @@
             "type": "shell",
             "detail": "edit /etc/hosts task",
             "command": [
+                "source ${workspaceFolder}/.vscode/.zshrc;",
+                "echo '================ ADDING THIS LINE IN FILE ========';",
+                "echo ${RHOST}  ${DOMAIN};",
+                "echo '================================================';",
                 "sudo",
                 "vim",
                 "/etc/hosts"
@@ -150,8 +160,8 @@
         {
             "id": "msfvenom-lhost",
             "type": "promptString",
-            "description": "Enter the LHOST",
-            "default": "10.10.",
+            "description": "Enter the LHOST, default will read the env.zsh configurated variable $LHOST",
+            "default": "$LHOST",
         },
         {
             "id": "msfvenom-lport",
