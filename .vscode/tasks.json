@@ -100,7 +100,23 @@
                 "cat ${workspaceFolder}/kubeconfig"
             ],
             "problemMatcher": []
-        }
+        },
+        {
+            "label": "hashcat runner",
+            "type": "shell",
+            "detail": "Create and run hashcat cracking task",
+            "command": [
+                "source ${workspaceFolder}/.vscode/.zshrc; ",
+                "hashcat",
+                "--force",
+                "-a ${input:hashcat-mode} ",
+                "-m ${input:hashcat-hashtype} ",
+                "-D ${input:hashcat-device} ",
+                "${input:hashcat-hashfile}",
+                "${input:hashcat-wordlist-or-masks}"
+            ],
+            "problemMatcher": []
+        },
     ],
     "inputs": [
         // msfvenom
@@ -245,6 +261,73 @@
                 "python",
             ],
             "default": "python"
+        },
+        // Hashcat
+        {
+            "id": "hashcat-mode",
+            "type": "pickString",
+            "description": "hashcat attack mode, like wordlist mode",
+            "options": [
+                "$HASHCAT_MODE_WORDLIST",
+                "$HASHCAT_MODE_COMBINATION",
+                "$HASHCAT_MODE_TOGGLE_CASE",
+                "$HASHCAT_MODE_MASK_BRUTE_FORCE",
+                "$HASHCAT_MODE_WORDLIST_MASK",
+                "$HASHCAT_MODE_MASK_WORDLIST",
+            ],
+            "default": "$HASHCAT_MODE_WORDLIST"
+        },
+        {
+            "id": "hashcat-device",
+            "type": "pickString",
+            "description": "which kind of hashcat device you need",
+            "options": [
+                "$HASHCAT_DEVICE_CPU",
+                "$HASHCAT_DEVICE_GPU",
+                "$HASHCAT_DEVICE_FPGA",
+            ],
+            "default": "$HASHCAT_DEVICE_GPU"
+        },
+        {
+            "id": "hashcat-hashtype",
+            "type": "pickString",
+            "description": "Which kind of hash u wanna crack",
+            "options": [
+                "$HASH_MD5",
+                "$HASH_SHA1",
+                "$HASH_MD5CYPT",
+                "$HASH_MD4",
+                "$HASH_NTLM",
+                "$HASH_SHA256",
+                "$HASH_APRMD5",
+                "$HASH_SHA512",
+                "$HASH_BCRYPT",
+                "$HASH_NETNTLMv2",
+                "$HASH_SHA256CRYPT",
+                "$HASH_KRB5_PA_23",
+                "$HASH_KRB5_PA_17",
+                "$HASH_KRB5_PA_18",
+                "$HASH_DJANGO_PBKDF2_SHA256",
+                "$HASH_PBKDF2_HMAC_SHA256",
+                "$HASH_KRB5_TGS_23",
+                "$HASH_KRB5_TGS_17",
+                "$HASH_KRB5_TGS_18",
+                "$HASH_JWT",
+                "$HASH_KRB5_AS_REP_23",
+            ],
+            "default": "$HASH_MD5",
+        },
+        {
+            "id": "hashcat-hashfile",
+            "type": "promptString",
+            "description": "This is the file contains hash, default ${file} is the opened file in vscode",
+            "default": "${file}"
+        },
+        {
+            "id": "hashcat-wordlist-or-masks",
+            "type": "promptString",
+            "description": "This is the place for wordlists or your mask string",
+            "default": "$ROCKYOU"
         }
     ]
 }

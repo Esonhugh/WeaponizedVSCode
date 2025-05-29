@@ -92,6 +92,17 @@ unset https_proxy http_proxy all_proxy
 # export TOP_DNS=${SECLIST}/Discovery/DNS/bitquark-subdomains-top100000.txt
 # export WORDLISTS=/usr/share/wordlists/
 
+export HASHCAT_MODE_WORDLIST=0
+export HASHCAT_MODE_COMBINATION=1
+export HASHCAT_MODE_TOGGLE_CASE=2
+export HASHCAT_MODE_MASK_BRUTE_FORCE=3
+export HASHCAT_MODE_WORDLIST_MASK=6
+export HASHCAT_MODE_MASK_WORDLIST=7
+
+export HASHCAT_DEVICE_CPU=1
+export HASHCAT_DEVICE_GPU=2
+export HASHCAT_DEVICE_FPGA=3
+
 # URL: https://hashcat.net/wiki/doku.php?id=example_hashes
 export HASH_MD5=0
 export HASH_SHA1=100
