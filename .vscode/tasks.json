@@ -117,6 +117,19 @@
             ],
             "problemMatcher": []
         },
+        {
+            "label": "auto rustscan",
+            "type": "shell",
+            "detail": "Run rustscan with some default options",
+            "command": [
+                "source ${workspaceFolder}/.vscode/.zshrc; ",
+                "rustscan",
+                "--ulimit 5000",
+                "-a ${input:scan-host}",
+                "-- ${input:nmap-args}"
+            ],
+            "problemMatcher": []
+        }
     ],
     "inputs": [
         // msfvenom
@@ -328,6 +341,18 @@
             "type": "promptString",
             "description": "This is the place for wordlists or your mask string",
             "default": "$ROCKYOU"
+        },
+        {
+            "id": "scan-host",
+            "type": "promptString",
+            "description": "Enter the host to scan, or using default $RHOST $DOMAIN $TARGET variable u defined",
+            "default": "$RHOST"
+        },
+        {
+            "id": "nmap-args",
+            "type": "promptString",
+            "description": "Enter the nmap arguments, like -sS/-sV/-sC/-Pn",
+            "default": "-A --script=vuln -Pn"
         }
     ]
 }
