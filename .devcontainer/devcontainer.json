@@ -49,5 +49,12 @@
       ]
     }
   },
-  "workspaceFolder": "/workspace"
+  "workspaceFolder": "/workspace",
+  "forwardPorts": [
+    6879,
+    8890,
+    4444,
+    8080,
+    8888
+  ]
 }
