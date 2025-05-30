@@ -1,6 +1,6 @@
 {
   "name": "Weaponized VSCode DevConatiner",
-  "image": "esonhugh/weaponized-vscode-devconatiner:latest",
+  "image": "esonhugh/weaponized-vscode:latest",
   "customizations": {
     "vscode": {
       "extensions": [
