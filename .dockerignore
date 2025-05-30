@@ -1,0 +1,11 @@
+documents/
+craft.py
+README.md
+LICENSE
+releaser.py
+verify.py
+.github/
+.git
+.gitignore
+.devcontainer/
+.vscode/.command_history
