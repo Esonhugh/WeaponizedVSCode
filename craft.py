@@ -1,4 +1,8 @@
-#!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.10"
+# dependencies = []
+# ///
+
 import os
 import json
 from hashlib import sha256
@@ -133,3 +137,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

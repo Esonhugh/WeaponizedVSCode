@@ -1,0 +1,1 @@
+ldapdomaindump --user "$DOMAIN"\\"$USER" --password "$PASS" --outdir ldapdomaindump "$DC_HOST"

@@ -7,19 +7,50 @@
 # Target settings
 export RHOST=10.10.X.X
 # works well on HTB and THM, Put your reverse IP here.
-export LHOST=`ifconfig|grep '10\.10\.'|cut -d ' ' -f2` 
 
 # use this if you are using a VPS or cloud server it can automatically get your public IP.
 # export LHOST=`curl ifconfig.me` 
 # export LHOST=`curl ip.me`
+export LHOST=`ifconfig|grep '10\.10\.'|cut -d ' ' -f2` 
+export ATTACKER_IP=$LHOST
+
 export LPORT=6789
 export DOMAIN=
 
-# export USER_A=
-# export PASS_A=
+export TARGET=${DOMAIN:-${RHOST}} # target is target hostname if not set use RHOST ip
 
-# export USER_B=
-# export PASS_B=
+export IP=${RHOST} # alias rhost
+export ip=${IP} # alias as IP
+export DC_IP=${RHOST} # alias rhost
+export DC_HOST=dc01.${DOMAIN} # domain controller host, if not set use dc01.domain.com
+
+export USER_A=username
+export PASS_A=password
+export NT_HASH_A=ffffffffffffffffffffffffffffffff # NTLM hash, if you have it
+
+export USER_B=
+export PASS_B=
+
+export CURRENT=A # set the current username 
+export CURRENT_USER=`eval echo '$USER_'$CURRENT` # alias for USER_A
+export CURRENT_PASS=`eval echo '$PASS_'$CURRENT` # alias for PASS_A
+export CURRENT_NT_HASH=`eval echo '$NT_HASH_'$CURRENT` # alias for NT_HASH_A
+
+# defined variables if u need
+export USER=${CURRENT_USER}
+export USERNAME=${CURRENT_USER}
+export PASS=${CURRENT_PASS}
+export PASSWORD=${CURRENT_PASS} # alias for PASS
+export NT_HASH=${CURRENT_NT_HASH} # alias for NT_HASH_A
+
+
+# export KRB5CCNAME=
+
+# FAKETIME settings
+# export LD_PRELOAD=/usr/local/lib/libfaketime.so.1
+# export LD_PRELOAD=/usr/lib/aarch64-linux-gnu/faketime/libfaketime.so.1
+# export DYLD_FORCE_FLAT_NAMESPACE=1 DYLD_INSERT_LIBRARIES=/opt/homebrew/Cellar/libfaketime/0.9.10/lib/faketime/libfaketime.1.dylib
+# export FAKETIME="-8h"
 
 
 export METASPLOIT_INIT_COMMAND=""
@@ -68,10 +99,6 @@ export TF_LOG_PATH=$PROJECT_FOLDER/terraform.log
 
 ################################################################
 # More default settings
-export TARGET=${DOMAIN:-${RHOST}} # target is target hostname if not set use RHOST ip
-
-export IP=${RHOST} # alias rhost
-export ip=${IP} # alias as IP
 
 export PROJECT_WEB_DELIVERY=$PROJECT_FOLDER/.web-delivery # web-delivery is a folder in PROJECT_FOLDER
 unset SSS_LOADED # make sure sss init shell is not set
