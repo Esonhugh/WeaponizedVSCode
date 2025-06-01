@@ -17,9 +17,10 @@ The `.vscode` folder will be created, and vscode will loaded settings from it.
 ## How to use it?
 
 1. Download the script
-2. source it 
-3. use function `createhack <foldername>` with the name of the file you want to open
-4. vscode will Automatically open the folder
+2. unzip the zip file 
+3. run ./installer.sh to install the weapon in to your ~/.local/weapon folder
+4. use function `createhack <foldername>` with the name of the file you want to open
+5. vscode will Automatically open the folder
 
 ## Script Hash
 
