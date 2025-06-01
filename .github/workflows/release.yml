@@ -22,9 +22,11 @@ jobs:
         with:
           python-version: "3.x"
 
-      - run: python3 craft.py
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
 
-      - run: python3 ./completion_creator.py
+      - run: uv run ./craft.py
+      - run: uv run ./completion_creator.py
 
       - run: |
           cd $GITHUB_WORKSPACE
