@@ -49,6 +49,7 @@ export NT_HASH_A=ffffffffffffffffffffffffffffffff # NTLM hash, if you have it
 
 function set_current_user() {
     if [[ -z $1 ]]; then
+        echo "current user is set to ${CURRENT}"
         echo "Usage: set_current_user <A|B|username>"
         echo "Example: set_current_user A"
         echo "supported users: "
