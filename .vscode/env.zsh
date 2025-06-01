@@ -125,10 +125,10 @@ unset https_proxy http_proxy all_proxy
 # Hashcat settings
 
 # useful settings like ROCKYOU, SECLIST, etc.
-# export ROCKYOU=/usr/share/wordlists/rockyou.txt
-# export SECLIST=/usr/share/wordlists/seclists/
-# export TOP_DNS=${SECLIST}/Discovery/DNS/bitquark-subdomains-top100000.txt
-# export WORDLISTS=/usr/share/wordlists/
+# export WORDLIST=/usr/share/wordlists
+export ROCKYOU=${WORDLIST}/rockyou.txt
+export SECLIST=${WORDLIST}/seclists/
+export TOP_DNS=${SECLIST}/Discovery/DNS/bitquark-subdomains-top100000.txt
 
 export HASHCAT_MODE_WORDLIST=0
 export HASHCAT_MODE_COMBINATION=1
