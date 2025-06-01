@@ -14,19 +14,17 @@ linux/macos (windows is completely different)
 
 ### install 
 
-1. Copy and download file `createhackenv.sh` to your environment 
+1. Copy and download file `createhackenv.zip` to your environment 
 
-> no other files needed only `createhackenv.sh`
+> no other files needed only `createhackenv.zip`
 
 2. Source it directly or add it to your `.zshrc` file
 
 ```zsh
-source createhackenv.sh
+unzip createhackenv.zip
 
-# Optional
-# Create alias for createhack
-
-alias weaponize-vsc=createhack
+./installere.sh
+# it will install the scripts and history files in ~/.local/weapon folder
 ```
 
 3. Create a templated hacking project folder with it
