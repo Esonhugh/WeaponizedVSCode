@@ -15,6 +15,7 @@ foam_template:
 - login: ${FOAM_TITLE/^(\S*)@//}
   user: ${FOAM_TITLE/@(\S*)$//}
   password: pass
+  nt_hash: fffffffffffffffffffffffffffffffffff
 ```
 
 #### information

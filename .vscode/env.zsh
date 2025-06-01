@@ -24,12 +24,28 @@ export ip=${IP} # alias as IP
 export DC_IP=${RHOST} # alias rhost
 export DC_HOST=dc01.${DOMAIN} # domain controller host, if not set use dc01.domain.com
 
+# auto set the data in the
+function update_user_cred_to_env () {
+    if [[ -x "$(command -v yq)" && -d "${PROJECT_FOLDER}/users" ]]; then 
+        for ur in `ls -1 ${PROJECT_FOLDER}/users`; do
+            local file="${PROJECT_FOLDER}/users/${ur}/${ur}.md"
+                if [ -f "$file" ]; then
+                local usercred=$(cat "$file" |grep '```yaml' -A 4 |grep -v '```' |grep -v -- --)
+                local user=$(echo "$usercred"|yq '.[0].user' -r )
+                local pass=$(echo "$usercred"|yq '.[0].password' -r )
+                local nt_hash=$(echo "$usercred"|yq '.[0].nt_hash' -r )
+                export USER_${user}=$user
+                export PASS_${user}=$pass
+                export NT_HASH_${user}=$nt_hash
+            fi
+        done
+    fi
+}
+update_user_cred_to_env
+
 export USER_A=username
 export PASS_A=password
 export NT_HASH_A=ffffffffffffffffffffffffffffffff # NTLM hash, if you have it
-
-export USER_B=
-export PASS_B=
 
 function set_current_user() {
     if [[ -z $1 ]]; then
