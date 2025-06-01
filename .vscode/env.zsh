@@ -31,17 +31,28 @@ export NT_HASH_A=ffffffffffffffffffffffffffffffff # NTLM hash, if you have it
 export USER_B=
 export PASS_B=
 
-export CURRENT=A # set the current username 
-export CURRENT_USER=`eval echo '$USER_'$CURRENT` # alias for USER_A
-export CURRENT_PASS=`eval echo '$PASS_'$CURRENT` # alias for PASS_A
-export CURRENT_NT_HASH=`eval echo '$NT_HASH_'$CURRENT` # alias for NT_HASH_A
+function set_current_user() {
+    if [[ -z $1 ]]; then
+        echo "Usage: set_current_user <A|B|username>"
+        echo "Example: set_current_user A"
+        echo "supported users: "
+        echo ""
+        env|egrep '^USER_' | sed -e 's/USER_//g' | awk '{printf "- " $1 "\n"}' |sed -e 's/=/: /g' | sort 
+        return 1
+    fi
+    export CURRENT=$1
+    export CURRENT_USER=`eval echo '$USER_'$CURRENT` # alias for USER_A or USER_B
+    export CURRENT_PASS=`eval echo '$PASS_'$CURRENT` # alias for PASS_A or PASS_B
+    export CURRENT_NT_HASH=`eval echo '$NT_HASH_'$CURRENT` # alias for NT_HASH_A or NT_HASH_B
 
-# defined variables if u need
-export USER=${CURRENT_USER}
-export USERNAME=${CURRENT_USER}
-export PASS=${CURRENT_PASS}
-export PASSWORD=${CURRENT_PASS} # alias for PASS
-export NT_HASH=${CURRENT_NT_HASH} # alias for NT_HASH_A
+    # defined variables if u need
+    export USER=${CURRENT_USER}
+    export USERNAME=${CURRENT_USER}
+    export PASS=${CURRENT_PASS}
+    export PASSWORD=${CURRENT_PASS} # alias for PASS
+    export NT_HASH=${CURRENT_NT_HASH} # alias for NT_HASH_A
+}
+set_current_user A
 
 
 # export KRB5CCNAME=
