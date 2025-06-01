@@ -60,7 +60,7 @@ jobs:
           cat commit_notes
 
           echo "Begin Creating Release..."
-          python3 ./releaser.py commit_notes > version.txt
+          uv run ./releaser.py commit_notes > version.txt
           echo "Create successful!"
           cat version.txt
 
