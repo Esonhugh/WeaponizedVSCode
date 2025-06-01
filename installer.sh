@@ -5,13 +5,18 @@ if [[ -d ~/.local/weapon ]]; then
     exit 0
 fi
 
-echo "Installing Weapon..."
-mkdir -p ~/.local/weapon
-
 export LOCATION=~/.local/weapon
-cp -f ./createhackenv.sh $LOCATION
-cp -f ./zsh_history $LOCATION
+echo "Installing Weapon..."
+mkdir -p $LOCATION && echo "Weapon directory created at $LOCATION." 
+cp -f ./createhackenv.sh $LOCATION && echo "createhackenv.sh copied to $LOCATION."
+cp -f ./zsh_history $LOCATION && echo "zsh_history copied to $LOCATION."
 
-echo "source $LOCATION/createhackenv.sh" >> ~/.zshrc
+grep -zq "source $LOCATION/createhackenv.sh" ~/.zshrc
+if [[ $? -eq 0 ]]; then
+    echo "createhackenv.sh already sourced in ~/.zshrc. sktpping..."
+else
+    echo "Sourcing createhackenv.sh in ~/.zshrc..."
+    echo "source $LOCATION/createhackenv.sh" >> ~/.zshrc
+fi
 
 echo "Weaponized VSCode installation completed."
