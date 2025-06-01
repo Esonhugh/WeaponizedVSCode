@@ -1,0 +1,2 @@
+sprayhound -d "$DOMAIN" -dc "$DC_HOST" -nu 'neo4j' -np 'exegol4thewin' -lu "$USER" -lp "$PASS"
+sprayhound -d "$DOMAIN" -dc "$DC_HOST" -nu 'neo4j' -np 'exegol4thewin' -lu "$USER" -lp "$PASS" -p 'somepassword'

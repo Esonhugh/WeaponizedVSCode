@@ -1,0 +1,1 @@
+pre2k auth -u $USER -p $PASS -d $DOMAIN --dc-ip $DC_HOST -verbose

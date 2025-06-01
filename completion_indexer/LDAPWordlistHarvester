@@ -1,0 +1,1 @@
+LDAPWordlistHarvester.py -d "$DOMAIN" -u "$USER" -p "$PASS" --dc-ip "$DC_IP

