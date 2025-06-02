@@ -11,7 +11,7 @@ foam_template:
 
 #### validated credentials
 
-```yaml
+```yaml credentials
 - login: ${FOAM_TITLE/^(\S*)@//}
   user: ${FOAM_TITLE/@(\S*)$//}
   password: pass

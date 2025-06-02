@@ -30,7 +30,7 @@ function update_user_cred_to_env () {
         for ur in `ls -1 ${PROJECT_FOLDER}/users`; do
             local file="${PROJECT_FOLDER}/users/${ur}/${ur}.md"
                 if [ -f "$file" ]; then
-                local usercred=$(cat "$file" |grep '```yaml' -A 4 |grep -v '```' |grep -v -- --)
+                local usercred=$(cat "$file" |grep '```yaml credentials' -A 4 |grep -v '```' |grep -v -- --)
                 local user=$(echo "$usercred"|yq '.[0].user' -r )
                 local pass=$(echo "$usercred"|yq '.[0].password' -r )
                 local nt_hash=$(echo "$usercred"|yq '.[0].nt_hash' -r )
