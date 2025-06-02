@@ -4,10 +4,7 @@
 # export HOST="[HackTheBox - Machine Name]"
 
 ################################################################
-# Target settings
-export RHOST=10.10.X.X
-# works well on HTB and THM, Put your reverse IP here.
-
+# Self condition settings
 # use this if you are using a VPS or cloud server it can automatically get your public IP.
 # export LHOST=`curl ifconfig.me` 
 # export LHOST=`curl ip.me`
@@ -15,6 +12,11 @@ export LHOST=`ifconfig|grep '10\.10\.'|cut -d ' ' -f2`
 export ATTACKER_IP=$LHOST
 
 export LPORT=6789
+
+################################################################
+# Target settings
+export RHOST=10.10.X.X
+# works well on HTB and THM, Put your reverse IP here.
 export DOMAIN=
 
 export TARGET=${DOMAIN:-${RHOST}} # target is target hostname if not set use RHOST ip
@@ -23,6 +25,59 @@ export IP=${RHOST} # alias rhost
 export ip=${IP} # alias as IP
 export DC_IP=${RHOST} # alias rhost
 export DC_HOST=dc01.${DOMAIN} # domain controller host, if not set use dc01.domain.com
+
+function update_host_to_env () {
+    if [[ -x "$(command -v yq)" && -d "${PROJECT_FOLDER}/hosts" ]]; then 
+        for ur in `ls -1 ${PROJECT_FOLDER}/hosts`; do
+            local file="${PROJECT_FOLDER}/hosts/${ur}/${ur}.md"
+                if [ -f "$file" ]; then
+                local host_data=$(cat "$file" |grep '```yaml host' -A 4 |grep -v '```' |grep -v -- --)
+                
+                local hostname=$(echo "$host_data"|yq '.[0].hostname' -r )
+                local _var=$(echo "$hostname"|sed -e "s/\./_/g") # replace . and - with _ to avoid env var issues
+                
+                local ip=$(echo "$host_data"|yq '.[0].ip' -r )
+                local is_dc=$(echo "$host_data"|yq '.[0].is_dc' -r )
+                if [[ "is_dc" -eq "true" ]]; then
+                        export DC_HOST_${_var}=$(echo "$host_data"|yq '.[0].alias.[0]')
+                        export DC_HOST=$(echo "$host_data"|yq '.[0].alias.[0]') # default dc01.domain.com
+                        export DC_IP_${_var}=$ip
+                        export DC_IP=${ip}
+                        export IS_DC_${_var}="true"
+                fi
+                export HOST_${_var}=$hostname
+                export IP_${_var}=$ip
+            fi
+        done
+    fi
+}
+update_host_to_env
+
+function set_current_host() {
+    if [[ -z $1 ]]; then
+        echo "current host is set to ${CURRENT_HOST}"
+        echo "Usage: set_current_host <hostname>"
+        echo "Example: set_current_host dc01"
+        echo "supported hosts: "
+        echo ""
+        env|egrep '^HOST_' | sed -e 's/HOST_//g' | awk '{printf "- " $1 "\n"}' |sed -e 's/=/: /g' | sort 
+        return 1
+    fi
+
+    export CURRENT_HOST=`echo "$1"|sed -e "s/\./_/g" `
+    export CURRENT_IP=`eval echo '$IP_'$CURRENT_HOST` # alias for IP_dc01 or IP_dc02
+    export CURRENT_HOSTNAME=`eval echo '$HOST_'$CURRENT_HOST` # alias for HOST_dc01 or HOST_dc02
+
+    # defined variables if u need
+    export RHOST=${CURRENT_IP}
+    export IP=${CURRENT_IP}
+    export DOMAIN=${CURRENT_HOSTNAME} # alias for DOMAIN_dc01 or DOMAIN_dc02
+    export TARGET=${DOMAIN:-${RHOST}} # target is target hostname if not set use RHOST ip
+    if [[ "$IS_DC_${CURRENT_HOST}" == "true" ]]; then
+        export DC_IP=`eval echo '$DC_IP_'$CURRENT_HOST` # alias for DC_IP_dc01 or DC_IP_dc02
+        export DC_HOST=`eval echo '$DC_HOST_'$CURRENT_HOST` # alias for DC_HOST_dc01 or DC_HOST_dc02
+    fi
+}
 
 # auto set the data in the
 function update_user_cred_to_env () {
@@ -191,21 +246,34 @@ function proxys() {
         case "$1" in
                 (h)
                         echo "|==============================================|"
-                        echo "|                   $0 Usage                   |"
+                        echo "|                proxys Usage                  |"
                         echo "|         ---- fast commandline proxy switcher |"
                         echo "|==============================================|"
-                        echo "| Basic Usage: $0 [SubCommand] [param1]        |"
+                        echo "| Basic Usage: proxys [SubCommand] [param1]    |"
                         echo "|==============================================|"
                         echo "|                Sub Command List              |"
                         echo "|==============================================|"
                         echo "| proxy [proxy_ip]          import ip temply   |"
                         echo "| port [port_id]            import port temply |"
                         echo "| loc                       import localhost   |"
+                        echo "| set [protocol]://[proxy_ip]:[port] set proxy |"
                         echo "| on                        up the cli proxy   |"
                         echo "| off                       down the proxy     |"
                         echo "| *                         show proxy setting |"
                         echo "| h/help                    show help          |"
                         echo "|==============================================|"
+                        ;;
+                (set)
+                        if [ -z "$2" ]
+                        then
+                                echo "Usage: $0 set [protocol]://[proxy_ip]:[port]"
+                                echo "Example: $0 set http://127.0.0.1:8080"
+                        else
+                                export http_proxy="$2" \
+                                https_proxy="$2" \
+                                all_proxy="$2" && \
+                                echo "export Proxy complete" && $0 show
+                        fi
                         ;;
                 (proxy)
                         export Proxy="$2"

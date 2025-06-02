@@ -1,0 +1,16 @@
+update_user_cred_to_env
+set_current_user
+update_host_to_env
+set_current_host
+wfuzz_vhost_http $DOMAIN $TOP_DNS
+wfuzz_vhost_https $DOMAIN $TOP_DNS
+venv-init
+venv-activate
+proxys on
+proxys loc
+proxys set http://127.0.0.1:8080
+rustscan -a $RHOST --ulimit 5000 -- -A --script=vuln
+cp xxx $PROJECT_FOLDER/
+cp xxx $PROJECT_WEB_DELIVERY/
+cat file |url encode
+cat file |url decode

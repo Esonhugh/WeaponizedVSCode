@@ -9,10 +9,14 @@ foam_template:
 
 ### ${1:$TM_FILENAME_BASE}
 
-#### host alias
+#### host location
 
-- ${1:$TM_FILENAME_BASE}
-- ip: 
+```yaml host
+- hostname: ${1:$TM_FILENAME_BASE}
+  is_dc: false
+  ip: 10.10.10.10
+  alias: ["${1:$TM_FILENAME_BASE}"] # if is DC, please set the dc hostname as the first alias, such as ["dc01.example.com"]
+```
 
 #### ports
 
