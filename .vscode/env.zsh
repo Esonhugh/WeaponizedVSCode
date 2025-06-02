@@ -26,12 +26,28 @@ export ip=${IP} # alias as IP
 export DC_IP=${RHOST} # alias rhost
 export DC_HOST=dc01.${DOMAIN} # domain controller host, if not set use dc01.domain.com
 
+function cut_lines () {
+    local file_path=$1
+    local identity='```yaml '$2
+    local line_no=$(grep -n '```' "$file_path"|grep "$identity" -A2|cut -d : -f1)
+    local line_no_start=$(echo $line_no | head -n 1)
+    local line_no_end=$(echo $line_no | tail -n 1)
+    local line_start=$(($line_no_start + 1))
+    local line_end=$(($line_no_end - 1))
+
+    if [[ -f $file_path ]]; then
+        sed -n "${line_start},${line_end}p" "$file_path"
+    else
+        echo "File not found: $file_path"
+    fi
+}
+
 function update_host_to_env () {
     if [[ -x "$(command -v yq)" && -d "${PROJECT_FOLDER}/hosts" ]]; then 
         for ur in `ls -1 ${PROJECT_FOLDER}/hosts`; do
             local file="${PROJECT_FOLDER}/hosts/${ur}/${ur}.md"
                 if [ -f "$file" ]; then
-                local host_data=$(cat "$file" |grep '```yaml host' -A 4 |grep -v '```' |grep -v -- --)
+                local host_data=$(cut_lines "$file" "host")
                 
                 local hostname=$(echo "$host_data"|yq '.[0].hostname' -r )
                 local _var=$(echo "$hostname"|sed -e "s/\./_/g") # replace . and - with _ to avoid env var issues
@@ -85,7 +101,7 @@ function update_user_cred_to_env () {
         for ur in `ls -1 ${PROJECT_FOLDER}/users`; do
             local file="${PROJECT_FOLDER}/users/${ur}/${ur}.md"
                 if [ -f "$file" ]; then
-                local usercred=$(cat "$file" |grep '```yaml credentials' -A 4 |grep -v '```' |grep -v -- --)
+                local usercred=$(cut_lines "$file" "credentials")
                 local user=$(echo "$usercred"|yq '.[0].user' -r )
                 local pass=$(echo "$usercred"|yq '.[0].password' -r )
                 local nt_hash=$(echo "$usercred"|yq '.[0].nt_hash' -r )
