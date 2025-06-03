@@ -30,8 +30,6 @@ function cut_lines_from_markdown_codes() {
         local file_path=$1
         local identity='```'$2
         local line=$(grep -n '```' "$file_path" | grep "$identity" -A1 | cut -d : -f1)
-        # echo "here" $(grep -n '```' "$file_path" | grep "$identity" -A1) >> debug.log
-        # echo "${file_path}: ${identity} found at line: $line_no" >> debug.log
         local line_no_list=$(echo "$line" | awk 'NR%2==1{T=$0;next}{print T "|" $0}')
         for line_no in `echo $line_no_list`; do
                 local line_no_start=$(echo $line_no | cut -d "|" -f 1)
@@ -39,7 +37,6 @@ function cut_lines_from_markdown_codes() {
                 local line_start=$(($line_no_start + 1))
                 local line_end=$(($line_no_end - 1))
                 if [[ $line_start == "1" && $line_end == "-1" ]]; then
-                        #echo "No code block found for identity: $identity in file: $file_path"
                         return 1
                 fi
 
