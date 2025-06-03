@@ -1,1 +1,1 @@
-dirsearch -r -w /usr/share/wordlists/seclists/Discovery/Web-Content/quickhits.txt -u "http://$TARGET/"
+dirsearch -r -w ${SECLIST}/Discovery/Web-Content/quickhits.txt -u "http://$TARGET/"

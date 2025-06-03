@@ -1,1 +1,1 @@
-dirb "http://$TARGET" /usr/share/seclists/Discovery/Web-Content/big.txt
+dirb "http://$TARGET" ${SECLIST}/Discovery/Web-Content/big.txt

