@@ -80,7 +80,7 @@ function set_current_host() {
         return 1
     fi
 
-    export CURRENT_HOST=`echo "$1"|sed -e "s/\./_/g" `
+    export CURRENT_HOST=`echo "$1"|sed -e "s/\./_/g"|sed -e "s/-/_/g" `
     export CURRENT_IP=`eval echo '$IP_'$CURRENT_HOST` # alias for IP_dc01 or IP_dc02
     export CURRENT_HOSTNAME=`eval echo '$HOST_'$CURRENT_HOST` # alias for HOST_dc01 or HOST_dc02
 
@@ -129,7 +129,7 @@ function set_current_user() {
         env|egrep '^USER_' | sed -e 's/USER_//g' | awk '{printf "- " $1 "\n"}' |sed -e 's/=/: /g' | sort 
         return 1
     fi
-    export CURRENT=$1
+    export CURRENT=`echo "$1"|sed -e "s/\./_/g" |sed -e "s/-/_/g" `
     export CURRENT_USER=`eval echo '$USER_'$CURRENT` # alias for USER_A or USER_B
     export CURRENT_PASS=`eval echo '$PASS_'$CURRENT` # alias for PASS_A or PASS_B
     export CURRENT_NT_HASH=`eval echo '$NT_HASH_'$CURRENT` # alias for NT_HASH_A or NT_HASH_B
