@@ -394,3 +394,11 @@ function wfuzz_vhost_https () {
     fi
     wfuzz -c -w $wordlist -H "Host: FUZZ.$host" -u "https://$host" $3 $4 $5 $6 $7 $8 $9 $10 $11 $12 $13 $14 $15 $16 $17 $18 $19
 }
+
+function ntlm () {
+        if [ -n "$1" ]; then
+                python3 -c 'import hashlib,binascii;hash = hashlib.new("md4", "'$1'".encode("utf-16le")).digest();print(binascii.hexlify(hash).decode("utf-8"))'
+        else
+                echo "usage: $0 password"
+        fi
+}

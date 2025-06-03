@@ -14,3 +14,4 @@ cp xxx $PROJECT_FOLDER/
 cp xxx $PROJECT_WEB_DELIVERY/
 cat file |url encode
 cat file |url decode
+ntlm $PASS
