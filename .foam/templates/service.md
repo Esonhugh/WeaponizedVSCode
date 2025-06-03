@@ -15,6 +15,10 @@ foam_template:
 
 #### location
 
+```zsh env-invoked
+# this will be automaticially invoked in your shell when you use this template
+```
+
 On host yyy port xxx
 
 #### information

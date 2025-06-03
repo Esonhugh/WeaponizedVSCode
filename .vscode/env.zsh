@@ -6,9 +6,9 @@
 ################################################################
 # Self condition settings
 # use this if you are using a VPS or cloud server it can automatically get your public IP.
-# export LHOST=`curl ifconfig.me` 
+# export LHOST=`curl ifconfig.me`
 # export LHOST=`curl ip.me`
-export LHOST=`ifconfig|grep '10\.10\.'|cut -d ' ' -f2` 
+export LHOST=$(ifconfig | grep '10\.10\.' | cut -d ' ' -f2)
 export ATTACKER_IP=$LHOST
 
 export LPORT=6789
@@ -21,128 +21,141 @@ export DOMAIN=
 
 export TARGET=${DOMAIN:-${RHOST}} # target is target hostname if not set use RHOST ip
 
-export IP=${RHOST} # alias rhost
-export ip=${IP} # alias as IP
-export DC_IP=${RHOST} # alias rhost
+export IP=${RHOST}            # alias rhost
+export ip=${IP}               # alias as IP
+export DC_IP=${RHOST}         # alias rhost
 export DC_HOST=dc01.${DOMAIN} # domain controller host, if not set use dc01.domain.com
 
-function cut_lines () {
-    local file_path=$1
-    local identity='```yaml '$2
-    local line_no=$(grep -n '```' "$file_path"|grep "$identity" -A2|cut -d : -f1)
-    local line_no_start=$(echo $line_no | head -n 1)
-    local line_no_end=$(echo $line_no | tail -n 1)
-    local line_start=$(($line_no_start + 1))
-    local line_end=$(($line_no_end - 1))
+function cut_lines_from_markdown_codes() {
+        local file_path=$1
+        local identity='```'$2
+        local line_no=$(grep -n '```' "$file_path" | grep "$identity" -A1 | cut -d : -f1)
+        # echo "here" $(grep -n '```' "$file_path" | grep "$identity" -A1) >> debug.log
+        # echo "${file_path}: ${identity} found at line: $line_no" >> debug.log
+        local line_no_start=$(echo $line_no | head -n 1)
+        local line_no_end=$(echo $line_no | tail -n 1)
+        local line_start=$(($line_no_start + 1))
+        local line_end=$(($line_no_end - 1))
+        if [[ $line_start == "1" && $line_end == "-1" ]]; then
+                #echo "No code block found for identity: $identity in file: $file_path"
+                return 1
+        fi
 
-    if [[ -f $file_path ]]; then
-        sed -n "${line_start},${line_end}p" "$file_path"
-    else
-        echo "File not found: $file_path"
-    fi
+        if [[ -f $file_path ]]; then
+                sed -n "${line_start},${line_end}p" "$file_path"
+        else
+                echo "File not found: $file_path"
+        fi
 }
 
-function update_host_to_env () {
-    if [[ -x "$(command -v yq)" && -d "${PROJECT_FOLDER}/hosts" ]]; then 
-        for ur in `ls -1 ${PROJECT_FOLDER}/hosts`; do
-            local file="${PROJECT_FOLDER}/hosts/${ur}/${ur}.md"
-                if [ -f "$file" ]; then
-                local host_data=$(cut_lines "$file" "host")
-                
-                local hostname=$(echo "$host_data"|yq '.[0].hostname' -r )
-                local _var=$(echo "$hostname"|sed -e "s/\./_/g"|sed -e "s/-/_/g") # replace . and - with _ to avoid env var issues
-                
-                local ip=$(echo "$host_data"|yq '.[0].ip' -r )
-                local is_dc=$(echo "$host_data"|yq '.[0].is_dc' -r )
-                if [[ "is_dc" -eq "true" ]]; then
-                        export DC_HOST_${_var}=$(echo "$host_data"|yq '.[0].alias.[0]')
-                        export DC_HOST=$(echo "$host_data"|yq '.[0].alias.[0]') # default dc01.domain.com
-                        export DC_IP_${_var}=$ip
-                        export DC_IP=${ip}
-                        export IS_DC_${_var}="true"
-                fi
-                export HOST_${_var}=$hostname
-                export IP_${_var}=$ip
-            fi
-        done
-    fi
+function update_host_to_env() {
+        if [[ -x "$(command -v yq)" && -d "${PROJECT_FOLDER}/hosts" ]]; then
+                for ur in $(ls -1 ${PROJECT_FOLDER}/hosts); do
+                        local file="${PROJECT_FOLDER}/hosts/${ur}/${ur}.md"
+                        if [ -f "$file" ]; then
+                                local host_data=$(cut_lines_from_markdown_codes "$file" "yaml host")
+
+                                local hostname=$(echo "$host_data" | yq '.[0].hostname' -r)
+                                local _var=$(echo "$hostname" | sed -e "s/\./_/g" | sed -e "s/-/_/g") # replace . and - with _ to avoid env var issues
+
+                                local ip=$(echo "$host_data" | yq '.[0].ip' -r)
+                                local is_dc=$(echo "$host_data" | yq '.[0].is_dc' -r)
+                                if [[ "is_dc" -eq "true" ]]; then
+                                        export DC_HOST_${_var}=$(echo "$host_data" | yq '.[0].alias.[0]')
+                                        export DC_HOST=$(echo "$host_data" | yq '.[0].alias.[0]') # default dc01.domain.com
+                                        export DC_IP_${_var}=$ip
+                                        export DC_IP=${ip}
+                                        export IS_DC_${_var}="true"
+                                fi
+                                export HOST_${_var}=$hostname
+                                export IP_${_var}=$ip
+                        fi
+                done
+        fi
 }
 update_host_to_env
 
 function set_current_host() {
-    if [[ -z $1 ]]; then
-        echo "current host is set to ${CURRENT_HOST}"
-        echo "Usage: set_current_host <hostname>"
-        echo "Example: set_current_host dc01"
-        echo "supported hosts: "
-        echo ""
-        env|egrep '^HOST_' | sed -e 's/HOST_//g' | awk '{printf "- " $1 "\n"}' |sed -e 's/=/: /g' | sort 
-        return 1
-    fi
+        if [[ -z $1 ]]; then
+                echo "current host is set to ${CURRENT_HOST}"
+                echo "Usage: set_current_host <hostname>"
+                echo "Example: set_current_host dc01"
+                echo "supported hosts: "
+                echo ""
+                env | egrep '^HOST_' | sed -e 's/HOST_//g' | awk '{printf "- " $1 "\n"}' | sed -e 's/=/: /g' | sort
+                return 1
+        fi
 
-    export CURRENT_HOST=`echo "$1"|sed -e "s/\./_/g"|sed -e "s/-/_/g" `
-    export CURRENT_IP=`eval echo '$IP_'$CURRENT_HOST` # alias for IP_dc01 or IP_dc02
-    export CURRENT_HOSTNAME=`eval echo '$HOST_'$CURRENT_HOST` # alias for HOST_dc01 or HOST_dc02
+        export CURRENT_HOST=$(echo "$1" | sed -e "s/\./_/g" | sed -e "s/-/_/g")
+        export CURRENT_IP=$(eval echo '$IP_'$CURRENT_HOST)         # alias for IP_dc01 or IP_dc02
+        export CURRENT_HOSTNAME=$(eval echo '$HOST_'$CURRENT_HOST) # alias for HOST_dc01 or HOST_dc02
 
-    # defined variables if u need
-    export RHOST=${CURRENT_IP}
-    export IP=${CURRENT_IP}
-    export DOMAIN=${CURRENT_HOSTNAME} # alias for DOMAIN_dc01 or DOMAIN_dc02
-    export TARGET=${DOMAIN:-${RHOST}} # target is target hostname if not set use RHOST ip
-    if [[ "$IS_DC_${CURRENT_HOST}" == "true" ]]; then
-        export DC_IP=`eval echo '$DC_IP_'$CURRENT_HOST` # alias for DC_IP_dc01 or DC_IP_dc02
-        export DC_HOST=`eval echo '$DC_HOST_'$CURRENT_HOST` # alias for DC_HOST_dc01 or DC_HOST_dc02
-    fi
+        # defined variables if u need
+        export RHOST=${CURRENT_IP}
+        export IP=${CURRENT_IP}
+        export DOMAIN=${CURRENT_HOSTNAME} # alias for DOMAIN_dc01 or DOMAIN_dc02
+        export TARGET=${DOMAIN:-${RHOST}} # target is target hostname if not set use RHOST ip
+        if [[ "$IS_DC_${CURRENT_HOST}" == "true" ]]; then
+                export DC_IP=$(eval echo '$DC_IP_'$CURRENT_HOST)     # alias for DC_IP_dc01 or DC_IP_dc02
+                export DC_HOST=$(eval echo '$DC_HOST_'$CURRENT_HOST) # alias for DC_HOST_dc01 or DC_HOST_dc02
+        fi
 }
+# set_current_host xx.htb
 
 # auto set the data in the
-function update_user_cred_to_env () {
-    if [[ -x "$(command -v yq)" && -d "${PROJECT_FOLDER}/users" ]]; then 
-        for ur in `ls -1 ${PROJECT_FOLDER}/users`; do
-            local file="${PROJECT_FOLDER}/users/${ur}/${ur}.md"
-                if [ -f "$file" ]; then
-                local usercred=$(cut_lines "$file" "credentials")
-                local user=$(echo "$usercred"|yq '.[0].user' -r )
-                local _var=$(echo "$user"|sed -e "s/\./_/g" | sed -e "s/-/_/g") # replace . and - with _ to avoid env var issues
-                local pass=$(echo "$usercred"|yq '.[0].password' -r )
-                local nt_hash=$(echo "$usercred"|yq '.[0].nt_hash' -r )
-                export USER_${_var}=$user
-                export PASS_${_var}=$pass
-                export NT_HASH_${_var}=$nt_hash
-            fi
-        done
-    fi
+function update_user_cred_to_env() {
+        if [[ -x "$(command -v yq)" && -d "${PROJECT_FOLDER}/users" ]]; then
+                for ur in $(ls -1 ${PROJECT_FOLDER}/users); do
+                        local file="${PROJECT_FOLDER}/users/${ur}/${ur}.md"
+                        if [ -f "$file" ]; then
+                                local usercred=$(cut_lines_from_markdown_codes "$file" "yaml credentials")
+                                local user=$(echo "$usercred" | yq '.[0].user' -r)
+                                local _var=$(echo "$user" | sed -e "s/\./_/g" | sed -e "s/-/_/g") # replace . and - with _ to avoid env var issues
+                                local pass=$(echo "$usercred" | yq '.[0].password' -r)
+                                local nt_hash=$(echo "$usercred" | yq '.[0].nt_hash' -r)
+                                export USER_${_var}=$user
+                                export PASS_${_var}=$pass
+                                export NT_HASH_${_var}=$nt_hash
+                        fi
+                done
+        fi
 }
 update_user_cred_to_env
 
-export USER_A=username
-export PASS_A=password
-export NT_HASH_A=ffffffffffffffffffffffffffffffff # NTLM hash, if you have it
-
 function set_current_user() {
-    if [[ -z $1 ]]; then
-        echo "current user is set to ${CURRENT}"
-        echo "Usage: set_current_user <A|B|username>"
-        echo "Example: set_current_user A"
-        echo "supported users: "
-        echo ""
-        env|egrep '^USER_' | sed -e 's/USER_//g' | awk '{printf "- " $1 "\n"}' |sed -e 's/=/: /g' | sort 
-        return 1
-    fi
-    export CURRENT=`echo "$1"|sed -e "s/\./_/g" |sed -e "s/-/_/g" `
-    export CURRENT_USER=`eval echo '$USER_'$CURRENT` # alias for USER_A or USER_B
-    export CURRENT_PASS=`eval echo '$PASS_'$CURRENT` # alias for PASS_A or PASS_B
-    export CURRENT_NT_HASH=`eval echo '$NT_HASH_'$CURRENT` # alias for NT_HASH_A or NT_HASH_B
+        if [[ -z $1 ]]; then
+                echo "current user is set to ${CURRENT}"
+                echo "Usage: set_current_user <A|B|username>"
+                echo "Example: set_current_user A"
+                echo "supported users: "
+                echo ""
+                env | egrep '^USER_' | sed -e 's/USER_//g' | awk '{printf "- " $1 "\n"}' | sed -e 's/=/: /g' | sort
+                return 1
+        fi
+        export CURRENT=$(echo "$1" | sed -e "s/\./_/g" | sed -e "s/-/_/g")
+        export CURRENT_USER=$(eval echo '$USER_'$CURRENT)       # alias for USER_A or USER_B
+        export CURRENT_PASS=$(eval echo '$PASS_'$CURRENT)       # alias for PASS_A or PASS_B
+        export CURRENT_NT_HASH=$(eval echo '$NT_HASH_'$CURRENT) # alias for NT_HASH_A or NT_HASH_B
 
-    # defined variables if u need
-    export USER=${CURRENT_USER}
-    export USERNAME=${CURRENT_USER}
-    export PASS=${CURRENT_PASS}
-    export PASSWORD=${CURRENT_PASS} # alias for PASS
-    export NT_HASH=${CURRENT_NT_HASH} # alias for NT_HASH_A
+        # defined variables if u need
+        export USER=${CURRENT_USER}
+        export USERNAME=${CURRENT_USER}
+        export PASS=${CURRENT_PASS}
+        export PASSWORD=${CURRENT_PASS}   # alias for PASS
+        export NT_HASH=${CURRENT_NT_HASH} # alias for NT_HASH_A
 }
-set_current_user A
+# set_current_user john
 
+### auto invoke the commands in markdown files
+function auto_invoker() {
+        for markdown in $(find ${PROJECT_FOLDER} -iname "*.md"|grep -v ".foam/templates"); do
+                local auto_invoker=$(cut_lines_from_markdown_codes "$markdown" "zsh env-invoked")
+                if [[ -n "$auto_invoker" ]]; then
+                        source <(echo "$auto_invoker") # source it! 
+                fi
+        done
+}
+auto_invoker
 
 # export KRB5CCNAME=
 
@@ -151,7 +164,6 @@ set_current_user A
 # export LD_PRELOAD=/usr/lib/aarch64-linux-gnu/faketime/libfaketime.so.1
 # export DYLD_FORCE_FLAT_NAMESPACE=1 DYLD_INSERT_LIBRARIES=/opt/homebrew/Cellar/libfaketime/0.9.10/lib/faketime/libfaketime.1.dylib
 # export FAKETIME="-8h"
-
 
 export METASPLOIT_INIT_COMMAND=""
 
@@ -201,7 +213,7 @@ export TF_LOG_PATH=$PROJECT_FOLDER/terraform.log
 # More default settings
 
 export PROJECT_WEB_DELIVERY=$PROJECT_FOLDER/.web-delivery # web-delivery is a folder in PROJECT_FOLDER
-unset SSS_LOADED # make sure sss init shell is not set
+unset SSS_LOADED                                          # make sure sss init shell is not set
 
 ################################################################
 # Network settings clean up and reset
@@ -253,149 +265,142 @@ export HASH_KRB5_TGS_18=19700
 export HASH_JWT=16500
 export HASH_KRB5_AS_REP_23=18200
 
-
 # utils functions
 
 ### functions
 function proxys() {
-    export Proxy="127.0.0.1"   # define as your favour
-    export ProxyPort="7890"  # define as your favour
+        export Proxy="127.0.0.1" # define as your favour
+        export ProxyPort="7890"  # define as your favour
         case "$1" in
-                (h)
-                        echo "|==============================================|"
-                        echo "|                proxys Usage                  |"
-                        echo "|         ---- fast commandline proxy switcher |"
-                        echo "|==============================================|"
-                        echo "| Basic Usage: proxys [SubCommand] [param1]    |"
-                        echo "|==============================================|"
-                        echo "|                Sub Command List              |"
-                        echo "|==============================================|"
-                        echo "| proxy [proxy_ip]          import ip temply   |"
-                        echo "| port [port_id]            import port temply |"
-                        echo "| loc                       import localhost   |"
-                        echo "| set [protocol]://[proxy_ip]:[port] set proxy |"
-                        echo "| on                        up the cli proxy   |"
-                        echo "| off                       down the proxy     |"
-                        echo "| *                         show proxy setting |"
-                        echo "| h/help                    show help          |"
-                        echo "|==============================================|"
-                        ;;
-                (set)
-                        if [ -z "$2" ]
-                        then
-                                echo "Usage: $0 set [protocol]://[proxy_ip]:[port]"
-                                echo "Example: $0 set http://127.0.0.1:8080"
-                        else
-                                export http_proxy="$2" \
+        h)
+                echo "|==============================================|"
+                echo "|                proxys Usage                  |"
+                echo "|         ---- fast commandline proxy switcher |"
+                echo "|==============================================|"
+                echo "| Basic Usage: proxys [SubCommand] [param1]    |"
+                echo "|==============================================|"
+                echo "|                Sub Command List              |"
+                echo "|==============================================|"
+                echo "| proxy [proxy_ip]          import ip temply   |"
+                echo "| port [port_id]            import port temply |"
+                echo "| loc                       import localhost   |"
+                echo "| set [protocol]://[proxy_ip]:[port] set proxy |"
+                echo "| on                        up the cli proxy   |"
+                echo "| off                       down the proxy     |"
+                echo "| *                         show proxy setting |"
+                echo "| h/help                    show help          |"
+                echo "|==============================================|"
+                ;;
+        set)
+                if [ -z "$2" ]; then
+                        echo "Usage: $0 set [protocol]://[proxy_ip]:[port]"
+                        echo "Example: $0 set http://127.0.0.1:8080"
+                else
+                        export http_proxy="$2" \
                                 https_proxy="$2" \
-                                all_proxy="$2" && \
+                                all_proxy="$2" &&
                                 echo "export Proxy complete" && $0 show
-                        fi
-                        ;;
-                (proxy)
-                        export Proxy="$2"
-                        ;;
-                (port)
-                        export ProxyPort="$2"
-                        ;;
-                (loc)
-                        export Proxy="127.0.0.1"        # define as your favour
-                        export ProxyPort="7890"       # define as your favour
-                        $0 on
-                        ;;
-                (on)
-                        export https_proxy=http://$Proxy:$ProxyPort \
-                        http_proxy=http://$Proxy:$ProxyPort && \
+                fi
+                ;;
+        proxy)
+                export Proxy="$2"
+                ;;
+        port)
+                export ProxyPort="$2"
+                ;;
+        loc)
+                export Proxy="127.0.0.1" # define as your favour
+                export ProxyPort="7890"  # define as your favour
+                $0 on
+                ;;
+        on)
+                export https_proxy=http://$Proxy:$ProxyPort \
+                        http_proxy=http://$Proxy:$ProxyPort &&
                         echo 'export Proxy complete' && $0 show
-                        ;;
-                (off)
-                        unset https_proxy http_proxy all_proxy && echo 'unset Proxy complete'
-                        ;;
-                (help)
-                        proxys h
-                        ;;
-                (*)
-                        echo "Current Proxy Condition like ...."
-                        export|grep proxy
-                        echo "if you can't see any output like 'XX_PROXY=' there"
-                        echo "That means no proxy is set"
-                        ;;
+                ;;
+        off)
+                unset https_proxy http_proxy all_proxy && echo 'unset Proxy complete'
+                ;;
+        help)
+                proxys h
+                ;;
+        *)
+                echo "Current Proxy Condition like ...."
+                export | grep proxy
+                echo "if you can't see any output like 'XX_PROXY=' there"
+                echo "That means no proxy is set"
+                ;;
         esac
 }
 
-function venv-init () {
-    python3 -m venv venv
+function venv-init() {
+        python3 -m venv venv
 }
 
-function venv-activate () {
-        if [ -d "./venv/" ] 
-        then
+function venv-activate() {
+        if [ -d "./venv/" ]; then
                 source "./venv/bin/activate"
-        else 
+        else
                 echo "No Python venv there. Error"
         fi
 }
 
-function goproxy () {
+function goproxy() {
         case "$1" in
-                (on) export GOPROXY=https://goproxy.io,direct  ;;
-                (off) unset GOPROXY ;;
-                (*) $0 on/off ;;
+        on) export GOPROXY=https://goproxy.io,direct ;;
+        off) unset GOPROXY ;;
+        *) $0 on/off ;;
         esac
 }
 
-function url () {
+function url() {
         case "$1" in
-                (h |-h |help| --help) 
-                    which $0
-                            ;;
-                (decode | d | -d | --decode) if [ -z "$2" ]
-                        then
-                                \python3 -c "import sys; from urllib.parse import unquote; print(unquote(sys.stdin.read()));"
-                        else
-                                \python3 -c "import sys; from urllib.parse import unquote; print(unquote(' '.join(sys.argv[2:])));" "$@"
-                        fi ;;
-                (encode | e | -e | --encode) if [ -z "$2" ]
-                        then
-                                \python3 -c "import sys; from urllib.parse import quote; print(quote(sys.stdin.read()[:-1]));"
-                        else
-                                \python3 -c "import sys; from urllib.parse import quote; print(quote(' '.join(sys.argv[2:])));" "$@"
-                        fi ;;
+        h | -h | help | --help)
+                which $0
+                ;;
+        decode | d | -d | --decode) if [ -z "$2" ]; then
+                \python3 -c "import sys; from urllib.parse import unquote; print(unquote(sys.stdin.read()));"
+        else
+                \python3 -c "import sys; from urllib.parse import unquote; print(unquote(' '.join(sys.argv[2:])));" "$@"
+        fi ;;
+        encode | e | -e | --encode) if [ -z "$2" ]; then
+                \python3 -c "import sys; from urllib.parse import quote; print(quote(sys.stdin.read()[:-1]));"
+        else
+                \python3 -c "import sys; from urllib.parse import quote; print(quote(' '.join(sys.argv[2:])));" "$@"
+        fi ;;
         esac
 }
 
 # Here is mode if-tree complete, Now will launch the shell
 # export SUBDOMAIN_WORDLIST=$SECLIST/Discovery/DNS/bitquark-subdomains-top100000.txt
 # pipx install wfuzz
-# alias wfuzz=docker run --rm --name wfuzz -v /usr/share/wordlists:/wordlists/ -it ghcr.io/xmendez/wfuzz wfuzz 
+# alias wfuzz=docker run --rm --name wfuzz -v /usr/share/wordlists:/wordlists/ -it ghcr.io/xmendez/wfuzz wfuzz
 # usage: alias wfuzz_http_vhost='wfuzz -c -w $SUBDOMAIN_WORDLIST -H "Host: FUZZ.$host" -u "http://$host"'
 # usage: alias wfuzz_https_vhost='wfuzz -c -w $SUBDOMAIN_WORDLIST -H "Host: FUZZ.$host" -u "https://$host"'
 alias wfuzz=\wfuzz
-# unset -f wfuzz_vhost_http 
-function wfuzz_vhost_http () {
-    local host=$1 
-    local wordlist=$2 
-    if [[ -z $wordlist ]] || [[ -z $host ]]
-    then
-        echo "Usage: wfuzz_vhost <host> <wordlist> [wfuzz options]"
-            return
-    fi
-    wfuzz -c -w $wordlist -H "Host: FUZZ.$host" -u "http://$host" $3 $4 $5 $6 $7 $8 $9 $10 $11 $12 $13 $14 $15 $16 $17 $18 $19
+# unset -f wfuzz_vhost_http
+function wfuzz_vhost_http() {
+        local host=$1
+        local wordlist=$2
+        if [[ -z $wordlist ]] || [[ -z $host ]]; then
+                echo "Usage: wfuzz_vhost <host> <wordlist> [wfuzz options]"
+                return
+        fi
+        wfuzz -c -w $wordlist -H "Host: FUZZ.$host" -u "http://$host" $3 $4 $5 $6 $7 $8 $9 $10 $11 $12 $13 $14 $15 $16 $17 $18 $19
 }
 
 # unset -f wfuzz_vhost_https
-function wfuzz_vhost_https () {
-    local host=$1 
-    local wordlist=$2 
-    if [[ -z $wordlist ]] || [[ -z $host ]]
-    then
-        echo "Usage: wfuzz_vhost <host> <wordlist> [wfuzz options]"
-            return
-    fi
-    wfuzz -c -w $wordlist -H "Host: FUZZ.$host" -u "https://$host" $3 $4 $5 $6 $7 $8 $9 $10 $11 $12 $13 $14 $15 $16 $17 $18 $19
+function wfuzz_vhost_https() {
+        local host=$1
+        local wordlist=$2
+        if [[ -z $wordlist ]] || [[ -z $host ]]; then
+                echo "Usage: wfuzz_vhost <host> <wordlist> [wfuzz options]"
+                return
+        fi
+        wfuzz -c -w $wordlist -H "Host: FUZZ.$host" -u "https://$host" $3 $4 $5 $6 $7 $8 $9 $10 $11 $12 $13 $14 $15 $16 $17 $18 $19
 }
 
-function ntlm () {
+function ntlm() {
         if [ -n "$1" ]; then
                 python3 -c 'import hashlib,binascii;hash = hashlib.new("md4", "'$1'".encode("utf-16le")).digest();print(binascii.hexlify(hash).decode("utf-8"))'
         else
