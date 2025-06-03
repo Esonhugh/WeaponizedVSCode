@@ -4,7 +4,7 @@
             "env": {
                 "PROJECT_FOLDER": "${workspaceFolder}"
             },
-            "path": "zsh",
+            "path": "zsh"
         },
         "meterpreter-handler": {
             "overrideName": true,
@@ -12,7 +12,7 @@
                 "PROJECT_FOLDER": "${workspaceFolder}",
                 "METASPLOIT_HANDLER_MODE": "True"
             },
-            "path": "zsh",
+            "path": "zsh"
         },
         "msfconsole": {
             "overrideName": true,
@@ -20,7 +20,7 @@
                 "PROJECT_FOLDER": "${workspaceFolder}",
                 "METASPLOIT_CONSOLE_MODE": "True"
             },
-            "path": "zsh",
+            "path": "zsh"
         },
         "netcat-handler": {
             "overrideName": true,
@@ -28,7 +28,7 @@
                 "PROJECT_FOLDER": "${workspaceFolder}",
                 "REVERSE_SHELL_MODE": "True"
             },
-            "path": "zsh",
+            "path": "zsh"
         },
         "web-delivery": {
             "overrideName": true,
@@ -36,15 +36,15 @@
                 "PROJECT_FOLDER": "${workspaceFolder}",
                 "WEB_DELIVERY_MODE": "True"
             },
-            "path": "zsh",
-        },
+            "path": "zsh"
+        }
     },
     "terminal.integrated.profiles.osx": {
         "zsh-shell": {
             "env": {
                 "PROJECT_FOLDER": "${workspaceFolder}"
             },
-            "path": "zsh",
+            "path": "zsh"
         },
         "meterpreter-handler": {
             "overrideName": true,
@@ -52,7 +52,7 @@
                 "PROJECT_FOLDER": "${workspaceFolder}",
                 "METASPLOIT_HANDLER_MODE": "True"
             },
-            "path": "zsh",
+            "path": "zsh"
         },
         "msfconsole": {
             "overrideName": true,
@@ -60,7 +60,7 @@
                 "PROJECT_FOLDER": "${workspaceFolder}",
                 "METASPLOIT_CONSOLE_MODE": "True"
             },
-            "path": "zsh",
+            "path": "zsh"
         },
         "netcat-handler": {
             "overrideName": true,
@@ -68,7 +68,7 @@
                 "PROJECT_FOLDER": "${workspaceFolder}",
                 "REVERSE_SHELL_MODE": "True"
             },
-            "path": "zsh",
+            "path": "zsh"
         },
         "web-delivery": {
             "overrideName": true,
@@ -76,7 +76,7 @@
                 "PROJECT_FOLDER": "${workspaceFolder}",
                 "WEB_DELIVERY_MODE": "True"
             },
-            "path": "zsh",
+            "path": "zsh"
         },
         "kali-orbstack": {
             "overrideName": true,
@@ -93,10 +93,10 @@
     "terminal.integrated.defaultProfile.osx": "zsh-shell",
     "terminal.integrated.defaultProfile.linux": "zsh-shell",
     "terminal.integrated.automationProfile.osx": {
-        "path": "zsh",
+        "path": "zsh"
     },
     "terminal.integrated.automationProfile.linux": {
-        "path": "zsh",
+        "path": "zsh"
     },
     "files.associations": {
         "*.nuclei": "yaml"
@@ -104,7 +104,7 @@
     "yaml.schemas": {
         "https://raw.githubusercontent.com/projectdiscovery/nuclei/main/nuclei-jsonschema.json": [
             "*.nuclei",
-            "*nuclei.yaml",
+            "*nuclei.yaml"
         ]
-    },
+    }
 }

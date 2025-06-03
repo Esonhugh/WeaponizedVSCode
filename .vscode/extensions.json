@@ -6,14 +6,12 @@
         // remote controls
         "ms-vscode-remote.remote-ssh", // remote ssh controller
         "ms-kubernetes-tools.vscode-kubernetes-tools", // Kubernetes Control
-        
         // documents and file read helper
         "foam.foam-vscode", // double linked knowledge base for showing the relationship in targets in actions
         "redhat.vscode-xml", // xml formatter 
         "redhat.vscode-yaml", // yaml formatter
         "euskadi31.json-pretty-printer", // json pretty printer
         "ryu1kn.edit-with-shell", // Edit file or selection with any shell command like sort -rn or uniq
-        
         ////////////////////////////////////////////////////////////////
         // Language supports
         ////////////////////////////////////////////////////////////////
@@ -24,7 +22,7 @@
         "donjayamanne.python-environment-manager", // python environment/packages manager
         // Golang
         "golang.go", // golang support
-
+        "foxundermoon.shell-format", // shell formatter
         ////////////////////////////////////////////////////////////////
         // Protocol supports
         ////////////////////////////////////////////////////////////////
@@ -35,7 +33,6 @@
         // "rpdswtk.vsmqtt", // MQTT support
         // "Dancheg97.grpc-clicker", // gRPC support
         "cweijan.vscode-office", // documents support + http request sender
-
         ////////////////////////////////////////////////////////////////
         // Custom Favorites
         ////////////////////////////////////////////////////////////////
