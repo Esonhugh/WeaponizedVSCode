@@ -131,46 +131,6 @@ if [ -d "$PROJECT_FOLDER/venv" ]; then
     source $PROJECT_FOLDER/venv/bin/activate
 fi
 
-# Auto Create Project Note Structure.
-function create_project_structure () {
-    if [ -f "${PROJECT_FOLDER}/Makefile" ];then # lock the project folder
-        return
-    fi
-    mkdir -p $PROJECT_FOLDER/{hosts,users,services}
-    touch $PROJECT_FOLDER/entrypoint.md
-    touch $PROJECT_FOLDER/Makefile
-
-    echo "Project Folder sturcture created completed!"
-    echo "===================== MANUAL ====================="
-    echo "Note: this function will not run again if Makefile is exists!"
-    echo "if you don't need created folder structure"
-    echo "Clean Project Folder: "
-    echo "   clean_project_structure"
-    echo ""
-    echo "Create Notes:"
-    echo "  User: "
-    echo "    new-user <username>"
-    echo "  Host:"
-    echo "    new-host <hostname>"
-    echo "  Service: "
-    echo "    new-service <servicename>"
-    echo "Delete Notes:"
-    echo "  User: "
-    echo "    del-user <username>"
-    echo "  Host:"
-    echo "    del-host <hostname>"
-    echo "  Service: "
-    echo "    del-service <servicename>"
-    echo "=================================================="
-}
-create_project_structure
-unset -f create_project_structure
-
-function clean_project_structure () {
-    rm -rf $PROJECT_FOLDER/{hosts,users,services} $PROJECT_FOLDER/entrypoint.md # $PROJECT_FOLDER/Makefile
-    echo "Project Folder sturcture cleaned completed!"
-}
-
 # change hist file location in project.
 HISTSIZE=100000000
 SAVEHIST=100000000
