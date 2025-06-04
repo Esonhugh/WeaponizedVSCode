@@ -156,9 +156,23 @@ function auto_invoker() {
 }
 auto_invoker
 
+function current_status () {
+        if [[ -z $CURRENT_HOST ]]; then
+                echo "No current host set."
+        else
+                echo "Current Host: ${CURRENT_HOST} => ${CURRENT_HOSTNAME} (${CURRENT_IP}) ${DC_HOST} ${DC_IP}"
+        fi
+        if [[ -z $CURRENT_USER ]]; then
+                echo "No current user set."
+        else
+                echo "Current User: ${CURRENT_USER} => ${USER}:${PASS} (${CURRENT_NT_HASH})"
+        fi
+}
+current_status
+
 # export KRB5CCNAME=
 
-# FAKETIME settings
+# [[administrator]]ME settings
 # export LD_PRELOAD=/usr/local/lib/libfaketime.so.1
 # export LD_PRELOAD=/usr/lib/aarch64-linux-gnu/faketime/libfaketime.so.1
 # export DYLD_FORCE_FLAT_NAMESPACE=1 DYLD_INSERT_LIBRARIES=/opt/homebrew/Cellar/libfaketime/0.9.10/lib/faketime/libfaketime.1.dylib
