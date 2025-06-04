@@ -18,6 +18,10 @@ foam_template:
   nt_hash: fffffffffffffffffffffffffffffffffff
 ```
 
+```zsh env-invoked
+set_current_user ${FOAM_TITLE}
+```
+
 #### information
 
 1. 

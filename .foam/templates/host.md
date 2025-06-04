@@ -18,6 +18,10 @@ foam_template:
   alias: ["${1:$TM_FILENAME_BASE}"] # if is DC, please set the dc hostname as the first alias, such as ["dc01.example.com"]
 ```
 
+```zsh env-invoked
+set_current_host ${1:$TM_FILENAME_BASE}
+```
+
 #### ports
 
 ##### 80
