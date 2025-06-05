@@ -55,7 +55,7 @@ function update_host_to_env() {
                                 local host_data=$(cut_lines_from_markdown_codes "$file" "yaml host")
 
                                 local hostname=$(echo "$host_data" | yq '.[0].hostname' -r)
-                                local _var=$(echo "$hostname" | sed -e "s/\./_/g" | sed -e "s/-/_/g") # replace . and - with _ to avoid env var issues
+                                local _var=$(echo "$file" | sed -e "s/\./_/g" | sed -e "s/-/_/g" | sed -e 's/$//g' ) # replace . and - with _ to avoid env var issues
 
                                 local ip=$(echo "$host_data" | yq '.[0].ip' -r)
                                 local is_dc=$(echo "$host_data" | yq '.[0].is_dc' -r)
@@ -108,8 +108,10 @@ function update_user_cred_to_env() {
                         local file="${PROJECT_FOLDER}/users/${ur}/${ur}.md"
                         if [ -f "$file" ]; then
                                 local usercred=$(cut_lines_from_markdown_codes "$file" "yaml credentials")
+
                                 local user=$(echo "$usercred" | yq '.[0].user' -r)
-                                local _var=$(echo "$user" | sed -e "s/\./_/g" | sed -e "s/-/_/g") # replace . and - with _ to avoid env var issues
+                                local _var=$(echo "$user" | sed -e "s/\./_/g" | sed -e "s/-/_/g" |sed -e 's/$//g' ) # replace . and - with _ to avoid env var issues
+                                
                                 local pass=$(echo "$usercred" | yq '.[0].password' -r)
                                 local nt_hash=$(echo "$usercred" | yq '.[0].nt_hash' -r)
                                 export USER_${_var}=$user
