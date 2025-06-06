@@ -28,17 +28,21 @@ export DC_HOST=dc01.${DOMAIN} # domain controller host, if not set use dc01.doma
 
 function cut_lines_from_markdown_codes() {
         local file_path=$1
-        if [[ ! -f $file_path ]];then
+        if [[ ! -f $file_path ]]; then
                 echo "no such file!"
                 return 1
         fi
         local identity='```'$2
         local line=$(grep -n '```' "$file_path" | grep "$identity" -A1 | cut -d : -f1)
         local line_no_list=$(echo "$line" | awk 'NR%2==1{T=$0;next}{print T "|" $0}')
-        for line_no in `echo $line_no_list`; do
+        for line_no in $(echo $line_no_list); do
                 local line_no_start=$(echo $line_no | cut -d "|" -f 1)
                 local line_no_end=$(echo $line_no | cut -d "|" -f 2)
                 local line_start=$(($line_no_start + 1))
+                if [[ "$line_no_end" == "$line_start" ]]; then # if the next line is the same as the start line, then it is empty
+                        echo ""
+                        return
+                fi
                 local line_end=$(($line_no_end - 1))
                 if [[ "$line_start" == "1" && "$line_end" == "-1" ]]; then
                         return 1
@@ -55,7 +59,7 @@ function update_host_to_env() {
                                 local host_data=$(cut_lines_from_markdown_codes "$file" "yaml host")
 
                                 local hostname=$(echo "$host_data" | yq '.[0].hostname' -r)
-                                local _var=$(echo "$file" | sed -e "s/\./_/g" | sed -e "s/-/_/g" | sed -e 's/$//g' ) # replace . and - with _ to avoid env var issues
+                                local _var=$(echo "$hostname" | sed -e "s/\./_/g" | sed -e "s/-/_/g" | sed -e 's/$//g') # replace . and - with _ to avoid env var issues
 
                                 local ip=$(echo "$host_data" | yq '.[0].ip' -r)
                                 local is_dc=$(echo "$host_data" | yq '.[0].is_dc' -r)
@@ -110,8 +114,8 @@ function update_user_cred_to_env() {
                                 local usercred=$(cut_lines_from_markdown_codes "$file" "yaml credentials")
 
                                 local user=$(echo "$usercred" | yq '.[0].user' -r)
-                                local _var=$(echo "$user" | sed -e "s/\./_/g" | sed -e "s/-/_/g" |sed -e 's/$//g' ) # replace . and - with _ to avoid env var issues
-                                
+                                local _var=$(echo "$user" | sed -e "s/\./_/g" | sed -e "s/-/_/g" | sed -e 's/$//g') # replace . and - with _ to avoid env var issues
+
                                 local pass=$(echo "$usercred" | yq '.[0].password' -r)
                                 local nt_hash=$(echo "$usercred" | yq '.[0].nt_hash' -r)
                                 export USER_${_var}=$user
@@ -149,7 +153,7 @@ function set_current_user() {
 
 ### auto invoke the commands in markdown files
 function auto_invoker() {
-        for markdown in $(find ${PROJECT_FOLDER}/{users,hosts,services} -iname "*.md" 2>/dev/null ); do
+        for markdown in $(find ${PROJECT_FOLDER}/{users,hosts,services} -iname "*.md" 2>/dev/null); do
                 local auto_invoker=$(cut_lines_from_markdown_codes "$markdown" "zsh env-invoked")
                 if [[ -n "$auto_invoker" ]]; then
                         source <(echo "$auto_invoker") # source it!
@@ -158,7 +162,7 @@ function auto_invoker() {
 }
 auto_invoker
 
-function current_status () {
+function current_status() {
         if [[ -z $CURRENT_HOST ]]; then
                 echo "No current host set."
         else
