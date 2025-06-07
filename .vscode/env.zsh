@@ -15,16 +15,16 @@ export LPORT=6789
 
 ################################################################
 # Target settings
-export RHOST=10.10.X.X
+# export RHOST=10.10.X.X
 # works well on HTB and THM, Put your reverse IP here.
-export DOMAIN=
+# export DOMAIN=
 
-export TARGET=${DOMAIN:-${RHOST}} # target is target hostname if not set use RHOST ip
+# export TARGET=${DOMAIN:-${RHOST}} # target is target hostname if not set use RHOST ip
 
-export IP=${RHOST}            # alias rhost
-export ip=${IP}               # alias as IP
-export DC_IP=${RHOST}         # alias rhost
-export DC_HOST=dc01.${DOMAIN} # domain controller host, if not set use dc01.domain.com
+# export IP=${RHOST}            # alias rhost
+# export ip=${IP}               # alias as IP
+# export DC_IP=${RHOST}         # alias rhost
+# export DC_HOST=dc01.${DOMAIN} # domain controller host, if not set use dc01.domain.com
 
 function cut_lines_from_markdown_codes() {
         local file_path=$1
@@ -63,7 +63,7 @@ function update_host_to_env() {
 
                                 local ip=$(echo "$host_data" | yq '.[0].ip' -r)
                                 local is_dc=$(echo "$host_data" | yq '.[0].is_dc' -r)
-                                if [[ "is_dc" -eq "true" ]]; then
+                                if [[ "$is_dc" == "true" ]]; then
                                         export DC_HOST_${_var}=$(echo "$host_data" | yq '.[0].alias.[0]')
                                         export DC_HOST=$(echo "$host_data" | yq '.[0].alias.[0]') # default dc01.domain.com
                                         export DC_IP_${_var}=$ip
@@ -98,7 +98,7 @@ function set_current_host() {
         export IP=${CURRENT_IP}
         export DOMAIN=${CURRENT_HOSTNAME} # alias for DOMAIN_dc01 or DOMAIN_dc02
         export TARGET=${DOMAIN:-${RHOST}} # target is target hostname if not set use RHOST ip
-        if [[ "$IS_DC_${CURRENT_HOST}" == "true" ]]; then
+        if [[ "$(eval echo '$IS_DC_'$CURRENT_HOST)" == "true" ]]; then
                 export DC_IP=$(eval echo '$DC_IP_'$CURRENT_HOST)     # alias for DC_IP_dc01 or DC_IP_dc02
                 export DC_HOST=$(eval echo '$DC_HOST_'$CURRENT_HOST) # alias for DC_HOST_dc01 or DC_HOST_dc02
         fi
