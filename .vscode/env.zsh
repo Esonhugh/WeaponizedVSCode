@@ -33,7 +33,7 @@ function cut_lines_from_markdown_codes() {
                 return 1
         fi
         local identity='```'$2
-        local line=$(grep -n '```' "$file_path" | grep "$identity" -A1 | cut -d : -f1)
+        local line=$(grep -n -E '^```' "$file_path" | grep "$identity" -A1 | cut -d : -f1)
         local line_no_list=$(echo "$line" | awk 'NR%2==1{T=$0;next}{print T "|" $0}')
         for line_no in $(echo $line_no_list); do
                 local line_no_start=$(echo $line_no | cut -d "|" -f 1)
