@@ -70,6 +70,11 @@ function update_host_to_env() {
                                         export DC_IP=${ip}
                                         export IS_DC_${_var}="true"
                                 fi
+                                local count=1
+                                for alias in $(echo "$host_data"|yq '.[0].alias.[]' -r ); do
+                                        export HOST_ALIAS_${_var}_${count}=$alias # replace . and - with _ to avoid env var issues
+                                        count=$((count + 1))
+                                done
                                 export HOST_${_var}=$hostname
                                 export IP_${_var}=$ip
                         fi
@@ -425,4 +430,14 @@ function ntlm() {
         else
                 echo "usage: $0 password"
         fi
+}
+
+function dump_hosts() {
+        for host in $(env|grep -E '^HOST_'|grep -v 'HOST_ALIAS'); do
+                local _var=$(echo $host|sed -e 's/HOST_//g' | cut -d '=' -f1) # replace _ with - to get the original hostname
+                local _ip=$(eval echo '$IP_'$_var)
+                local _hostname=$(eval echo '$HOST_'$_var)
+                local aliases=$(env | grep -E "^HOST_ALIAS_${_var}_" |cut -d '=' -f2 | tr '\n' ' ')
+                echo "${_ip} ${_hostname} ${aliases}"
+        done
 }

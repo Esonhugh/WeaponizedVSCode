@@ -57,7 +57,7 @@
             "command": [
                 "source ${workspaceFolder}/.vscode/.zshrc;",
                 "echo '================ ADDING THIS LINE IN FILE ========';",
-                "echo ${RHOST}  ${DOMAIN};",
+                "dump_hosts;",
                 "echo '================================================';",
                 "sudo",
                 "vim",
