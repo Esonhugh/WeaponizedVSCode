@@ -59,7 +59,7 @@ function update_host_to_env() {
                                 local host_data=$(cut_lines_from_markdown_codes "$file" "yaml host")
 
                                 local hostname=$(echo "$host_data" | yq '.[0].hostname' -r)
-                                local _var=$(echo "$hostname" | sed -e "s/\./_/g" | sed -e "s/-/_/g" | sed -e 's/$//g') # replace . and - with _ to avoid env var issues
+                                local _var=$(echo "$hostname" | sed -e "s/\./_/g" | sed -e "s/-/_/g" | sed -e 's/\$/_/g') # replace . and - with _ to avoid env var issues
 
                                 local ip=$(echo "$host_data" | yq '.[0].ip' -r)
                                 local is_dc=$(echo "$host_data" | yq '.[0].is_dc' -r)
@@ -94,7 +94,7 @@ function set_current_host() {
                 return 1
         fi
 
-        export CURRENT_HOST=$(echo "$1" | sed -e "s/\./_/g" | sed -e "s/-/_/g")
+        export CURRENT_HOST=$(echo "$1" | sed -e "s/\./_/g" | sed -e "s/-/_/g" | sed -e 's/\$/_/g') # replace . and - with _ to avoid env var issues
         export CURRENT_IP=$(eval echo '$IP_'$CURRENT_HOST)         # alias for IP_dc01 or IP_dc02
         export CURRENT_HOSTNAME=$(eval echo '$HOST_'$CURRENT_HOST) # alias for HOST_dc01 or HOST_dc02
 
@@ -119,8 +119,7 @@ function update_user_cred_to_env() {
                                 local usercred=$(cut_lines_from_markdown_codes "$file" "yaml credentials")
 
                                 local user=$(echo "$usercred" | yq '.[0].user' -r)
-                                local _var=$(echo "$user" | sed -e "s/\./_/g" | sed -e "s/-/_/g" | sed -e 's/$//g') # replace . and - with _ to avoid env var issues
-
+                                local _var=$(echo "$user" | sed -e "s/\./_/g" | sed -e "s/-/_/g" | sed -e 's/\$/_/g') # replace . and - with _ to avoid env var issues
                                 local pass=$(echo "$usercred" | yq '.[0].password' -r)
                                 local nt_hash=$(echo "$usercred" | yq '.[0].nt_hash' -r)
                                 export USER_${_var}=$user
@@ -142,7 +141,7 @@ function set_current_user() {
                 env | egrep '^USER_' | sed -e 's/USER_//g' | awk '{printf "- " $1 "\n"}' | sed -e 's/=/: /g' | sort
                 return 1
         fi
-        export CURRENT=$(echo "$1" | sed -e "s/\./_/g" | sed -e "s/-/_/g")
+        export CURRENT=$(echo "$1" | sed -e "s/\./_/g" | sed -e "s/-/_/g" | sed -e 's/\$/_/g') # replace . and - with _ to avoid env var issues
         export CURRENT_USER=$(eval echo '$USER_'$CURRENT)       # alias for USER_A or USER_B
         export CURRENT_PASS=$(eval echo '$PASS_'$CURRENT)       # alias for PASS_A or PASS_B
         export CURRENT_NT_HASH=$(eval echo '$NT_HASH_'$CURRENT) # alias for NT_HASH_A or NT_HASH_B
@@ -154,7 +153,7 @@ function set_current_user() {
         export PASSWORD=${CURRENT_PASS}   # alias for PASS
         export NT_HASH=${CURRENT_NT_HASH} # alias for NT_HASH_A
 }
-# set_current_user john
+# set_current_user 
 
 ### auto invoke the commands in markdown files
 function auto_invoker() {
