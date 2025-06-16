@@ -64,3 +64,5 @@ function main() {
     echo "Weaponized VSCode installation completed."
 
 }
+
+main "$@"
