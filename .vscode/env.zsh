@@ -457,4 +457,4 @@ function dump_users() {
                 fi
                 echo "${_user}:${_pass}(${_nt_hash})"
         done
-}hje
+}
