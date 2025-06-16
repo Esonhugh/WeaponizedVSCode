@@ -426,6 +426,11 @@ function wfuzz_vhost_https() {
 function ntlm() {
         if [ -n "$1" ]; then
                 python3 -c 'import hashlib,binascii;hash = hashlib.new("md4", "'$1'".encode("utf-16le")).digest();print(binascii.hexlify(hash).decode("utf-8"))'
+                if [[ $? -ne 0 ]]; then
+                        echo "Error: ntlm hash generation failed. "
+                        echo "if not support md4 hash, please check your openssl config."
+                        return 1
+                fi
         else
                 echo "usage: $0 password"
         fi
@@ -440,3 +445,16 @@ function dump_hosts() {
                 echo "${_ip} ${_hostname} ${aliases}"
         done
 }
+
+function dump_users() {
+        for user in $(env|grep -E '^USER_'|grep -v 'USER_ALIAS'); do
+                local _var=$(echo $user|sed -e 's/USER_//g' | cut -d '=' -f1) # replace _ with - to get the original username
+                local _user=$(eval echo '$USER_'$_var)
+                local _pass=$(eval echo '$PASS_'$_var)
+                local _nt_hash=$(eval echo '$NT_HASH_'$_var)
+                if [[ "$_nt_hash" == "fffffffffffffffffffffffffffffffffff" ]]; then
+                        _nt_hash=$(ntlm "${_pass}")
+                fi
+                echo "${_user}:${_pass}(${_nt_hash})"
+        done
+}hje
