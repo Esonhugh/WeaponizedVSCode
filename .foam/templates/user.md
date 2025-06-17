@@ -19,7 +19,7 @@ foam_template:
 ```
 
 ```zsh env-invoked
-set_current_user ${FOAM_TITLE}
+set_current_user ${FOAM_TITLE/@(\S*)$//}
 ```
 
 #### information
