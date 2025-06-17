@@ -1,6 +1,6 @@
 ---
 title: ${1:$TM_FILENAME_BASE}
-tags: service
+type: service
 foam_template:
   filepath: 'services/$FOAM_TITLE/$FOAM_TITLE.md'
   name: 'service'

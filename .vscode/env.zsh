@@ -192,7 +192,7 @@ function current_status() {
                 echo "Current User: ${CURRENT_USER} => ${USER}:${PASS} (${CURRENT_NT_HASH})"
         fi
 }
-if [[ ! -z "$SHOW_CURRENT" ]]; then
+if [[ ! -z "$SHOW_CURRENT_STATUS" ]]; then
         current_status
 fi
 

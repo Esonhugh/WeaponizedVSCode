@@ -1,6 +1,6 @@
 ---
 title: ${1:$TM_FILENAME_BASE}
-tags: host
+type: host
 foam_template:
   filepath: 'hosts/$FOAM_TITLE/$FOAM_TITLE.md'
   name: 'host'
