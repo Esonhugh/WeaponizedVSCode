@@ -59,9 +59,9 @@
                 "echo '================ ADDING THIS LINE IN FILE ========';",
                 "dump_hosts;",
                 "echo '================================================';",
-                "sudo",
-                "vim",
-                "/etc/hosts"
+                "echo 'Press any key to continue';",
+                "read;",
+                "sudo vim /etc/hosts"
             ],
             "isBackground": false,
             "problemMatcher": []

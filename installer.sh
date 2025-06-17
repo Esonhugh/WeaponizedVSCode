@@ -44,8 +44,9 @@ function main() {
         echo "Weapon already installed."
         exit 0
     fi
-
     export LOCATION="$WEAPON_LOCATION"
+    echo "Weapon will be installed to $LOCATION, Press any key to continue or Ctrl+C to cancel..."
+    read
     echo "Installing Weapon..."
     mkdir -p $LOCATION && echo "Weapon directory created at $LOCATION."
     cp -f ./createhackenv.sh $LOCATION && echo "createhackenv.sh copied to $LOCATION."
