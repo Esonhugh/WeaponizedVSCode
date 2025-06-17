@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "options": {
         "env": {
-            "PROJECT_FOLDER": "${workspaceFolder}",
+            "PROJECT_FOLDER": "${workspaceFolder}"
         }
     },
     "tasks": [
@@ -79,7 +79,7 @@
             "detail": "OSCP exam style note template task, you can use this to create a note file for the exam or other lab.",
             "command": [
                 "echo ${input:note-template-type}|base64 -d > ${input:note-filename}",
-                "\n# fileSource: https://github.com/0prrr/OSCP-Note-Template",
+                "\n# fileSource: https://github.com/0prrr/OSCP-Note-Template"
             ],
             "problemMatcher": []
         },
@@ -137,11 +137,11 @@
             "command": [
                 "source ${workspaceFolder}/.vscode/.zshrc; ",
                 "echo 'Running command with selection:';",
-                "echo '${selectedText}';",
                 "echo 'Press any key to continue or Ctrl-C to cancal';",
                 "read;",
                 "${selectedText}"
             ],
+            "problemMatcher": []
         }
     ],
     "inputs": [
@@ -163,7 +163,7 @@
                 "windows/x64/meterpreter/reverse_http",
                 "windows/meterpreter/reverse_https",
                 "windows/x64/meterpreter/reverse_https",
-                "java/meterpreter/reverse_tcp",
+                "java/meterpreter/reverse_tcp"
             ]
         },
         {
@@ -196,20 +196,20 @@
                 "vba",
                 "vba-exe",
                 "vba-psh",
-                "vbs",
+                "vbs"
             ]
         },
         {
             "id": "msfvenom-lhost",
             "type": "promptString",
             "description": "Enter the LHOST, default will read the env.zsh configurated variable $LHOST",
-            "default": "$LHOST",
+            "default": "$LHOST"
         },
         {
             "id": "msfvenom-lport",
             "type": "promptString",
             "description": "Enter the LPORT",
-            "default": "6789",
+            "default": "6789"
         },
         {
             "id": "msfvenom-payload-advanced-options",
@@ -221,14 +221,14 @@
                 "PrependMigrate=true PrependMigrateProc=explorer.exe",
                 "PrependFork=true",
                 "PrependSetuid=true",
-                "PrependSetuid=true PrependFork=true",
+                "PrependSetuid=true PrependFork=true"
             ]
         },
         {
             "id": "msfvenom-output",
             "type": "promptString",
             "description": "Enter the output filename. if you put /dev/stdout here, the output will be printed to the terminal",
-            "default": "${workspaceFolder}/trojan",
+            "default": "${workspaceFolder}/trojan"
         },
         // note-templates
         {
@@ -244,7 +244,7 @@
             "id": "note-filename",
             "type": "promptString",
             "description": "Enter the note filename",
-            "default": "${workspaceFolder}/note.md",
+            "default": "${workspaceFolder}/note.md"
         },
         // cyberchef url
         {
@@ -260,12 +260,12 @@
             "id": "kubeconfig-gen-api-server",
             "type": "promptString",
             "description": "kubernetes api server",
-            "default": "https://server-ip:6443",
+            "default": "https://server-ip:6443"
         },
         {
             "id": "kubeconfig-gen-sa-token",
             "type": "promptString",
-            "description": "kubernetes service account token under /var/run/secrets/kubernetes.io/serviceaccount/token",
+            "description": "kubernetes service account token under /var/run/secrets/kubernetes.io/serviceaccount/token"
         },
         {
             "id": "kubeconfig-gen-namespace",
@@ -284,7 +284,7 @@
                 "python3.10",
                 "python3.11",
                 "python3.12",
-                "python",
+                "python"
             ],
             "default": "python"
         },
@@ -299,7 +299,7 @@
                 "$HASHCAT_MODE_TOGGLE_CASE",
                 "$HASHCAT_MODE_MASK_BRUTE_FORCE",
                 "$HASHCAT_MODE_WORDLIST_MASK",
-                "$HASHCAT_MODE_MASK_WORDLIST",
+                "$HASHCAT_MODE_MASK_WORDLIST"
             ],
             "default": "$HASHCAT_MODE_WORDLIST"
         },
@@ -310,7 +310,7 @@
             "options": [
                 "$HASHCAT_DEVICE_CPU",
                 "$HASHCAT_DEVICE_GPU",
-                "$HASHCAT_DEVICE_FPGA",
+                "$HASHCAT_DEVICE_FPGA"
             ],
             "default": "$HASHCAT_DEVICE_GPU"
         },
@@ -339,9 +339,9 @@
                 "$HASH_KRB5_TGS_17",
                 "$HASH_KRB5_TGS_18",
                 "$HASH_JWT",
-                "$HASH_KRB5_AS_REP_23",
+                "$HASH_KRB5_AS_REP_23"
             ],
-            "default": "$HASH_MD5",
+            "default": "$HASH_MD5"
         },
         {
             "id": "hashcat-hashfile",
