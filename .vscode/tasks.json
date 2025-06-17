@@ -129,6 +129,19 @@
                 "-- ${input:nmap-args}"
             ],
             "problemMatcher": []
+        },
+        {
+            "label": "run command with selection",
+            "type": "shell",
+            "detail": "Run command with selection in the terminal",
+            "command": [
+                "source ${workspaceFolder}/.vscode/.zshrc; ",
+                "echo 'Running command with selection:';",
+                "echo '${selectedText}';",
+                "echo 'Press any key to continue or Ctrl-C to cancal';",
+                "read;",
+                "${selectedText}"
+            ],
         }
     ],
     "inputs": [
