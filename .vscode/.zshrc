@@ -52,6 +52,7 @@ if [ "$WEB_DELIVERY_MODE" ]; then
     # ProjectDiscovery/SimpleHTTPServer
     simplehttpserver -listen 0.0.0.0:$LISTEN_ON -verbose -upload
     # python3 -m http.server $LISTEN_ON
+    read
     exit 0
 fi
 
@@ -63,12 +64,14 @@ export METASPLOIT_INIT_COMMAND="${METASPLOIT_INIT_COMMAND} setg VHOST $DOMAIN;"
 if [ "$METASPLOIT_HANDLER_MODE" ]; then
     msfconsole -r "$PROJECT_FOLDER/.vscode/metasploit_handler.rc" \
         -x "${METASPLOIT_INIT_COMMAND}"
+    read
     exit 0
 fi
 
 if [ "$METASPLOIT_CONSOLE_MODE" ]; then
     msfconsole -r "$PROJECT_FOLDER/.vscode/msfconsole.rc" \
         -x "${METASPLOIT_INIT_COMMAND}"
+    read
     exit 0
 fi
 
@@ -81,7 +84,8 @@ if [ "$REVERSE_SHELL_MODE" ]; then
     echo "Advanced: "
     echo "  https://rev.eson.ninja/?ip=${LHOST}&port=${LPORT}"
     echo ""
-    rlwrap -I -cAr nc -lvvp ${LPORT}
+    rlwrap -I -cAr netcat -lvvp ${LPORT}
+    read;
     exit 0
 fi
 

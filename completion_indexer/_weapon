@@ -1,7 +1,16 @@
 update_user_cred_to_env
 set_current_user
+dump_users
 update_host_to_env
 set_current_host
+dump_hosts
+dump_hosts | sudo tee -a /etc/hosts
+current_status
+proxys 
+proxys on
+proxys off
+url encode "content=="
+url decode "content%3D%3D"
 wfuzz_vhost_http $DOMAIN $TOP_DNS
 wfuzz_vhost_https $DOMAIN $TOP_DNS
 venv-init
@@ -15,3 +24,4 @@ cp xxx $PROJECT_WEB_DELIVERY/
 cat file |url encode
 cat file |url decode
 ntlm $PASS
+differ file1 file2

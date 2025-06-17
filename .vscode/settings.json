@@ -2,7 +2,8 @@
     "terminal.integrated.profiles.linux": {
         "zsh-shell": {
             "env": {
-                "PROJECT_FOLDER": "${workspaceFolder}"
+                "PROJECT_FOLDER": "${workspaceFolder}",
+                "SHOW_CURRENT_STATUS": "True"
             },
             "path": "zsh"
         },
@@ -42,7 +43,8 @@
     "terminal.integrated.profiles.osx": {
         "zsh-shell": {
             "env": {
-                "PROJECT_FOLDER": "${workspaceFolder}"
+                "PROJECT_FOLDER": "${workspaceFolder}",
+                "SHOW_CURRENT_STATUS": "True"
             },
             "path": "zsh"
         },

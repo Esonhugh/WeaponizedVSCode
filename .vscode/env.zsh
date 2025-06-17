@@ -2,13 +2,14 @@
 ################################################################
 # Project settings for Zsh Prompt
 # export HOST="[HackTheBox - Machine Name]"
+unset USER_ZDOTDIR
 
 ################################################################
 # Self condition settings
 # use this if you are using a VPS or cloud server it can automatically get your public IP.
 # export LHOST=`curl ifconfig.me`
 # export LHOST=`curl ip.me`
-export LHOST=$(ifconfig | grep '10\.10\.' | cut -d ' ' -f2)
+export LHOST=${$(ifconfig | grep '10\.10\.' | cut -d ' ' -f2):-10.0.0.1}
 export ATTACKER_IP=$LHOST
 
 export LPORT=6789
@@ -132,7 +133,7 @@ function update_user_cred_to_env() {
                                 local pass=$(echo "$usercred" | yq '.[0].password' -r)
                                 local nt_hash=$(echo "$usercred" | yq '.[0].nt_hash' -r)
                                 local login=$(echo "$usercred" | yq '.[0].login' -r)
-                                local LOGIN_${_var}=$login
+                                export LOGIN_${_var}=$login
                                 export USER_${_var}=$user
                                 export PASS_${_var}=$pass
                                 export NT_HASH_${_var}=$nt_hash
@@ -191,62 +192,18 @@ function current_status() {
                 echo "Current User: ${CURRENT_USER} => ${USER}:${PASS} (${CURRENT_NT_HASH})"
         fi
 }
-current_status
+if [[ ! -z "$SHOW_CURRENT" ]]; then
+        current_status
+fi
 
 # export KRB5CCNAME=
 
-# [[administrator]]ME settings
 # export LD_PRELOAD=/usr/local/lib/libfaketime.so.1
 # export LD_PRELOAD=/usr/lib/aarch64-linux-gnu/faketime/libfaketime.so.1
 # export DYLD_FORCE_FLAT_NAMESPACE=1 DYLD_INSERT_LIBRARIES=/opt/homebrew/Cellar/libfaketime/0.9.10/lib/faketime/libfaketime.1.dylib
 # export FAKETIME="-8h"
 
 export METASPLOIT_INIT_COMMAND=""
-
-################################################################
-# Advanced settings
-
-# AWS settings
-# export AWS_DEFAULT_REGION=us-west-2
-# export AWS_ACCESS_KEY_ID=AKIA...
-# export AWS_SECRET_ACCESS_KEY=...
-# export AWS_SESSION_TOKEN=...
-# export AWS_ENDPOINT_URL=
-
-# VAULT settings
-# export VAULT_ADDR=
-# export VAULT_TOKEN=...
-
-# MINIO settings
-# export MINIO_ROOT_USER=... # access key
-# export MINIO_ROOT_PASSWORD=... # secret key
-# export MINIO_ENDPOINT=
-# export MC_HOST_myminio=http://${MINIO_ROOT_USER}:${MINIO_ROOT_PASSWORD}@${MINIO_ENDPOINT}
-
-# Kubernetes settings
-# export KUBECONFIG=${PROJECT_FOLDER}/kubeconfig
-
-# Terraform settings
-export TF_LOG=trace
-export TF_LOG_PATH=$PROJECT_FOLDER/terraform.log
-# export TF_VAR_aws_access_key=...
-# export TF_VAR_aws_secret_key=...
-# export TF_VAR_aws_session_token=...
-# export TF_VAR_aws_region=us-west-2
-
-# OpenStack settings
-# export OS_USERNAME=username
-# export OS_PASSWORD=password
-# export OS_TENANT_NAME=projectName
-# export OS_AUTH_URL=https://identityHost:portNumber/v2
-# The following lines can be omitted
-# export OS_TENANT_ID=tenantIDString
-# export OS_REGION_NAME=regionName
-# export OS_CACERT=/path/to/cacertFile
-# export OS_TOKEN=tokenString
-
-################################################################
-# More default settings
 
 export PROJECT_WEB_DELIVERY=$PROJECT_FOLDER/.web-delivery # web-delivery is a folder in PROJECT_FOLDER
 unset SSS_LOADED                                          # make sure sss init shell is not set
@@ -262,7 +219,7 @@ unset https_proxy http_proxy all_proxy
 # Hashcat settings
 
 # useful settings like ROCKYOU, SECLIST, etc.
-# export WORDLIST=/usr/share/wordlists
+export WORDLIST=${WORDLIST:-/usr/share/wordlists}
 export ROCKYOU=${WORDLIST}/rockyou.txt
 export SECLIST=${WORDLIST}/seclists/
 export TOP_DNS=${SECLIST}/Discovery/DNS/bitquark-subdomains-top100000.txt
@@ -460,14 +417,60 @@ function dump_hosts() {
 }
 
 function dump_users() {
+        echo "dumping impacket format for users:"
         for user in $(env|grep -E '^USER_'|grep -v 'USER_ALIAS'); do
                 local _var=$(echo $user|sed -e 's/USER_//g' | cut -d '=' -f1) # replace _ with - to get the original username
                 local _user=$(eval echo '$USER_'$_var)
                 local _pass=$(eval echo '$PASS_'$_var)
                 local _nt_hash=$(eval echo '$NT_HASH_'$_var)
-                if [[ "$_nt_hash" == "fffffffffffffffffffffffffffffffffff" ]]; then
-                        _nt_hash=$(ntlm "${_pass}")
+                local _login=$(eval echo '$LOGIN_'$_var)
+                if [[ "$_login" == "$_user" ]]; then
+                        _login=$DOMAIN
                 fi
-                echo "${_user}:${_pass}(${_nt_hash})"
+                if [[ "$_nt_hash" == "fffffffffffffffffffffffffffffffffff" ]]; then
+                        echo "\"${_login}\"/\"${_user}\":'${_pass}' (No NT Hash)"
+                else
+                        echo "\"${_login}\"/\"${_user}\" (${_nt_hash})"
+                fi
         done
+        echo ""
+        echo "# dumping environment variables for users:"
+        for user in $(env|grep -E '^USER_'|grep -v 'USER_ALIAS'); do
+                local _var=$(echo $user|sed -e 's/USER_//g' | cut -d '=' -f1)
+                local _user=$(eval echo '$USER_'$_var)
+                echo "# user: $_user"
+                local _pass=$(eval echo '$PASS_'$_var)
+                local _nt_hash=$(eval echo '$NT_HASH_'$_var)
+                local _login=$(eval echo '$LOGIN_'$_var)
+                echo "export USER_${_var}=\"${_user}\""
+                echo "export PASS_${_var}=\"${_pass}\""
+                echo "export NT_HASH_${_var}=\"${_nt_hash}\""
+                echo "export LOGIN_${_var}=\"${_login}\""
+        done
+        echo ""
+        echo "# dumping current user environment variables:"
+        echo "export USER=${CURRENT_USER}"
+        echo "export USERNAME=${CURRENT_PASS}"
+        echo "export PASS=${CURRENT_PASS}"
+        echo "export PASSWORD=${CURRENT_PASS}"
+        echo "export NT_HASH=${CURRENT_NT_HASH}"
+        echo "export LOGIN=${CURRENT_LOGIN}"
+        echo ""
+        echo "export CURRENT_USER=${CURRENT_USER}"
+        echo "export CURRENT_PASS=${CURRENT_PASS}"
+        echo "export CURRENT_NT_HASH=${CURRENT_NT_HASH}"
+        echo "export CURRENT_LOGIN=${CURRENT_LOGIN}"
+        echo "export CURRENT=${CURRENT}"
+}
+
+function differ() {
+        if [[ -z $1 || -z $2 ]]; then
+                echo "Usage: differ <file1> <file2>"
+                return 1
+        fi
+        if [[ ! -f $1 || ! -f $2 ]]; then
+                echo "File not found!"
+                return 1
+        fi
+        code -d "$1" "$2"
 }

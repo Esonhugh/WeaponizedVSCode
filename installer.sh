@@ -1,17 +1,17 @@
 #!/bin/zsh
 
 function check_command() {
-    local prompt=$2
     command -v "$1" >/dev/null 2>&1 && {
     } || {
-        echo "$1 is not installed."
-        echo "Install it for better experience."
-        echo "$prompt"
+        echo "detect $1 is not installed."
+        echo "$2"
         return 2
     }
 }
 
 function check_requirements() {
+    check_command "awk" "awk is required for parsing the output of commands, please install it." || return 2
+    check_command "sed" "sed is required for parsing the output of commands, please install it." || return 2
     check_command "zsh" "zsh is core to WeaponizedVSCode integrated shell." || return 2
     check_command "vim" "vim is required for task edit /etc/hosts, please install it or change it." || return 2
     check_command "nc" "nc is core for netcat shell session handling or u can't use it, please install it." || return 2
@@ -22,6 +22,7 @@ function check_requirements() {
     check_command "simplehttpserver" "simplehttpserver is cool for serving files with upload feature and dump http requests, install it with https://github.com/projectdiscovery/simplehttpserver" || return 2
     check_command "rustscan" "rustscan is required for the auto scanning task in vscode, fast and reliable, install it with https://github.com/bee-san/RustScan" || return 2
     check_command "wfuzz" "wfuzz is required for command wfuzz_vhost_https and wfuzz_vhost_http, to fuzz the subdomain and vhost. install it or u can't use that" || return 2
+    check_command "hashcat" "hashcat is required for the hashcat cracking task in vscode, install it with 'apt install hashcat' or 'brew install hashcat'." || return 2
     check_command "python3" "Python3 is required for the Python scripts in WeaponizedVSCode, please install it." || return 2
     check_command "uv" "uv is optional but recommended for better performance, install it with 'pip install uv'. Their script is useful"
 }
@@ -45,7 +46,7 @@ function main() {
         exit 0
     fi
     export LOCATION="$WEAPON_LOCATION"
-    echo "Weapon will be installed to $LOCATION, Press any key to continue or Ctrl+C to cancel..."
+    echo "Weapon will be installed to $LOCATION, Press Enter key to continue or Ctrl+C to cancel..."
     read
     echo "Installing Weapon..."
     mkdir -p $LOCATION && echo "Weapon directory created at $LOCATION."
