@@ -12,6 +12,8 @@ function check_command() {
 function check_requirements() {
     check_command "awk" "awk is required for parsing the output of commands, please install it." || return 2
     check_command "sed" "sed is required for parsing the output of commands, please install it." || return 2
+    check_command "grep" "grep is required for parsing the output of commands, please install it." || return 2
+    check_command "tr" "tr is required for parsing the output of commands, please install it." || return 2
     check_command "zsh" "zsh is core to WeaponizedVSCode integrated shell." || return 2
     check_command "vim" "vim is required for task edit /etc/hosts, please install it or change it." || return 2
     check_command "nc" "nc is core for netcat shell session handling or u can't use it, please install it." || return 2
@@ -52,7 +54,7 @@ function main() {
     mkdir -p $LOCATION && echo "Weapon directory created at $LOCATION."
     cp -f ./createhackenv.sh $LOCATION && echo "createhackenv.sh copied to $LOCATION."
     echo "" >>$LOCATION/createhackenv.sh
-    echo "export WEAPON_LOCATION=$LOCATION" >>$LOCATION/createhackenv.sh # overwrite if exists
+    sed -i "s/__REPLACE__/$LOCATION/g" $LOCATION/createhackenv.sh && echo "createhackenv.sh updated with WEAPON_LOCATION."
     cp -f ./zsh_history $LOCATION && echo "zsh_history copied to $LOCATION."
 
     grep -zq "source $LOCATION/createhackenv.sh" ~/.zshrc
@@ -64,7 +66,6 @@ function main() {
     fi
 
     echo "Weaponized VSCode installation completed."
-
 }
 
 main "$@"
