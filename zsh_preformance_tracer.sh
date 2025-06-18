@@ -1,3 +1,5 @@
+export WEAPON_TRACE_LOG=/tmp/weapon_trace_log.$$
+
 zsh_trace_start() {
     echo "starting zsh tracing"
     # set the trace prompt to include seconds, nanoseconds, script name and line number
@@ -11,7 +13,7 @@ zsh_trace_start() {
     fi
     # save file stderr to file descriptor 3 and redirect stderr (including trace 
     # output) to a file with the script's PID as an extension
-    exec 3>&2 2>/tmp/startlog.$$
+    exec 3>&2 2>$WEAPON_TRACE_LOG
     # set options to turn on tracing and expansion of commands contained in the prompt
     setopt xtrace prompt_subst
     trap 'setopt xtrace' EXIT
@@ -22,7 +24,7 @@ zsh_trace_end() {
     unsetopt xtrace
     # restore stderr to the value saved in FD 3
     exec 2>&3 3>&-
-    echo "zsh tracing done. See /tmp/startlog.$$"
+    echo "zsh tracing done. See $WEAPON_TRACE_LOG for details."
     trap 'unsetopt xtrace' EXIT
 }
 

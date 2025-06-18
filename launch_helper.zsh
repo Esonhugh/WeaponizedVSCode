@@ -1,6 +1,8 @@
+export WEAPON_LOCATION=__REPLACE__
+
 weapon_vscode_launch_helper () {
-    if [ -f ~/.local/weapon/zsh_history ]; then
-        export HIST_COMMAND_INDEXER=~/.local/weapon/zsh_history
+    if [ -f ${WEAPON_LOCATION}/zsh_history ]; then
+        export HIST_COMMAND_INDEXER=${WEAPON_LOCATION}/zsh_history
     fi
     if [ -n "$PROJECT_FOLDER" ]; then
         if [ -f "$PROJECT_FOLDER/.vscode/.zshrc" ]; then
