@@ -101,7 +101,7 @@ cat<<EOF >> ~/.zshrc
 # ${INSTALL_IDENTIFIER}
 [[ -f $LOCATION/zsh_preformance_tracer.sh ]] && source $LOCATION/zsh_preformance_tracer.sh && zsh_trace_start
 [[ -f $LOCATION/createhackenv.sh ]] && source $LOCATION/createhackenv.sh
-[[ -f $LOCATION/zsh_performance_tracer ]] && zsh_trace_end
+[[ -f $LOCATION/zsh_preformance_tracer.sh ]] && zsh_trace_end
 EOF
         else
 cat<<EOF >> ~/.zshrc
