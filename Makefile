@@ -1,8 +1,10 @@
-
-install:
-	@echo "Installing the project..."
+build:
+	@echo "Building the project..."
 	uv run ./craft.py
 	uv run ./completion_creator.py
+	@echo "Build complete."
+
+install: build
 	@echo "Preparing the environment..."
 	WEAPON_LOCATION=$(shell pwd)/weapon_test ./installer.sh
 	@echo "Installation complete."
