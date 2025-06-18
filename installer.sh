@@ -36,8 +36,8 @@ function main() {
         echo "If you want to force install without checking requirements, run the script with FORCE_INSTALL=true ./installer.sh"
         exit 1
     fi
-
-    if [[ -z "$WEAPON_LOCATON" ]]; then
+    
+    if [[ -z "$WEAPON_LOCATION" ]]; then
         echo "WEAPON_LOCATION is not set. set to default ~/.local/weapon"
         export WEAPON_LOCATION=~/.local/weapon
         echo "You can set it by exporting WEAPON_LOCATION=your_desired_path before running this script."
@@ -52,9 +52,7 @@ function main() {
     read
     echo "Installing Weapon..."
     mkdir -p $LOCATION && echo "Weapon directory created at $LOCATION."
-    cp -f ./createhackenv.sh $LOCATION && echo "createhackenv.sh copied to $LOCATION."
-    echo "" >>$LOCATION/createhackenv.sh
-    sed -i "s/__REPLACE__/$LOCATION/g" $LOCATION/createhackenv.sh && echo "createhackenv.sh updated with WEAPON_LOCATION."
+    cat ./createhackenv.sh |sed -e "s#__REPLACE__#$LOCATION#g" > $LOCATION/createhackenv.sh && echo "createhackenv.sh copied to $LOCATION."
     cp -f ./zsh_history $LOCATION && echo "zsh_history copied to $LOCATION."
 
     grep -zq "source $LOCATION/createhackenv.sh" ~/.zshrc
