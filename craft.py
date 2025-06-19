@@ -22,6 +22,8 @@ def create_value_map(filepath:str):
     variable_file_content_map = {}
     files = os.listdir(filepath)
     for file in files:
+        if file in [".command_history"]:
+            continue
         curr_file = os.path.join(filepath, file)
         if os.path.isfile(curr_file):
             variable_file_content_map[curr_file] = read_file_return_base64ed_content(curr_file)
