@@ -73,7 +73,6 @@ function main() {
             echo "If you want to reinstall Weapon, please remove the existing directory at $WEAPON_LOCATION or use --force-install option."
             exit 0
         fi
-        exit 0
     fi
 
     export LOCATION="$WEAPON_LOCATION"
