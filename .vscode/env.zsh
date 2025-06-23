@@ -58,13 +58,13 @@ function safe_name() {
                 echo "Usage: safe_name <name>"
                 return 1
         fi
-        echo "$name" | tr '@$.-' '____' # replace . and - with _ to avoid env var issues
+        echo "$name" | tr '@$.- ' '_____' # replace . and - with _ to avoid env var issues
 }
 
 function update_host_to_env() {
         if [[ -x "$(command -v yq)" && -d "${PROJECT_FOLDER}/hosts" ]]; then
-                for ur in $(ls -1 ${PROJECT_FOLDER}/hosts); do
-                        local file="${PROJECT_FOLDER}/hosts/${ur}/${ur}.md"
+                for ur in ${(@f)"$(ls -1 ${PROJECT_FOLDER}/hosts)"}; do
+                        local file="'${PROJECT_FOLDER}/hosts/${ur}/${ur}.md'"
                         if [ -f "$file" ]; then
                                 local host_data=$(cut_lines_from_markdown_codes "$file" "yaml host")
 
@@ -123,8 +123,8 @@ function set_current_host() {
 # auto set the data in the
 function update_user_cred_to_env() {
         if [[ -x "$(command -v yq)" && -d "${PROJECT_FOLDER}/users" ]]; then
-                for ur in $(ls -1 ${PROJECT_FOLDER}/users); do
-                        local file="${PROJECT_FOLDER}/users/${ur}/${ur}.md"
+                for ur in ${(@f)"$(ls -1 ${PROJECT_FOLDER}/users)"}; do
+                        local file="'${PROJECT_FOLDER}/users/${ur}/${ur}.md'"
                         if [ -f "$file" ]; then
                                 local usercred=$(cut_lines_from_markdown_codes "$file" "yaml credentials")
 
@@ -171,7 +171,7 @@ function set_current_user() {
 
 ### auto invoke the commands in markdown files
 function auto_invoker() {
-        for markdown in $(find ${PROJECT_FOLDER}/{users,hosts,services} -iname "*.md" 2>/dev/null); do
+        for markdown in ${(@f)"$(find ${PROJECT_FOLDER}/{users,hosts,services} -iname "*.md" 2>/dev/null)"}; do # list all markdown files in users, hosts, services
                 local auto_invoker=$(cut_lines_from_markdown_codes "$markdown" "zsh env-invoked")
                 if [[ -n "$auto_invoker" ]]; then
                         source <(echo "$auto_invoker") # source it!
