@@ -64,7 +64,7 @@ function safe_name() {
 function update_host_to_env() {
         if [[ -x "$(command -v yq)" && -d "${PROJECT_FOLDER}/hosts" ]]; then
                 for ur in ${(@f)"$(ls -1 ${PROJECT_FOLDER}/hosts)"}; do
-                        local file="'${PROJECT_FOLDER}/hosts/${ur}/${ur}.md'"
+                        local file="${PROJECT_FOLDER}/hosts/${ur}/${ur}.md"
                         if [ -f "$file" ]; then
                                 local host_data=$(cut_lines_from_markdown_codes "$file" "yaml host")
 
@@ -124,10 +124,10 @@ function set_current_host() {
 function update_user_cred_to_env() {
         if [[ -x "$(command -v yq)" && -d "${PROJECT_FOLDER}/users" ]]; then
                 for ur in ${(@f)"$(ls -1 ${PROJECT_FOLDER}/users)"}; do
-                        local file="'${PROJECT_FOLDER}/users/${ur}/${ur}.md'"
+                        local file="${PROJECT_FOLDER}/users/${ur}/${ur}.md"
                         if [ -f "$file" ]; then
                                 local usercred=$(cut_lines_from_markdown_codes "$file" "yaml credentials")
-
+                                
                                 local user=$(echo "$usercred" | yq '.[0].user' -r)
                                 local _var=$(safe_name "$user") # replace . and - with _ to avoid env var issues
                                 local pass=$(echo "$usercred" | yq '.[0].password' -r)
