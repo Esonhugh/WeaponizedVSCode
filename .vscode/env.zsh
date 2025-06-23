@@ -9,7 +9,7 @@ unset USER_ZDOTDIR
 # use this if you are using a VPS or cloud server it can automatically get your public IP.
 # export LHOST=`curl ifconfig.me`
 # export LHOST=`curl ip.me`
-export LHOST=${$(ifconfig | grep '10\.10\.' | cut -d ' ' -f2):-10.0.0.1}
+export LHOST=${$(ip a | grep '10\.10\.' | cut -d ' ' -f6 | cut -d '/' -f1):-10.0.0.1}
 export ATTACKER_IP=$LHOST
 
 export LPORT=6789
