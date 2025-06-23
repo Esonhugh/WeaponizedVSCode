@@ -181,15 +181,15 @@ function auto_invoker() {
 auto_invoker
 
 function current_status() {
-        if [[ -z $CURRENT_HOST ]]; then
+        if [[ -z $CURRENT_RHOST ]]; then
                 echo "No current host set."
         else
-                echo "Current Host: ${CURRENT_HOST} => ${CURRENT_HOSTNAME} (${CURRENT_IP}) ${DC_HOST} ${DC_IP}"
+                echo "Current Host: ${TARGET} => ${DOMAIN} (${RHOST}) ${DC_HOST} ${DC_IP}"
         fi
         if [[ -z $CURRENT_USER ]]; then
                 echo "No current user set."
         else
-                echo "Current User: ${CURRENT_USER} => ${USER}:${PASS} (${CURRENT_NT_HASH})"
+                echo "Current User: ${USER} => ${USER}:${PASS} (${NT_HASH})"
         fi
 }
 if [[ ! -z "$SHOW_CURRENT_STATUS" ]]; then
