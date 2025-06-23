@@ -58,7 +58,7 @@ function safe_name() {
                 echo "Usage: safe_name <name>"
                 return 1
         fi
-        echo "$name" | tr '@$.- ' '_____' # replace . and - with _ to avoid env var issues
+        echo "$name" | tr '@$.- [](){}!#' '_' # replace . and - with _ to avoid env var issues
 }
 
 function update_host_to_env() {
