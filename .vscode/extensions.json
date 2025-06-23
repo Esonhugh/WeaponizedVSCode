@@ -19,7 +19,7 @@
         "icsharpcode.ilspy-vscode", // c# decompiler
         // Python
         "ms-python.python", // ms python supports
-        "donjayamanne.python-environment-manager", // python environment/packages manager
+        "ms-python.vscode-python-envs", // python environment/packages manager
         // Golang
         "golang.go", // golang support
         "foxundermoon.shell-format", // shell formatter
