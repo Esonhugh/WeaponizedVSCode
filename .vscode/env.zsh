@@ -58,12 +58,12 @@ function safe_name() {
                 echo "Usage: safe_name <name>"
                 return 1
         fi
-        echo "$name" | tr '@$.-' '____' # replace . and - with _ to avoid env var issues
+        echo "$name" | tr '@$.- [](){}!#' '_' # replace . and - with _ to avoid env var issues
 }
 
 function update_host_to_env() {
         if [[ -x "$(command -v yq)" && -d "${PROJECT_FOLDER}/hosts" ]]; then
-                for ur in $(ls -1 ${PROJECT_FOLDER}/hosts); do
+                for ur in ${(@f)"$(ls -1 ${PROJECT_FOLDER}/hosts)"}; do
                         local file="${PROJECT_FOLDER}/hosts/${ur}/${ur}.md"
                         if [ -f "$file" ]; then
                                 local host_data=$(cut_lines_from_markdown_codes "$file" "yaml host")
@@ -123,11 +123,11 @@ function set_current_host() {
 # auto set the data in the
 function update_user_cred_to_env() {
         if [[ -x "$(command -v yq)" && -d "${PROJECT_FOLDER}/users" ]]; then
-                for ur in $(ls -1 ${PROJECT_FOLDER}/users); do
+                for ur in ${(@f)"$(ls -1 ${PROJECT_FOLDER}/users)"}; do
                         local file="${PROJECT_FOLDER}/users/${ur}/${ur}.md"
                         if [ -f "$file" ]; then
                                 local usercred=$(cut_lines_from_markdown_codes "$file" "yaml credentials")
-
+                                
                                 local user=$(echo "$usercred" | yq '.[0].user' -r)
                                 local _var=$(safe_name "$user") # replace . and - with _ to avoid env var issues
                                 local pass=$(echo "$usercred" | yq '.[0].password' -r)
@@ -171,7 +171,7 @@ function set_current_user() {
 
 ### auto invoke the commands in markdown files
 function auto_invoker() {
-        for markdown in $(find ${PROJECT_FOLDER}/{users,hosts,services} -iname "*.md" 2>/dev/null); do
+        for markdown in ${(@f)"$(find ${PROJECT_FOLDER}/{users,hosts,services} -iname "*.md" 2>/dev/null)"}; do # list all markdown files in users, hosts, services
                 local auto_invoker=$(cut_lines_from_markdown_codes "$markdown" "zsh env-invoked")
                 if [[ -n "$auto_invoker" ]]; then
                         source <(echo "$auto_invoker") # source it!
@@ -181,15 +181,15 @@ function auto_invoker() {
 auto_invoker
 
 function current_status() {
-        if [[ -z $CURRENT_HOST ]]; then
+        if [[ -z $CURRENT_RHOST ]]; then
                 echo "No current host set."
         else
-                echo "Current Host: ${CURRENT_HOST} => ${CURRENT_HOSTNAME} (${CURRENT_IP}) ${DC_HOST} ${DC_IP}"
+                echo "Current Host: ${TARGET} => ${DOMAIN} (${RHOST}) ${DC_HOST} ${DC_IP}"
         fi
         if [[ -z $CURRENT_USER ]]; then
                 echo "No current user set."
         else
-                echo "Current User: ${CURRENT_USER} => ${USER}:${PASS} (${CURRENT_NT_HASH})"
+                echo "Current User: ${USER} => ${USER}:${PASS} (${NT_HASH})"
         fi
 }
 if [[ ! -z "$SHOW_CURRENT_STATUS" ]]; then
