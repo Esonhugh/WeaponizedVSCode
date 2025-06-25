@@ -9,7 +9,11 @@ unset USER_ZDOTDIR
 # use this if you are using a VPS or cloud server it can automatically get your public IP.
 # export LHOST=`curl ifconfig.me`
 # export LHOST=`curl ip.me`
-export LHOST=${$(ip a | grep '10\.10\.' | cut -d ' ' -f6 | cut -d '/' -f1):-10.0.0.1}
+if command -v ifconfig >/dev/null 2>&1; then
+  export LHOST=${$(ifconfig | grep '10\.10\.' | cut -d ' ' -f2):-10.0.0.1}
+else
+  export LHOST=${$(ip a | grep '10\.10\.' | cut -d ' ' -f6 | cut -d '/' -f1):-10.0.0.1}
+fi
 export ATTACKER_IP=$LHOST
 
 export LPORT=6789
@@ -127,7 +131,7 @@ function update_user_cred_to_env() {
                         local file="${PROJECT_FOLDER}/users/${ur}/${ur}.md"
                         if [ -f "$file" ]; then
                                 local usercred=$(cut_lines_from_markdown_codes "$file" "yaml credentials")
-                                
+
                                 local user=$(echo "$usercred" | yq '.[0].user' -r)
                                 local _var=$(safe_name "$user") # replace . and - with _ to avoid env var issues
                                 local pass=$(echo "$usercred" | yq '.[0].password' -r)
@@ -158,7 +162,7 @@ function set_current_user() {
         export CURRENT_PASS=$(eval echo '$PASS_'$CURRENT)       # alias for PASS_A or PASS_B
         export CURRENT_NT_HASH=$(eval echo '$NT_HASH_'$CURRENT) # alias for NT_HASH_A or NT_HASH_B
         export CURRENT_LOGIN=$(eval echo '$LOGIN_'$CURRENT) # alias for LOGIN_A or LOGIN_B
-        
+
         # defined variables if u need
         export USER=${CURRENT_USER}
         export USERNAME=${CURRENT_USER}
@@ -167,7 +171,7 @@ function set_current_user() {
         export NT_HASH=${CURRENT_NT_HASH} # alias for NT_HASH_A
         export LOGIN=${CURRENT_LOGIN}     # alias for LOGIN_A
 }
-# set_current_user 
+# set_current_user
 
 ### auto invoke the commands in markdown files
 function auto_invoker() {
