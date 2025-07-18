@@ -1,8 +1,7 @@
 #!/bin/zsh
 
 function check_command() {
-    command -v "$1" >/dev/null 2>&1 && {
-    } || {
+    command -v "$1" >/dev/null 2>&1 || {
         echo "detect $1 is not installed."
         echo "$2"
         return 2
